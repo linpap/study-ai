@@ -16,11 +16,20 @@ export default function VoiceRecorder({ onTranscript, disabled, maxDuration = 30
   const shouldRestartRef = useRef(false);
   const startTimeRef = useRef<number | null>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const restartTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const stopRecording = useCallback(() => {
     shouldRestartRef.current = false;
+    if (restartTimeoutRef.current) {
+      clearTimeout(restartTimeoutRef.current);
+      restartTimeoutRef.current = null;
+    }
     if (recognitionRef.current) {
-      recognitionRef.current.stop();
+      try {
+        recognitionRef.current.stop();
+      } catch (e) {
+        // Ignore stop errors
+      }
     }
     setIsListening(false);
     setElapsedTime(0);
@@ -43,6 +52,7 @@ export default function VoiceRecorder({ onTranscript, disabled, maxDuration = 30
       recognition.continuous = true;
       recognition.interimResults = true;
       recognition.lang = 'en-US';
+      recognition.maxAlternatives = 1;
 
       recognition.onresult = (event) => {
         let finalTranscript = '';
@@ -59,29 +69,37 @@ export default function VoiceRecorder({ onTranscript, disabled, maxDuration = 30
 
       recognition.onerror = (event) => {
         console.error('Speech recognition error:', event.error);
-        // Don't stop on no-speech error, just restart
-        if (event.error === 'no-speech' && shouldRestartRef.current) {
-          try {
-            recognition.start();
-          } catch (e) {
-            // Already started, ignore
-          }
+        // Don't stop on these errors, they're recoverable
+        if (event.error === 'no-speech' || event.error === 'aborted' || event.error === 'network') {
+          // Will auto-restart via onend handler
           return;
         }
-        if (event.error !== 'aborted') {
-          stopRecording();
-        }
+        // For other errors, stop recording
+        stopRecording();
       };
 
       recognition.onend = () => {
         // Auto-restart if we should still be listening
         if (shouldRestartRef.current) {
-          try {
-            recognition.start();
-          } catch (e) {
-            // Already started or other error, stop
-            stopRecording();
-          }
+          // Small delay before restarting to avoid rapid start/stop cycles
+          restartTimeoutRef.current = setTimeout(() => {
+            if (shouldRestartRef.current && recognitionRef.current) {
+              try {
+                recognitionRef.current.start();
+              } catch (e) {
+                // If start fails, try again after a longer delay
+                restartTimeoutRef.current = setTimeout(() => {
+                  if (shouldRestartRef.current && recognitionRef.current) {
+                    try {
+                      recognitionRef.current.start();
+                    } catch (e2) {
+                      stopRecording();
+                    }
+                  }
+                }, 500);
+              }
+            }
+          }, 100);
         } else {
           setIsListening(false);
         }
@@ -92,11 +110,18 @@ export default function VoiceRecorder({ onTranscript, disabled, maxDuration = 30
 
     return () => {
       shouldRestartRef.current = false;
+      if (restartTimeoutRef.current) {
+        clearTimeout(restartTimeoutRef.current);
+      }
       if (timerRef.current) {
         clearInterval(timerRef.current);
       }
       if (recognitionRef.current) {
-        recognitionRef.current.stop();
+        try {
+          recognitionRef.current.stop();
+        } catch (e) {
+          // Ignore
+        }
       }
     };
   }, [onTranscript, stopRecording]);

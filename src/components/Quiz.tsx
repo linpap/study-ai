@@ -34,8 +34,8 @@ export default function Quiz({ questions, onComplete }: QuizProps) {
         answer: option,
         isCorrect,
         feedback: isCorrect
-          ? 'Correct!'
-          : `Incorrect. ${question.explanation}`,
+          ? question.explanation
+          : `${question.explanation}`,
         checked: true,
       },
     }));
