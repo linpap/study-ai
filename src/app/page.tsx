@@ -3,6 +3,10 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { lessons } from '@/data/lessons';
+import { useAuth } from '@/context/AuthContext';
+import { createClient } from '@/lib/supabase/client';
+
+const FREE_LESSONS = [1, 2, 3];
 
 interface Progress {
   [lessonId: number]: {
@@ -13,16 +17,51 @@ interface Progress {
   };
 }
 
+interface UserProgress {
+  lesson_id: number;
+  viewed: boolean;
+  completed: boolean;
+  score: number | null;
+  completed_at: string | null;
+}
+
 export default function Home() {
   const [progress, setProgress] = useState<Progress>({});
   const [darkMode, setDarkMode] = useState(false);
+  const { user, loading: authLoading, signOut } = useAuth();
+  const supabase = createClient();
 
   useEffect(() => {
-    // Load progress from localStorage
-    const saved = localStorage.getItem('studyai-progress');
-    if (saved) {
-      setProgress(JSON.parse(saved));
-    }
+    const loadProgress = async () => {
+      if (user && supabase) {
+        // Load from Supabase for authenticated users
+        const { data } = await supabase
+          .from('user_progress')
+          .select('*')
+          .eq('user_id', user.id);
+
+        if (data) {
+          const progressMap: Progress = {};
+          (data as UserProgress[]).forEach((p) => {
+            progressMap[p.lesson_id] = {
+              viewed: p.viewed,
+              completed: p.completed,
+              score: p.score ?? undefined,
+              completedAt: p.completed_at ?? undefined,
+            };
+          });
+          setProgress(progressMap);
+        }
+      } else {
+        // Load from localStorage for non-authenticated users
+        const saved = localStorage.getItem('studyai-progress');
+        if (saved) {
+          setProgress(JSON.parse(saved));
+        }
+      }
+    };
+
+    loadProgress();
 
     // Check dark mode preference from localStorage first, then system preference
     const savedDarkMode = localStorage.getItem('darkMode');
@@ -38,7 +77,7 @@ export default function Home() {
       setDarkMode(true);
       document.documentElement.classList.add('dark');
     }
-  }, []);
+  }, [user, supabase]);
 
   const toggleDarkMode = () => {
     const newDarkMode = !darkMode;
@@ -70,7 +109,7 @@ export default function Home() {
               <p className="text-xs text-gray-500 dark:text-gray-400">Master AI from Zero to Hero</p>
             </div>
           </div>
-          <nav className="flex items-center gap-6">
+          <nav className="flex items-center gap-4">
             <Link
               href="/"
               className="text-blue-600 dark:text-blue-400 font-medium"
@@ -84,19 +123,41 @@ export default function Home() {
               Practice
             </Link>
             <button
-            onClick={toggleDarkMode}
-            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition"
-          >
-            {darkMode ? (
-              <svg className="w-6 h-6 text-yellow-500" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-              </svg>
-            ) : (
-              <svg className="w-6 h-6 text-gray-600" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-              </svg>
-            )}
+              onClick={toggleDarkMode}
+              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+            >
+              {darkMode ? (
+                <svg className="w-6 h-6 text-yellow-500" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+              ) : (
+                <svg className="w-6 h-6 text-gray-600" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                </svg>
+              )}
             </button>
+            {!authLoading && (
+              user ? (
+                <div className="flex items-center gap-3">
+                  <span className="text-sm text-gray-600 dark:text-gray-300 hidden sm:inline">
+                    {user.email}
+                  </span>
+                  <button
+                    onClick={() => signOut()}
+                    className="px-3 py-1.5 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+                  >
+                    Sign out
+                  </button>
+                </div>
+              ) : (
+                <Link
+                  href="/auth/login"
+                  className="px-4 py-1.5 text-sm font-medium text-white bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg hover:from-blue-600 hover:to-purple-700 transition"
+                >
+                  Sign in
+                </Link>
+              )
+            )}
           </nav>
         </div>
       </header>
@@ -201,23 +262,33 @@ export default function Home() {
             const lessonProgress = progress[lesson.id];
             const isCompleted = lessonProgress?.completed;
             const isViewed = lessonProgress?.viewed;
+            const isFreeLesson = FREE_LESSONS.includes(lesson.id);
+            const isLocked = !isFreeLesson && !user;
 
             return (
               <Link
                 key={lesson.id}
-                href={`/lesson/${lesson.id}`}
-                className="group bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm hover:shadow-md transition-all border-2 border-transparent hover:border-blue-500"
+                href={isLocked ? '/auth/login?redirect=/lesson/' + lesson.id : `/lesson/${lesson.id}`}
+                className={`group bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm hover:shadow-md transition-all border-2 border-transparent ${
+                  isLocked ? 'hover:border-purple-500' : 'hover:border-blue-500'
+                }`}
               >
                 <div className="flex items-start gap-4">
                   {/* Lesson Number / Status */}
                   <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${
-                    isCompleted
+                    isLocked
+                      ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400'
+                      : isCompleted
                       ? 'bg-green-500 text-white'
                       : isViewed
                       ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400'
                       : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300'
                   }`}>
-                    {isCompleted ? (
+                    {isLocked ? (
+                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                      </svg>
+                    ) : isCompleted ? (
                       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
@@ -228,8 +299,10 @@ export default function Home() {
 
                   {/* Lesson Info */}
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-3 mb-1">
-                      <h4 className="font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition truncate">
+                    <div className="flex items-center gap-3 mb-1 flex-wrap">
+                      <h4 className={`font-semibold text-gray-900 dark:text-white transition truncate ${
+                        isLocked ? 'group-hover:text-purple-600 dark:group-hover:text-purple-400' : 'group-hover:text-blue-600 dark:group-hover:text-blue-400'
+                      }`}>
                         {lesson.title}
                       </h4>
                       <span className={`px-2 py-0.5 rounded-full text-xs font-medium flex-shrink-0 ${
@@ -241,6 +314,11 @@ export default function Home() {
                       }`}>
                         {lesson.difficulty}
                       </span>
+                      {isLocked && (
+                        <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400 flex-shrink-0">
+                          Login required
+                        </span>
+                      )}
                     </div>
                     <p className="text-gray-600 dark:text-gray-300 text-sm mb-2 line-clamp-1">
                       {lesson.description}

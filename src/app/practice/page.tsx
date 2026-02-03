@@ -4,12 +4,14 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { practiceExercises, getAllCategories } from '@/data/practice-exercises';
 import { PracticeProgress } from '@/types/practice';
+import { useAuth } from '@/context/AuthContext';
 
 export default function PracticePage() {
   const [darkMode, setDarkMode] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedDifficulty, setSelectedDifficulty] = useState<string>('all');
   const [progress, setProgress] = useState<PracticeProgress>({});
+  const { user, loading: authLoading, signOut } = useAuth();
 
   useEffect(() => {
     const savedDarkMode = localStorage.getItem('darkMode') === 'true';
@@ -68,7 +70,7 @@ export default function PracticePage() {
               </span>
             </Link>
 
-            <nav className="flex items-center gap-6">
+            <nav className="flex items-center gap-4">
               <Link
                 href="/"
                 className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
@@ -96,6 +98,28 @@ export default function PracticePage() {
                   </svg>
                 )}
               </button>
+              {!authLoading && (
+                user ? (
+                  <div className="flex items-center gap-3">
+                    <span className="text-sm text-gray-600 dark:text-gray-300 hidden sm:inline">
+                      {user.email}
+                    </span>
+                    <button
+                      onClick={() => signOut()}
+                      className="px-3 py-1.5 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+                    >
+                      Sign out
+                    </button>
+                  </div>
+                ) : (
+                  <Link
+                    href="/auth/login"
+                    className="px-4 py-1.5 text-sm font-medium text-white bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg hover:from-blue-600 hover:to-purple-700 transition"
+                  >
+                    Sign in
+                  </Link>
+                )
+              )}
             </nav>
           </div>
         </div>

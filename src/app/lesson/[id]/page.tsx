@@ -5,16 +5,36 @@ import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { getLessonById, lessons } from '@/data/lessons';
 import Quiz from '@/components/Quiz';
+import { useAuth } from '@/context/AuthContext';
+import { createClient } from '@/lib/supabase/client';
+
+const FREE_LESSONS = [1, 2, 3];
 
 export default function LessonPage() {
   const params = useParams();
   const router = useRouter();
   const lessonId = parseInt(params.id as string);
   const lesson = getLessonById(lessonId);
+  const { user, loading: authLoading } = useAuth();
+  const supabase = createClient();
 
   const [showQuiz, setShowQuiz] = useState(false);
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [score, setScore] = useState({ correct: 0, total: 0 });
+  const [authChecked, setAuthChecked] = useState(false);
+
+  const isFreeLesson = FREE_LESSONS.includes(lessonId);
+
+  // Check auth for non-free lessons (client-side backup for middleware)
+  useEffect(() => {
+    if (!authLoading) {
+      if (!isFreeLesson && !user) {
+        router.push(`/auth/login?redirect=/lesson/${lessonId}`);
+      } else {
+        setAuthChecked(true);
+      }
+    }
+  }, [authLoading, user, isFreeLesson, lessonId, router]);
 
   useEffect(() => {
     // Apply dark mode from localStorage
@@ -25,23 +45,57 @@ export default function LessonPage() {
       document.documentElement.classList.remove('dark');
     }
 
-    // Mark lesson as viewed in localStorage
-    if (lesson) {
-      const progress = JSON.parse(localStorage.getItem('studyai-progress') || '{}');
-      progress[lessonId] = {
-        ...progress[lessonId],
-        viewed: true,
-        lastViewed: new Date().toISOString(),
-      };
-      localStorage.setItem('studyai-progress', JSON.stringify(progress));
+    // Mark lesson as viewed
+    const markViewed = async () => {
+      if (!lesson) return;
+
+      if (user && supabase) {
+        // Save to Supabase for authenticated users
+        await supabase.from('user_progress').upsert({
+          user_id: user.id,
+          lesson_id: lessonId,
+          viewed: true,
+          last_viewed: new Date().toISOString(),
+        }, {
+          onConflict: 'user_id,lesson_id',
+        });
+      } else {
+        // Save to localStorage for non-authenticated users
+        const progress = JSON.parse(localStorage.getItem('studyai-progress') || '{}');
+        progress[lessonId] = {
+          ...progress[lessonId],
+          viewed: true,
+          lastViewed: new Date().toISOString(),
+        };
+        localStorage.setItem('studyai-progress', JSON.stringify(progress));
+      }
+    };
+
+    if (authChecked && lesson) {
+      markViewed();
     }
-  }, [lessonId, lesson]);
+  }, [lessonId, lesson, user, authChecked, supabase]);
+
+  // Show loading while checking auth
+  if (authLoading || (!authChecked && !isFreeLesson)) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+        <div className="flex flex-col items-center gap-4">
+          <svg className="animate-spin h-8 w-8 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          <p className="text-gray-500 dark:text-gray-400">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!lesson) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
         <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4">Lesson not found</h1>
+          <h1 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Lesson not found</h1>
           <Link href="/" className="text-blue-500 hover:underline">
             Return to lessons
           </Link>
@@ -50,19 +104,37 @@ export default function LessonPage() {
     );
   }
 
-  const handleQuizComplete = (correct: number, total: number) => {
+  const handleQuizComplete = async (correct: number, total: number) => {
     setScore({ correct, total });
     setQuizCompleted(true);
 
-    // Save progress
-    const progress = JSON.parse(localStorage.getItem('studyai-progress') || '{}');
-    progress[lessonId] = {
-      ...progress[lessonId],
-      completed: true,
-      score: Math.round((correct / total) * 100),
-      completedAt: new Date().toISOString(),
-    };
-    localStorage.setItem('studyai-progress', JSON.stringify(progress));
+    const scorePercent = Math.round((correct / total) * 100);
+    const completedAt = new Date().toISOString();
+
+    if (user && supabase) {
+      // Save to Supabase for authenticated users
+      await supabase.from('user_progress').upsert({
+        user_id: user.id,
+        lesson_id: lessonId,
+        viewed: true,
+        completed: true,
+        score: scorePercent,
+        completed_at: completedAt,
+        last_viewed: completedAt,
+      }, {
+        onConflict: 'user_id,lesson_id',
+      });
+    } else {
+      // Save to localStorage for non-authenticated users
+      const progress = JSON.parse(localStorage.getItem('studyai-progress') || '{}');
+      progress[lessonId] = {
+        ...progress[lessonId],
+        completed: true,
+        score: scorePercent,
+        completedAt,
+      };
+      localStorage.setItem('studyai-progress', JSON.stringify(progress));
+    }
   };
 
   const nextLesson = lessons.find(l => l.id === lessonId + 1);
