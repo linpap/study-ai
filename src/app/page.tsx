@@ -56,7 +56,20 @@ export default function Home() {
               <p className="text-xs text-gray-500 dark:text-gray-400">Master AI from Zero to Hero</p>
             </div>
           </div>
-          <button
+          <nav className="flex items-center gap-6">
+            <Link
+              href="/"
+              className="text-blue-600 dark:text-blue-400 font-medium"
+            >
+              Lessons
+            </Link>
+            <Link
+              href="/practice"
+              className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            >
+              Practice
+            </Link>
+            <button
             onClick={toggleDarkMode}
             className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition"
           >
@@ -69,7 +82,8 @@ export default function Home() {
                 <path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
               </svg>
             )}
-          </button>
+            </button>
+          </nav>
         </div>
       </header>
 
@@ -127,7 +141,7 @@ export default function Home() {
         </div>
 
         {/* Features */}
-        <div className="grid md:grid-cols-3 gap-6 mb-12">
+        <div className="grid md:grid-cols-4 gap-6 mb-12">
           <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
             <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center mb-4">
               <svg className="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -146,6 +160,15 @@ export default function Home() {
             <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Interactive Quizzes</h3>
             <p className="text-gray-600 dark:text-gray-300 text-sm">MCQ and descriptive questions with AI evaluation</p>
           </div>
+          <Link href="/practice" className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm hover:shadow-md hover:border-orange-400 border-2 border-transparent transition-all group">
+            <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900/30 rounded-lg flex items-center justify-center mb-4">
+              <svg className="w-6 h-6 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+              </svg>
+            </div>
+            <h3 className="font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">Practice Area</h3>
+            <p className="text-gray-600 dark:text-gray-300 text-sm">Hands-on coding exercises with live execution</p>
+          </Link>
           <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
             <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center mb-4">
               <svg className="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
