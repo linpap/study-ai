@@ -5,13 +5,13 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 interface VoiceRecorderProps {
   onTranscript: (text: string) => void;
   disabled?: boolean;
-  minDuration?: number; // minimum recording duration in seconds
+  maxDuration?: number; // maximum recording duration in seconds
 }
 
-export default function VoiceRecorder({ onTranscript, disabled, minDuration = 15 }: VoiceRecorderProps) {
+export default function VoiceRecorder({ onTranscript, disabled, maxDuration = 30 }: VoiceRecorderProps) {
   const [isListening, setIsListening] = useState(false);
   const [isSupported, setIsSupported] = useState(true);
-  const [timeRemaining, setTimeRemaining] = useState(0);
+  const [elapsedTime, setElapsedTime] = useState(0);
   const recognitionRef = useRef<SpeechRecognition | null>(null);
   const shouldRestartRef = useRef(false);
   const startTimeRef = useRef<number | null>(null);
@@ -23,7 +23,7 @@ export default function VoiceRecorder({ onTranscript, disabled, minDuration = 15
       recognitionRef.current.stop();
     }
     setIsListening(false);
-    setTimeRemaining(0);
+    setElapsedTime(0);
     startTimeRef.current = null;
     if (timerRef.current) {
       clearInterval(timerRef.current);
@@ -106,14 +106,18 @@ export default function VoiceRecorder({ onTranscript, disabled, minDuration = 15
 
     shouldRestartRef.current = true;
     startTimeRef.current = Date.now();
-    setTimeRemaining(minDuration);
+    setElapsedTime(0);
 
-    // Start countdown timer
+    // Start timer to track elapsed time and auto-stop at max duration
     timerRef.current = setInterval(() => {
       if (startTimeRef.current) {
         const elapsed = Math.floor((Date.now() - startTimeRef.current) / 1000);
-        const remaining = Math.max(0, minDuration - elapsed);
-        setTimeRemaining(remaining);
+        setElapsedTime(elapsed);
+
+        // Auto-stop after max duration
+        if (elapsed >= maxDuration) {
+          stopRecording();
+        }
       }
     }, 1000);
 
@@ -124,18 +128,11 @@ export default function VoiceRecorder({ onTranscript, disabled, minDuration = 15
       console.error('Failed to start recognition:', e);
       stopRecording();
     }
-  }, [minDuration, stopRecording]);
+  }, [maxDuration, stopRecording]);
 
   const toggleListening = () => {
     if (isListening) {
-      // Only allow stopping after minimum duration
-      if (startTimeRef.current) {
-        const elapsed = (Date.now() - startTimeRef.current) / 1000;
-        if (elapsed < minDuration) {
-          // Don't stop yet, still within minimum duration
-          return;
-        }
-      }
+      // Allow stopping anytime
       stopRecording();
     } else {
       startRecording();
@@ -150,7 +147,7 @@ export default function VoiceRecorder({ onTranscript, disabled, minDuration = 15
     );
   }
 
-  const canStop = timeRemaining === 0;
+  const timeLeft = maxDuration - elapsedTime;
 
   return (
     <button
@@ -158,23 +155,17 @@ export default function VoiceRecorder({ onTranscript, disabled, minDuration = 15
       disabled={disabled}
       className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${
         isListening
-          ? canStop
-            ? 'bg-red-500 text-white animate-pulse'
-            : 'bg-orange-500 text-white animate-pulse'
+          ? 'bg-red-500 text-white animate-pulse'
           : 'bg-gray-100 hover:bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600'
       } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
-      title={isListening && !canStop ? `Recording for at least ${timeRemaining}s more` : ''}
+      title={isListening ? 'Click to stop recording' : 'Click to start voice input'}
     >
       {isListening ? (
         <>
           <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-            {canStop ? (
-              <rect x="6" y="6" width="12" height="12" rx="2" />
-            ) : (
-              <circle cx="12" cy="12" r="8" />
-            )}
+            <rect x="6" y="6" width="12" height="12" rx="2" />
           </svg>
-          {canStop ? 'Stop Recording' : `Recording... ${timeRemaining}s`}
+          Stop ({timeLeft}s)
         </>
       ) : (
         <>
