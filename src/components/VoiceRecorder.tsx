@@ -1,16 +1,35 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 
 interface VoiceRecorderProps {
   onTranscript: (text: string) => void;
   disabled?: boolean;
+  minDuration?: number; // minimum recording duration in seconds
 }
 
-export default function VoiceRecorder({ onTranscript, disabled }: VoiceRecorderProps) {
+export default function VoiceRecorder({ onTranscript, disabled, minDuration = 15 }: VoiceRecorderProps) {
   const [isListening, setIsListening] = useState(false);
   const [isSupported, setIsSupported] = useState(true);
+  const [timeRemaining, setTimeRemaining] = useState(0);
   const recognitionRef = useRef<SpeechRecognition | null>(null);
+  const shouldRestartRef = useRef(false);
+  const startTimeRef = useRef<number | null>(null);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const stopRecording = useCallback(() => {
+    shouldRestartRef.current = false;
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+    }
+    setIsListening(false);
+    setTimeRemaining(0);
+    startTimeRef.current = null;
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+  }, []);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -40,32 +59,86 @@ export default function VoiceRecorder({ onTranscript, disabled }: VoiceRecorderP
 
       recognition.onerror = (event) => {
         console.error('Speech recognition error:', event.error);
-        setIsListening(false);
+        // Don't stop on no-speech error, just restart
+        if (event.error === 'no-speech' && shouldRestartRef.current) {
+          try {
+            recognition.start();
+          } catch (e) {
+            // Already started, ignore
+          }
+          return;
+        }
+        if (event.error !== 'aborted') {
+          stopRecording();
+        }
       };
 
       recognition.onend = () => {
-        setIsListening(false);
+        // Auto-restart if we should still be listening
+        if (shouldRestartRef.current) {
+          try {
+            recognition.start();
+          } catch (e) {
+            // Already started or other error, stop
+            stopRecording();
+          }
+        } else {
+          setIsListening(false);
+        }
       };
 
       recognitionRef.current = recognition;
     }
 
     return () => {
+      shouldRestartRef.current = false;
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
       if (recognitionRef.current) {
         recognitionRef.current.stop();
       }
     };
-  }, [onTranscript]);
+  }, [onTranscript, stopRecording]);
 
-  const toggleListening = () => {
+  const startRecording = useCallback(() => {
     if (!recognitionRef.current) return;
 
-    if (isListening) {
-      recognitionRef.current.stop();
-      setIsListening(false);
-    } else {
+    shouldRestartRef.current = true;
+    startTimeRef.current = Date.now();
+    setTimeRemaining(minDuration);
+
+    // Start countdown timer
+    timerRef.current = setInterval(() => {
+      if (startTimeRef.current) {
+        const elapsed = Math.floor((Date.now() - startTimeRef.current) / 1000);
+        const remaining = Math.max(0, minDuration - elapsed);
+        setTimeRemaining(remaining);
+      }
+    }, 1000);
+
+    try {
       recognitionRef.current.start();
       setIsListening(true);
+    } catch (e) {
+      console.error('Failed to start recognition:', e);
+      stopRecording();
+    }
+  }, [minDuration, stopRecording]);
+
+  const toggleListening = () => {
+    if (isListening) {
+      // Only allow stopping after minimum duration
+      if (startTimeRef.current) {
+        const elapsed = (Date.now() - startTimeRef.current) / 1000;
+        if (elapsed < minDuration) {
+          // Don't stop yet, still within minimum duration
+          return;
+        }
+      }
+      stopRecording();
+    } else {
+      startRecording();
     }
   };
 
@@ -77,22 +150,31 @@ export default function VoiceRecorder({ onTranscript, disabled }: VoiceRecorderP
     );
   }
 
+  const canStop = timeRemaining === 0;
+
   return (
     <button
       onClick={toggleListening}
       disabled={disabled}
       className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${
         isListening
-          ? 'bg-red-500 text-white animate-pulse'
+          ? canStop
+            ? 'bg-red-500 text-white animate-pulse'
+            : 'bg-orange-500 text-white animate-pulse'
           : 'bg-gray-100 hover:bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600'
       } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+      title={isListening && !canStop ? `Recording for at least ${timeRemaining}s more` : ''}
     >
       {isListening ? (
         <>
           <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-            <rect x="6" y="6" width="12" height="12" rx="2" />
+            {canStop ? (
+              <rect x="6" y="6" width="12" height="12" rx="2" />
+            ) : (
+              <circle cx="12" cy="12" r="8" />
+            )}
           </svg>
-          Stop Recording
+          {canStop ? 'Stop Recording' : `Recording... ${timeRemaining}s`}
         </>
       ) : (
         <>
