@@ -18,7 +18,7 @@ export interface Lesson {
   questions: Question[];
 }
 
-export const lessons: Lesson[] = [
+const baseLessons: Lesson[] = [
   {
     id: 1,
     title: "Introduction to Artificial Intelligence",
@@ -2050,6 +2050,18 @@ export default function Home() {
       }
     ]
   }
+];
+
+import { advancedLessons } from './advanced-lessons';
+import { engineeringLessons } from './engineering-lessons';
+import { productionLessons } from './production-lessons';
+
+// Combine all lessons
+export const lessons: Lesson[] = [
+  ...baseLessons,
+  ...advancedLessons,
+  ...engineeringLessons,
+  ...productionLessons
 ];
 
 export const getLessonById = (id: number): Lesson | undefined => {
