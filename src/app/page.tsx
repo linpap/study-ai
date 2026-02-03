@@ -24,17 +24,31 @@ export default function Home() {
       setProgress(JSON.parse(saved));
     }
 
-    // Check dark mode preference
-    if (typeof window !== 'undefined') {
-      const isDark = document.documentElement.classList.contains('dark') ||
-        window.matchMedia('(prefers-color-scheme: dark)').matches;
+    // Check dark mode preference from localStorage first, then system preference
+    const savedDarkMode = localStorage.getItem('darkMode');
+    if (savedDarkMode !== null) {
+      const isDark = savedDarkMode === 'true';
       setDarkMode(isDark);
+      if (isDark) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      setDarkMode(true);
+      document.documentElement.classList.add('dark');
     }
   }, []);
 
   const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-    document.documentElement.classList.toggle('dark');
+    const newDarkMode = !darkMode;
+    setDarkMode(newDarkMode);
+    localStorage.setItem('darkMode', String(newDarkMode));
+    if (newDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
   };
 
   const completedCount = Object.values(progress).filter(p => p.completed).length;

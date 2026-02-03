@@ -17,6 +17,14 @@ export default function LessonPage() {
   const [score, setScore] = useState({ correct: 0, total: 0 });
 
   useEffect(() => {
+    // Apply dark mode from localStorage
+    const savedDarkMode = localStorage.getItem('darkMode');
+    if (savedDarkMode === 'true') {
+      document.documentElement.classList.add('dark');
+    } else if (savedDarkMode === 'false') {
+      document.documentElement.classList.remove('dark');
+    }
+
     // Mark lesson as viewed in localStorage
     if (lesson) {
       const progress = JSON.parse(localStorage.getItem('studyai-progress') || '{}');
