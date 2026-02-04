@@ -29,26 +29,31 @@ body {
 }
 
 /* Code block styles for lessons */
-.prose .code-block {
-  background: #1e293b;
-  color: #e2e8f0;
-  padding: 1rem;
+.code-block,
+.prose .code-block,
+article .code-block {
+  background: #1e293b !important;
+  color: #e2e8f0 !important;
+  padding: 1rem !important;
   overflow-x: auto;
-  font-family: 'Fira Code', 'Consolas', 'Monaco', monospace;
-  font-size: 0.875rem;
+  font-family: 'Fira Code', 'Consolas', 'Monaco', monospace !important;
+  font-size: 0.875rem !important;
   white-space: pre-wrap;
   line-height: 1.6;
-  margin: 1rem 0;
-  border-radius: 0.5rem;
+  margin: 1rem 0 !important;
+  border-radius: 0.5rem !important;
 }
 
-.prose .code-block pre {
-  margin: 0;
-  padding: 0;
-  background: transparent;
-  color: inherit;
-  font-family: inherit;
-  font-size: inherit;
+.code-block pre,
+.prose .code-block pre,
+article .code-block pre {
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  color: inherit !important;
+  font-family: inherit !important;
+  font-size: inherit !important;
+  white-space: pre-wrap;
 }
 
 .prose h2 {
