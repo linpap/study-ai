@@ -212,7 +212,7 @@ export default function LessonPage() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Header */}
       <header className="bg-white dark:bg-gray-800 shadow-sm sticky top-0 z-10">
-        <div className="max-w-[1200px] mx-auto px-8 py-4 flex items-center justify-between">
+        <div className="max-w-[1400px] mx-auto px-8 py-4 flex items-center justify-between">
           <Link
             href="/"
             className="flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
@@ -228,10 +228,10 @@ export default function LessonPage() {
         </div>
       </header>
 
-      <main className="max-w-[1200px] mx-auto px-8 py-8">
+      <main className="max-w-[1400px] mx-auto px-8 py-8">
         {/* Lesson Header */}
-        <div className="mb-8 text-center">
-          <div className="flex items-center justify-center gap-3 mb-3">
+        <div className="mb-8">
+          <div className="flex items-center gap-3 mb-3">
             <span className={`px-3 py-1 rounded-full text-sm font-medium ${
               lesson.difficulty === 'Beginner'
                 ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300'
