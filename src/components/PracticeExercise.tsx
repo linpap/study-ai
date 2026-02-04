@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { PracticeExercise as PracticeExerciseType, TestResult, PracticeProgress } from '@/types/practice';
+import { PracticeExercise as PracticeExerciseType, TestResult } from '@/types/practice';
 import CodeEditor from './CodeEditor';
 import CodeBlock from './CodeBlock';
 import { useCodeRunner } from './CodeRunner';
@@ -16,16 +16,15 @@ export default function PracticeExercise({ exercise, darkMode, onComplete }: Pra
   const [code, setCode] = useState(exercise.starterCode);
   const [results, setResults] = useState<TestResult[]>([]);
   const [running, setRunning] = useState(false);
-  const [showHints, setShowHints] = useState(false);
   const [revealedHints, setRevealedHints] = useState(0);
   const [showSolution, setShowSolution] = useState(false);
   const [activeTab, setActiveTab] = useState<'problem' | 'solution'>('problem');
   const { runCode } = useCodeRunner();
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional reset when exercise changes
     setCode(exercise.starterCode);
     setResults([]);
-    setShowHints(false);
     setRevealedHints(0);
     setShowSolution(false);
     setActiveTab('problem');

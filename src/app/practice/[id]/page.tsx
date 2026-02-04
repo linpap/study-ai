@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { getExerciseById, practiceExercises } from '@/data/practice-exercises';
 import { PracticeProgress } from '@/types/practice';
@@ -10,7 +10,6 @@ import { useAuth } from '@/context/AuthContext';
 
 export default function ExercisePage() {
   const params = useParams();
-  const router = useRouter();
   const exerciseId = parseInt(params.id as string, 10);
   const exercise = getExerciseById(exerciseId);
 
@@ -20,6 +19,7 @@ export default function ExercisePage() {
 
   useEffect(() => {
     const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional sync with localStorage on mount
     setDarkMode(savedDarkMode);
     if (savedDarkMode) {
       document.documentElement.classList.add('dark');

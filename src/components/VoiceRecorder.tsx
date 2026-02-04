@@ -27,7 +27,7 @@ export default function VoiceRecorder({ onTranscript, disabled, maxDuration = 30
     if (recognitionRef.current) {
       try {
         recognitionRef.current.stop();
-      } catch (e) {
+      } catch {
         // Ignore stop errors
       }
     }
@@ -44,6 +44,7 @@ export default function VoiceRecorder({ onTranscript, disabled, maxDuration = 30
     if (typeof window !== 'undefined') {
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
       if (!SpeechRecognition) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional feature detection on mount
         setIsSupported(false);
         return;
       }
@@ -86,13 +87,13 @@ export default function VoiceRecorder({ onTranscript, disabled, maxDuration = 30
             if (shouldRestartRef.current && recognitionRef.current) {
               try {
                 recognitionRef.current.start();
-              } catch (e) {
+              } catch {
                 // If start fails, try again after a longer delay
                 restartTimeoutRef.current = setTimeout(() => {
                   if (shouldRestartRef.current && recognitionRef.current) {
                     try {
                       recognitionRef.current.start();
-                    } catch (e2) {
+                    } catch {
                       stopRecording();
                     }
                   }
@@ -119,7 +120,7 @@ export default function VoiceRecorder({ onTranscript, disabled, maxDuration = 30
       if (recognitionRef.current) {
         try {
           recognitionRef.current.stop();
-        } catch (e) {
+        } catch {
           // Ignore
         }
       }

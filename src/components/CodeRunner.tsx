@@ -12,33 +12,7 @@ interface CodeRunnerProps {
 export default function CodeRunner({ onResults, onError, onRunning }: CodeRunnerProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
-  const runCode = useCallback(async (code: string, testCases: TestCase[]) => {
-    onRunning(true);
-    onError('');
-
-    const results: TestResult[] = [];
-
-    for (const testCase of testCases) {
-      try {
-        const result = await executeInSandbox(code, testCase);
-        results.push(result);
-      } catch (err) {
-        results.push({
-          testId: testCase.id,
-          passed: false,
-          input: testCase.input,
-          expected: testCase.expectedOutput,
-          actual: '',
-          error: err instanceof Error ? err.message : 'Unknown error',
-        });
-      }
-    }
-
-    onResults(results);
-    onRunning(false);
-  }, [onResults, onError, onRunning]);
-
-  const executeInSandbox = (code: string, testCase: TestCase): Promise<TestResult> => {
+  const executeInSandbox = useCallback((code: string, testCase: TestCase): Promise<TestResult> => {
     return new Promise((resolve) => {
       const timeout = setTimeout(() => {
         resolve({
@@ -97,11 +71,33 @@ export default function CodeRunner({ onResults, onError, onRunning }: CodeRunner
         });
       }
     });
-  };
+  }, []);
 
-  // Expose runCode method via ref-like pattern
-  const runnerRef = useRef({ runCode });
-  runnerRef.current.runCode = runCode;
+  const runCode = useCallback(async (code: string, testCases: TestCase[]) => {
+    onRunning(true);
+    onError('');
+
+    const results: TestResult[] = [];
+
+    for (const testCase of testCases) {
+      try {
+        const result = await executeInSandbox(code, testCase);
+        results.push(result);
+      } catch (err) {
+        results.push({
+          testId: testCase.id,
+          passed: false,
+          input: testCase.input,
+          expected: testCase.expectedOutput,
+          actual: '',
+          error: err instanceof Error ? err.message : 'Unknown error',
+        });
+      }
+    }
+
+    onResults(results);
+    onRunning(false);
+  }, [onResults, onError, onRunning, executeInSandbox]);
 
   return (
     <div style={{ display: 'none' }}>

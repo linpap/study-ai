@@ -8,6 +8,7 @@ export default function RefundPage() {
 
   useEffect(() => {
     const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional sync with localStorage on mount
     setDarkMode(savedDarkMode);
     if (savedDarkMode) {
       document.documentElement.classList.add('dark');

@@ -10,18 +10,6 @@ import { practiceExercises } from '@/data/practice-exercises';
 
 const ADMIN_EMAIL = 'linpap@gmail.com';
 
-interface UserStats {
-  id: string;
-  email: string;
-  created_at: string;
-  last_sign_in_at: string;
-}
-
-interface ProgressStats {
-  user_id: string;
-  lessons_completed: number;
-  total_score: number;
-}
 
 export default function AdminPage() {
   const router = useRouter();
@@ -32,7 +20,6 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(true);
   const [totalUsers, setTotalUsers] = useState(0);
   const [premiumUsers, setPremiumUsers] = useState(0);
-  const [recentSignups, setRecentSignups] = useState<UserStats[]>([]);
   const [progressStats, setProgressStats] = useState<{completedLessons: number, totalAttempts: number}>({
     completedLessons: 0,
     totalAttempts: 0
@@ -40,6 +27,7 @@ export default function AdminPage() {
 
   useEffect(() => {
     const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional sync with localStorage on mount
     setDarkMode(savedDarkMode);
     if (savedDarkMode) {
       document.documentElement.classList.add('dark');
@@ -62,7 +50,7 @@ export default function AdminPage() {
 
       try {
         // Get user progress stats
-        const { data: progressData, count: progressCount } = await supabase
+        const { data: progressData } = await supabase
           .from('user_progress')
           .select('*', { count: 'exact' });
 

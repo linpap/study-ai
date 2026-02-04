@@ -11,7 +11,8 @@ export async function POST(request: Request) {
     const paymentRequestId = body.get('payment_request_id') as string;
     const paymentId = body.get('payment_id') as string;
     const status = body.get('status') as string;
-    const mac = body.get('mac') as string;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- Reserved for MAC verification in production
+    const _mac = body.get('mac') as string;
 
     // Verify MAC (Message Authentication Code) for security
     // Note: In production, you should verify the MAC using your salt

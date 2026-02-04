@@ -22,13 +22,12 @@ export default function LessonPage() {
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [score, setScore] = useState({ correct: 0, total: 0 });
   const [authChecked, setAuthChecked] = useState(false);
-  const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
 
   // Process code blocks to add copy buttons
   useEffect(() => {
     const processCodeBlocks = () => {
       const codeBlocks = document.querySelectorAll('.prose .code-block:not([data-processed])');
-      codeBlocks.forEach((block, index) => {
+      codeBlocks.forEach((block) => {
         block.setAttribute('data-processed', 'true');
 
         // Create wrapper
@@ -97,6 +96,7 @@ export default function LessonPage() {
       if (!isFreeLesson && !user) {
         router.push(`/auth/login?redirect=/lesson/${lessonId}`);
       } else {
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional auth check on mount
         setAuthChecked(true);
       }
     }

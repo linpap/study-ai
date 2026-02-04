@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useState, ReactNode, useMemo, useCallback } from 'react'
 import { User, AuthError, AuthChangeEvent, Session } from '@supabase/supabase-js'
-import { createClient, isSupabaseConfigured } from '@/lib/supabase/client'
+import { createClient } from '@/lib/supabase/client'
 
 interface AuthContextType {
   user: User | null
@@ -45,53 +45,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, [supabase, user])
 
-  useEffect(() => {
-    // If Supabase is not configured, just set loading to false
-    if (!supabase) {
-      setLoading(false)
-      return
-    }
-
-    // Get initial session
-    const getInitialSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession()
-      setUser(session?.user ?? null)
-      setLoading(false)
-    }
-
-    getInitialSession()
-
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event: AuthChangeEvent, session: Session | null) => {
-        setUser(session?.user ?? null)
-        setLoading(false)
-
-        // Migrate localStorage progress on sign in
-        if (event === 'SIGNED_IN' && session?.user) {
-          await migrateLocalProgress(session.user.id)
-        }
-
-        // Reset premium status on sign out
-        if (event === 'SIGNED_OUT') {
-          setIsPremium(false)
-        }
-      }
-    )
-
-    return () => {
-      subscription.unsubscribe()
-    }
-  }, [supabase])
-
-  // Check premium status when user changes
-  useEffect(() => {
-    if (user) {
-      checkPremiumStatus()
-    }
-  }, [user, checkPremiumStatus])
-
-  const migrateLocalProgress = async (userId: string) => {
+  const migrateLocalProgress = useCallback(async (userId: string) => {
     if (!supabase) return
 
     try {
@@ -142,7 +96,55 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } catch (error) {
       console.error('Failed to migrate local progress:', error)
     }
-  }
+  }, [supabase])
+
+  useEffect(() => {
+    // If Supabase is not configured, just set loading to false
+    if (!supabase) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional early return when Supabase not configured
+      setLoading(false)
+      return
+    }
+
+    // Get initial session
+    const getInitialSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession()
+      setUser(session?.user ?? null)
+      setLoading(false)
+    }
+
+    getInitialSession()
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event: AuthChangeEvent, session: Session | null) => {
+        setUser(session?.user ?? null)
+        setLoading(false)
+
+        // Migrate localStorage progress on sign in
+        if (event === 'SIGNED_IN' && session?.user) {
+          await migrateLocalProgress(session.user.id)
+        }
+
+        // Reset premium status on sign out
+        if (event === 'SIGNED_OUT') {
+          setIsPremium(false)
+        }
+      }
+    )
+
+    return () => {
+      subscription.unsubscribe()
+    }
+  }, [supabase, migrateLocalProgress])
+
+  // Check premium status when user changes
+  useEffect(() => {
+    if (user) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional check on user change
+      checkPremiumStatus()
+    }
+  }, [user, checkPremiumStatus])
 
   const signIn = async (email: string, password: string) => {
     if (!supabase) {

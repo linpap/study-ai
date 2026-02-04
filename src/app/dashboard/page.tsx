@@ -38,6 +38,7 @@ export default function DashboardPage() {
 
   useEffect(() => {
     const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional sync with localStorage on mount
     setDarkMode(savedDarkMode);
     if (savedDarkMode) {
       document.documentElement.classList.add('dark');
@@ -90,7 +91,6 @@ export default function DashboardPage() {
 
   // Calculate stats
   const completedLessons = lessonProgress.filter(p => p.completed).length;
-  const viewedLessons = lessonProgress.filter(p => p.viewed).length;
   const completedPractice = Object.values(practiceProgress).filter(p => p.completed).length;
   const totalAttempts = Object.values(practiceProgress).reduce((sum, p) => sum + (p.attempts || 0), 0);
 
