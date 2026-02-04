@@ -528,6 +528,763 @@ knn(trainingData, [5.5, 5.5], 3) // returns 'B' (closer to B points)
     ],
     tags: ['classification', 'knn', 'algorithms'],
   },
+  // ============== NEW EXERCISES ==============
+  {
+    id: 11,
+    title: 'Matrix Multiplication',
+    description: 'Implement matrix multiplication - the core operation in neural networks.',
+    difficulty: 'beginner',
+    category: 'Linear Algebra',
+    estimatedTime: '15 min',
+    problemStatement: `**Matrix multiplication** is fundamental to neural networks - every layer performs matrix operations.
+
+Write a function called \`matmul\` that multiplies two 2D matrices.
+
+**Rules:**
+- Matrix A (m×n) × Matrix B (n×p) = Result (m×p)
+- Result[i][j] = sum of A[i][k] × B[k][j] for all k
+
+**Example:**
+\`\`\`javascript
+matmul([[1,2],[3,4]], [[5,6],[7,8]])
+// returns [[19,22],[43,50]]
+// [1×5+2×7, 1×6+2×8] = [19, 22]
+// [3×5+4×7, 3×6+4×8] = [43, 50]
+\`\`\``,
+    hints: [
+      'Create a result matrix with dimensions rows(A) × cols(B)',
+      'Use three nested loops: row of A, col of B, and the sum index',
+      'Each element is a dot product of a row from A and column from B',
+    ],
+    language: 'javascript',
+    starterCode: `function matmul(A, B) {
+  // Your code here
+  // Multiply matrix A by matrix B
+}`,
+    solutionCode: `function matmul(A, B) {
+  const rowsA = A.length;
+  const colsA = A[0].length;
+  const colsB = B[0].length;
+
+  const result = [];
+  for (let i = 0; i < rowsA; i++) {
+    result[i] = [];
+    for (let j = 0; j < colsB; j++) {
+      let sum = 0;
+      for (let k = 0; k < colsA; k++) {
+        sum += A[i][k] * B[k][j];
+      }
+      result[i][j] = sum;
+    }
+  }
+  return result;
+}`,
+    testCases: [
+      { id: '1', description: '2x2 matrices', input: 'JSON.stringify(matmul([[1,2],[3,4]], [[5,6],[7,8]]))', expectedOutput: '"[[19,22],[43,50]]"' },
+      { id: '2', description: 'Identity matrix', input: 'JSON.stringify(matmul([[1,0],[0,1]], [[5,6],[7,8]]))', expectedOutput: '"[[5,6],[7,8]]"' },
+      { id: '3', description: '2x3 times 3x2', input: 'JSON.stringify(matmul([[1,2,3],[4,5,6]], [[1],[2],[3]]))', expectedOutput: '"[[14],[32]]"' },
+    ],
+    tags: ['linear algebra', 'matrices', 'neural networks'],
+  },
+  {
+    id: 12,
+    title: 'Linear Regression Prediction',
+    description: 'Implement the prediction step of linear regression.',
+    difficulty: 'beginner',
+    category: 'Machine Learning',
+    estimatedTime: '10 min',
+    problemStatement: `**Linear regression** predicts a continuous value using a linear equation.
+
+Write a function called \`linearPredict\` that predicts values using weights and bias.
+
+**Formula:** y = w₁×x₁ + w₂×x₂ + ... + wₙ×xₙ + b
+
+**Example:**
+\`\`\`javascript
+linearPredict([2, 3], [0.5, 1.5], 1)
+// weights: [0.5, 1.5], bias: 1
+// prediction: 2×0.5 + 3×1.5 + 1 = 1 + 4.5 + 1 = 6.5
+\`\`\``,
+    hints: [
+      'Multiply each feature by its corresponding weight',
+      'Sum all the products',
+      'Add the bias at the end',
+    ],
+    language: 'javascript',
+    starterCode: `function linearPredict(features, weights, bias) {
+  // Your code here
+  // Return weighted sum + bias
+}`,
+    solutionCode: `function linearPredict(features, weights, bias) {
+  let sum = 0;
+  for (let i = 0; i < features.length; i++) {
+    sum += features[i] * weights[i];
+  }
+  return sum + bias;
+}`,
+    testCases: [
+      { id: '1', description: 'Basic prediction', input: 'linearPredict([2, 3], [0.5, 1.5], 1)', expectedOutput: '6.5' },
+      { id: '2', description: 'Zero bias', input: 'linearPredict([1, 2, 3], [1, 1, 1], 0)', expectedOutput: '6' },
+      { id: '3', description: 'Single feature', input: 'linearPredict([5], [2], 3)', expectedOutput: '13' },
+    ],
+    tags: ['regression', 'prediction', 'machine learning'],
+  },
+  {
+    id: 13,
+    title: 'Logistic Regression (Sigmoid Prediction)',
+    description: 'Combine linear regression with sigmoid for binary classification.',
+    difficulty: 'intermediate',
+    category: 'Machine Learning',
+    estimatedTime: '12 min',
+    problemStatement: `**Logistic regression** uses sigmoid to convert linear output to probability (0-1).
+
+Write a function called \`logisticPredict\` that returns the probability of class 1.
+
+**Formula:** P(y=1) = sigmoid(w·x + b) = 1 / (1 + e^(-(w·x + b)))
+
+**Example:**
+\`\`\`javascript
+logisticPredict([2, 3], [0.5, 0.5], -2)
+// linear: 2×0.5 + 3×0.5 + (-2) = 0.5
+// sigmoid(0.5) ≈ 0.622
+\`\`\``,
+    hints: [
+      'First calculate the linear combination (dot product + bias)',
+      'Then apply sigmoid: 1 / (1 + Math.exp(-z))',
+      'Result should be between 0 and 1',
+    ],
+    language: 'javascript',
+    starterCode: `function logisticPredict(features, weights, bias) {
+  // Your code here
+  // 1. Calculate linear combination
+  // 2. Apply sigmoid
+}`,
+    solutionCode: `function logisticPredict(features, weights, bias) {
+  let z = 0;
+  for (let i = 0; i < features.length; i++) {
+    z += features[i] * weights[i];
+  }
+  z += bias;
+  return 1 / (1 + Math.exp(-z));
+}`,
+    testCases: [
+      { id: '1', description: 'Returns ~0.62 for z=0.5', input: 'Math.round(logisticPredict([2, 3], [0.5, 0.5], -2) * 100) / 100', expectedOutput: '0.62' },
+      { id: '2', description: 'Returns 0.5 for z=0', input: 'logisticPredict([1, 1], [1, -1], 0)', expectedOutput: '0.5' },
+      { id: '3', description: 'Close to 1 for large positive z', input: 'Math.round(logisticPredict([5], [2], 0) * 1000) / 1000', expectedOutput: '1' },
+    ],
+    tags: ['classification', 'logistic regression', 'probability'],
+  },
+  {
+    id: 14,
+    title: 'Precision, Recall, and F1 Score',
+    description: 'Calculate key classification metrics from predictions.',
+    difficulty: 'intermediate',
+    category: 'Model Evaluation',
+    estimatedTime: '15 min',
+    problemStatement: `Calculate **precision**, **recall**, and **F1 score** - crucial metrics for classification.
+
+Write a function called \`classificationMetrics\` that returns all three metrics.
+
+**Formulas:**
+- Precision = TP / (TP + FP) — "Of predicted positives, how many are correct?"
+- Recall = TP / (TP + FN) — "Of actual positives, how many did we find?"
+- F1 = 2 × (Precision × Recall) / (Precision + Recall)
+
+**Example:**
+\`\`\`javascript
+// actual: [1,1,1,0,0], predicted: [1,1,0,0,1]
+// TP=2, FP=1, FN=1
+// Precision=2/3, Recall=2/3, F1=2/3
+\`\`\``,
+    hints: [
+      'Count TP (both actual and predicted are 1)',
+      'Count FP (predicted 1, actual 0)',
+      'Count FN (predicted 0, actual 1)',
+      'Handle division by zero - return 0 if denominator is 0',
+    ],
+    language: 'javascript',
+    starterCode: `function classificationMetrics(actual, predicted) {
+  // Your code here
+  // Return { precision, recall, f1 }
+}`,
+    solutionCode: `function classificationMetrics(actual, predicted) {
+  let tp = 0, fp = 0, fn = 0;
+
+  for (let i = 0; i < actual.length; i++) {
+    if (predicted[i] === 1 && actual[i] === 1) tp++;
+    else if (predicted[i] === 1 && actual[i] === 0) fp++;
+    else if (predicted[i] === 0 && actual[i] === 1) fn++;
+  }
+
+  const precision = tp + fp === 0 ? 0 : tp / (tp + fp);
+  const recall = tp + fn === 0 ? 0 : tp / (tp + fn);
+  const f1 = precision + recall === 0 ? 0 : 2 * precision * recall / (precision + recall);
+
+  return { precision, recall, f1 };
+}`,
+    testCases: [
+      { id: '1', description: 'Basic metrics', input: 'JSON.stringify(classificationMetrics([1,1,1,0,0], [1,1,0,0,1]))', expectedOutput: '{"precision":0.6666666666666666,"recall":0.6666666666666666,"f1":0.6666666666666666}' },
+      { id: '2', description: 'Perfect prediction', input: 'JSON.stringify(classificationMetrics([1,0,1,0], [1,0,1,0]))', expectedOutput: '{"precision":1,"recall":1,"f1":1}' },
+      { id: '3', description: 'All wrong', input: 'classificationMetrics([1,1,1], [0,0,0]).recall', expectedOutput: '0' },
+    ],
+    tags: ['metrics', 'evaluation', 'classification'],
+  },
+  {
+    id: 15,
+    title: 'Confusion Matrix',
+    description: 'Build a confusion matrix from predictions and actual labels.',
+    difficulty: 'beginner',
+    category: 'Model Evaluation',
+    estimatedTime: '10 min',
+    problemStatement: `A **confusion matrix** shows the breakdown of predictions vs actual values.
+
+Write a function called \`confusionMatrix\` that returns a 2x2 matrix for binary classification.
+
+**Structure:**
+\`\`\`
+              Predicted
+              0    1
+Actual  0   [TN,  FP]
+        1   [FN,  TP]
+\`\`\`
+
+**Example:**
+\`\`\`javascript
+confusionMatrix([0,0,1,1], [0,1,0,1])
+// returns [[1,1],[1,1]]
+// TN=1, FP=1, FN=1, TP=1
+\`\`\``,
+    hints: [
+      'Initialize a 2x2 matrix with zeros',
+      'Loop through pairs of (actual, predicted)',
+      'matrix[actual][predicted]++ for each pair',
+    ],
+    language: 'javascript',
+    starterCode: `function confusionMatrix(actual, predicted) {
+  // Your code here
+  // Return [[TN, FP], [FN, TP]]
+}`,
+    solutionCode: `function confusionMatrix(actual, predicted) {
+  const matrix = [[0, 0], [0, 0]];
+
+  for (let i = 0; i < actual.length; i++) {
+    matrix[actual[i]][predicted[i]]++;
+  }
+
+  return matrix;
+}`,
+    testCases: [
+      { id: '1', description: 'Mixed results', input: 'JSON.stringify(confusionMatrix([0,0,1,1], [0,1,0,1]))', expectedOutput: '"[[1,1],[1,1]]"' },
+      { id: '2', description: 'All correct', input: 'JSON.stringify(confusionMatrix([0,0,1,1], [0,0,1,1]))', expectedOutput: '"[[2,0],[0,2]]"' },
+      { id: '3', description: 'All wrong', input: 'JSON.stringify(confusionMatrix([0,0,1,1], [1,1,0,0]))', expectedOutput: '"[[0,2],[2,0]]"' },
+    ],
+    tags: ['metrics', 'evaluation', 'visualization'],
+  },
+  {
+    id: 16,
+    title: 'Min-Max Normalization',
+    description: 'Scale features to a 0-1 range using min-max normalization.',
+    difficulty: 'beginner',
+    category: 'Data Preprocessing',
+    estimatedTime: '10 min',
+    problemStatement: `**Min-Max normalization** scales data to [0, 1] range - essential for neural networks.
+
+Write a function called \`minMaxNormalize\` that normalizes an array of values.
+
+**Formula:** x_normalized = (x - min) / (max - min)
+
+**Example:**
+\`\`\`javascript
+minMaxNormalize([10, 20, 30, 40, 50])
+// min=10, max=50, range=40
+// returns [0, 0.25, 0.5, 0.75, 1]
+\`\`\``,
+    hints: [
+      'First find the min and max of the array',
+      'Calculate range = max - min',
+      'Apply formula to each element',
+      'Handle edge case: if all values are the same, return array of 0s',
+    ],
+    language: 'javascript',
+    starterCode: `function minMaxNormalize(arr) {
+  // Your code here
+  // Return normalized array
+}`,
+    solutionCode: `function minMaxNormalize(arr) {
+  const min = Math.min(...arr);
+  const max = Math.max(...arr);
+  const range = max - min;
+
+  if (range === 0) return arr.map(() => 0);
+
+  return arr.map(x => (x - min) / range);
+}`,
+    testCases: [
+      { id: '1', description: 'Basic normalization', input: 'JSON.stringify(minMaxNormalize([10, 20, 30, 40, 50]))', expectedOutput: '"[0,0.25,0.5,0.75,1]"' },
+      { id: '2', description: 'Negative values', input: 'JSON.stringify(minMaxNormalize([-10, 0, 10]))', expectedOutput: '"[0,0.5,1]"' },
+      { id: '3', description: 'All same values', input: 'JSON.stringify(minMaxNormalize([5, 5, 5]))', expectedOutput: '"[0,0,0]"' },
+    ],
+    tags: ['preprocessing', 'normalization', 'feature scaling'],
+  },
+  {
+    id: 17,
+    title: 'One-Hot Encoding',
+    description: 'Convert categorical labels to one-hot vectors.',
+    difficulty: 'beginner',
+    category: 'Data Preprocessing',
+    estimatedTime: '12 min',
+    problemStatement: `**One-hot encoding** converts categories to binary vectors - required for neural networks.
+
+Write a function called \`oneHotEncode\` that converts labels to one-hot vectors.
+
+**Example:**
+\`\`\`javascript
+oneHotEncode(['cat', 'dog', 'cat', 'bird'], ['cat', 'dog', 'bird'])
+// returns:
+// [[1,0,0], [0,1,0], [1,0,0], [0,0,1]]
+\`\`\``,
+    hints: [
+      'Create a vector of zeros with length = number of classes',
+      'Set the index corresponding to the class to 1',
+      'Use the classes array to find the index of each label',
+    ],
+    language: 'javascript',
+    starterCode: `function oneHotEncode(labels, classes) {
+  // Your code here
+  // Return array of one-hot vectors
+}`,
+    solutionCode: `function oneHotEncode(labels, classes) {
+  return labels.map(label => {
+    const vector = new Array(classes.length).fill(0);
+    const index = classes.indexOf(label);
+    if (index !== -1) vector[index] = 1;
+    return vector;
+  });
+}`,
+    testCases: [
+      { id: '1', description: 'Three classes', input: "JSON.stringify(oneHotEncode(['cat', 'dog', 'cat', 'bird'], ['cat', 'dog', 'bird']))", expectedOutput: '"[[1,0,0],[0,1,0],[1,0,0],[0,0,1]]"' },
+      { id: '2', description: 'Numbers as classes', input: 'JSON.stringify(oneHotEncode([0, 1, 2, 1], [0, 1, 2]))', expectedOutput: '"[[1,0,0],[0,1,0],[0,0,1],[0,1,0]]"' },
+      { id: '3', description: 'Two classes', input: "JSON.stringify(oneHotEncode(['yes', 'no', 'yes'], ['yes', 'no']))", expectedOutput: '"[[1,0],[0,1],[1,0]]"' },
+    ],
+    tags: ['preprocessing', 'encoding', 'categorical'],
+  },
+  {
+    id: 18,
+    title: 'Cross-Entropy Loss',
+    description: 'Calculate cross-entropy loss for classification.',
+    difficulty: 'intermediate',
+    category: 'Neural Networks',
+    estimatedTime: '12 min',
+    problemStatement: `**Cross-entropy loss** measures how wrong classification predictions are.
+
+Write a function called \`crossEntropyLoss\` that calculates the average loss.
+
+**Formula:** L = -1/n × Σ[y×log(p) + (1-y)×log(1-p)]
+
+Where y is actual (0 or 1) and p is predicted probability.
+
+**Example:**
+\`\`\`javascript
+crossEntropyLoss([1, 0, 1], [0.9, 0.1, 0.8])
+// -1/3 × [1×log(0.9) + 1×log(0.9) + 1×log(0.8)]
+// ≈ 0.146
+\`\`\``,
+    hints: [
+      'Use Math.log for natural logarithm',
+      'Clip probabilities to avoid log(0) - use small epsilon like 1e-15',
+      'Sum the loss for each sample, then divide by n',
+    ],
+    language: 'javascript',
+    starterCode: `function crossEntropyLoss(actual, predicted) {
+  // Your code here
+  // Return average cross-entropy loss
+}`,
+    solutionCode: `function crossEntropyLoss(actual, predicted) {
+  const eps = 1e-15;
+  let totalLoss = 0;
+
+  for (let i = 0; i < actual.length; i++) {
+    const p = Math.max(eps, Math.min(1 - eps, predicted[i]));
+    const y = actual[i];
+    totalLoss += -(y * Math.log(p) + (1 - y) * Math.log(1 - p));
+  }
+
+  return totalLoss / actual.length;
+}`,
+    testCases: [
+      { id: '1', description: 'Good predictions', input: 'Math.round(crossEntropyLoss([1, 0, 1], [0.9, 0.1, 0.8]) * 1000) / 1000', expectedOutput: '0.146' },
+      { id: '2', description: 'Perfect predictions', input: 'Math.round(crossEntropyLoss([1, 0], [0.999999, 0.000001]) * 1000) / 1000', expectedOutput: '0' },
+      { id: '3', description: 'Bad predictions', input: 'crossEntropyLoss([1, 0], [0.1, 0.9]) > 2', expectedOutput: 'true' },
+    ],
+    tags: ['loss function', 'classification', 'neural networks'],
+  },
+  {
+    id: 19,
+    title: '2D Convolution',
+    description: 'Apply a filter/kernel to an image using convolution.',
+    difficulty: 'intermediate',
+    category: 'Computer Vision',
+    estimatedTime: '20 min',
+    problemStatement: `**Convolution** is the core operation in CNNs - sliding a filter over an image.
+
+Write a function called \`convolve2d\` that applies a 3x3 kernel to an image.
+
+**Operation:** Slide the kernel, multiply element-wise, sum the result.
+
+**Example:**
+\`\`\`javascript
+// 4x4 image, 3x3 edge detection kernel
+// Output is 2x2 (no padding)
+convolve2d(image, kernel)
+\`\`\``,
+    hints: [
+      'Output size = (input_size - kernel_size + 1)',
+      'For each output position, extract the corresponding patch from input',
+      'Multiply patch with kernel element-wise and sum',
+    ],
+    language: 'javascript',
+    starterCode: `function convolve2d(image, kernel) {
+  // Your code here
+  // Apply 3x3 kernel to image (no padding)
+}`,
+    solutionCode: `function convolve2d(image, kernel) {
+  const imgH = image.length;
+  const imgW = image[0].length;
+  const kH = kernel.length;
+  const kW = kernel[0].length;
+
+  const outH = imgH - kH + 1;
+  const outW = imgW - kW + 1;
+
+  const output = [];
+
+  for (let i = 0; i < outH; i++) {
+    output[i] = [];
+    for (let j = 0; j < outW; j++) {
+      let sum = 0;
+      for (let ki = 0; ki < kH; ki++) {
+        for (let kj = 0; kj < kW; kj++) {
+          sum += image[i + ki][j + kj] * kernel[ki][kj];
+        }
+      }
+      output[i][j] = sum;
+    }
+  }
+
+  return output;
+}`,
+    testCases: [
+      { id: '1', description: 'Identity kernel', input: 'JSON.stringify(convolve2d([[1,2,3],[4,5,6],[7,8,9]], [[0,0,0],[0,1,0],[0,0,0]]))', expectedOutput: '"[[5]]"' },
+      { id: '2', description: '4x4 image', input: 'convolve2d([[1,1,1,1],[1,1,1,1],[1,1,1,1],[1,1,1,1]], [[1,1,1],[1,1,1],[1,1,1]])[0][0]', expectedOutput: '9' },
+      { id: '3', description: 'Edge detection', input: 'convolve2d([[0,0,0,10],[0,0,0,10],[0,0,0,10]], [[-1,0,1],[-1,0,1],[-1,0,1]])[0][0]', expectedOutput: '30' },
+    ],
+    tags: ['cnn', 'convolution', 'computer vision'],
+  },
+  {
+    id: 20,
+    title: 'Max Pooling',
+    description: 'Implement max pooling - a key operation in CNNs.',
+    difficulty: 'intermediate',
+    category: 'Computer Vision',
+    estimatedTime: '15 min',
+    problemStatement: `**Max pooling** reduces spatial dimensions by taking the max value in each region.
+
+Write a function called \`maxPool2d\` with a 2x2 window and stride 2.
+
+**Example:**
+\`\`\`javascript
+maxPool2d([[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16]])
+// 2x2 regions: [1,2,5,6], [3,4,7,8], [9,10,13,14], [11,12,15,16]
+// maxes: [[6,8],[14,16]]
+\`\`\``,
+    hints: [
+      'Output size = input_size / pool_size',
+      'For each output cell, find the corresponding 2x2 region in input',
+      'Take the maximum value from that region',
+    ],
+    language: 'javascript',
+    starterCode: `function maxPool2d(input) {
+  // Your code here
+  // 2x2 max pooling with stride 2
+}`,
+    solutionCode: `function maxPool2d(input) {
+  const h = input.length;
+  const w = input[0].length;
+  const outH = Math.floor(h / 2);
+  const outW = Math.floor(w / 2);
+
+  const output = [];
+
+  for (let i = 0; i < outH; i++) {
+    output[i] = [];
+    for (let j = 0; j < outW; j++) {
+      const vals = [
+        input[i*2][j*2],
+        input[i*2][j*2+1],
+        input[i*2+1][j*2],
+        input[i*2+1][j*2+1]
+      ];
+      output[i][j] = Math.max(...vals);
+    }
+  }
+
+  return output;
+}`,
+    testCases: [
+      { id: '1', description: '4x4 to 2x2', input: 'JSON.stringify(maxPool2d([[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16]]))', expectedOutput: '"[[6,8],[14,16]]"' },
+      { id: '2', description: '2x2 to 1x1', input: 'JSON.stringify(maxPool2d([[1,3],[2,4]]))', expectedOutput: '"[[4]]"' },
+      { id: '3', description: 'Negative values', input: 'maxPool2d([[-5,-1],[-3,-2]])[0][0]', expectedOutput: '-1' },
+    ],
+    tags: ['cnn', 'pooling', 'computer vision'],
+  },
+  {
+    id: 21,
+    title: 'Simple Tokenizer',
+    description: 'Build a basic tokenizer for text processing.',
+    difficulty: 'beginner',
+    category: 'NLP',
+    estimatedTime: '10 min',
+    problemStatement: `**Tokenization** splits text into tokens - the first step in NLP.
+
+Write a function called \`tokenize\` that:
+1. Converts to lowercase
+2. Splits on whitespace and punctuation
+3. Removes empty tokens
+
+**Example:**
+\`\`\`javascript
+tokenize("Hello, World! How are you?")
+// returns ["hello", "world", "how", "are", "you"]
+\`\`\``,
+    hints: [
+      'Use toLowerCase() first',
+      'Use a regex to split on non-word characters: /\\W+/',
+      'Filter out empty strings',
+    ],
+    language: 'javascript',
+    starterCode: `function tokenize(text) {
+  // Your code here
+  // Return array of tokens
+}`,
+    solutionCode: `function tokenize(text) {
+  return text
+    .toLowerCase()
+    .split(/\\W+/)
+    .filter(token => token.length > 0);
+}`,
+    testCases: [
+      { id: '1', description: 'Basic sentence', input: 'JSON.stringify(tokenize("Hello, World!"))', expectedOutput: '["hello","world"]' },
+      { id: '2', description: 'Multiple spaces', input: 'JSON.stringify(tokenize("one   two    three"))', expectedOutput: '["one","two","three"]' },
+      { id: '3', description: 'Mixed punctuation', input: 'tokenize("AI is great... really!").length', expectedOutput: '4' },
+    ],
+    tags: ['nlp', 'tokenization', 'text processing'],
+  },
+  {
+    id: 22,
+    title: 'Bag of Words',
+    description: 'Create a bag of words representation of text.',
+    difficulty: 'intermediate',
+    category: 'NLP',
+    estimatedTime: '15 min',
+    problemStatement: `**Bag of Words** represents text as word frequency counts.
+
+Write a function called \`bagOfWords\` that counts word occurrences.
+
+**Example:**
+\`\`\`javascript
+bagOfWords("the cat sat on the mat")
+// returns { "the": 2, "cat": 1, "sat": 1, "on": 1, "mat": 1 }
+\`\`\``,
+    hints: [
+      'First tokenize the text (lowercase, split on non-word chars)',
+      'Use an object to count occurrences',
+      'Increment count for each token',
+    ],
+    language: 'javascript',
+    starterCode: `function bagOfWords(text) {
+  // Your code here
+  // Return object with word counts
+}`,
+    solutionCode: `function bagOfWords(text) {
+  const tokens = text.toLowerCase().split(/\\W+/).filter(t => t.length > 0);
+  const counts = {};
+
+  for (const token of tokens) {
+    counts[token] = (counts[token] || 0) + 1;
+  }
+
+  return counts;
+}`,
+    testCases: [
+      { id: '1', description: 'Simple sentence', input: 'bagOfWords("the cat sat on the mat")["the"]', expectedOutput: '2' },
+      { id: '2', description: 'Single words', input: 'Object.keys(bagOfWords("a b c d")).length', expectedOutput: '4' },
+      { id: '3', description: 'Repeated word', input: 'bagOfWords("hello hello hello")["hello"]', expectedOutput: '3' },
+    ],
+    tags: ['nlp', 'bow', 'text representation'],
+  },
+  {
+    id: 23,
+    title: 'Train-Test Split',
+    description: 'Split data into training and test sets.',
+    difficulty: 'beginner',
+    category: 'Data Preprocessing',
+    estimatedTime: '10 min',
+    problemStatement: `**Train-test split** divides data for model training and evaluation.
+
+Write a function called \`trainTestSplit\` that splits data with a given ratio.
+
+**Example:**
+\`\`\`javascript
+trainTestSplit([1,2,3,4,5,6,7,8,9,10], 0.8)
+// returns { train: [1,2,3,4,5,6,7,8], test: [9,10] }
+\`\`\``,
+    hints: [
+      'Calculate split index: Math.floor(data.length * ratio)',
+      'Use slice to split the array',
+      'Return an object with train and test arrays',
+    ],
+    language: 'javascript',
+    starterCode: `function trainTestSplit(data, trainRatio) {
+  // Your code here
+  // Return { train: [...], test: [...] }
+}`,
+    solutionCode: `function trainTestSplit(data, trainRatio) {
+  const splitIndex = Math.floor(data.length * trainRatio);
+  return {
+    train: data.slice(0, splitIndex),
+    test: data.slice(splitIndex)
+  };
+}`,
+    testCases: [
+      { id: '1', description: '80-20 split', input: 'trainTestSplit([1,2,3,4,5,6,7,8,9,10], 0.8).train.length', expectedOutput: '8' },
+      { id: '2', description: '50-50 split', input: 'trainTestSplit([1,2,3,4], 0.5).test.length', expectedOutput: '2' },
+      { id: '3', description: 'Test set values', input: 'JSON.stringify(trainTestSplit([1,2,3,4,5], 0.6).test)', expectedOutput: '"[4,5]"' },
+    ],
+    tags: ['preprocessing', 'data splitting', 'evaluation'],
+  },
+  {
+    id: 24,
+    title: 'K-Means Clustering (One Step)',
+    description: 'Implement one iteration of the K-Means algorithm.',
+    difficulty: 'advanced',
+    category: 'Machine Learning',
+    estimatedTime: '20 min',
+    problemStatement: `**K-Means** groups data points into k clusters.
+
+Write a function called \`kmeansStep\` that performs one iteration:
+1. Assign each point to nearest centroid
+2. Update centroids to mean of assigned points
+
+**Example:**
+\`\`\`javascript
+kmeansStep([[0,0],[1,1],[5,5],[6,6]], [[0,0],[5,5]])
+// Assignments: [0,0,1,1]
+// New centroids: [[0.5,0.5], [5.5,5.5]]
+\`\`\``,
+    hints: [
+      'For each point, find the closest centroid using Euclidean distance',
+      'Group points by their assigned centroid',
+      'Calculate new centroid as mean of all assigned points',
+    ],
+    language: 'javascript',
+    starterCode: `function kmeansStep(points, centroids) {
+  // Your code here
+  // Return { assignments: [...], newCentroids: [...] }
+}`,
+    solutionCode: `function kmeansStep(points, centroids) {
+  // Assign points to nearest centroid
+  const assignments = points.map(point => {
+    let minDist = Infinity;
+    let nearest = 0;
+
+    centroids.forEach((centroid, idx) => {
+      const dist = Math.sqrt(
+        Math.pow(point[0] - centroid[0], 2) +
+        Math.pow(point[1] - centroid[1], 2)
+      );
+      if (dist < minDist) {
+        minDist = dist;
+        nearest = idx;
+      }
+    });
+
+    return nearest;
+  });
+
+  // Calculate new centroids
+  const newCentroids = centroids.map((_, idx) => {
+    const assigned = points.filter((_, i) => assignments[i] === idx);
+    if (assigned.length === 0) return centroids[idx];
+
+    const sumX = assigned.reduce((s, p) => s + p[0], 0);
+    const sumY = assigned.reduce((s, p) => s + p[1], 0);
+    return [sumX / assigned.length, sumY / assigned.length];
+  });
+
+  return { assignments, newCentroids };
+}`,
+    testCases: [
+      { id: '1', description: 'Two clusters', input: 'JSON.stringify(kmeansStep([[0,0],[1,1],[5,5],[6,6]], [[0,0],[5,5]]).assignments)', expectedOutput: '"[0,0,1,1]"' },
+      { id: '2', description: 'Updated centroids', input: 'kmeansStep([[0,0],[2,2]], [[0,0]]).newCentroids[0][0]', expectedOutput: '1' },
+      { id: '3', description: 'Three points', input: 'kmeansStep([[0,0],[10,0],[5,5]], [[0,0],[10,10]]).assignments[2]', expectedOutput: '1' },
+    ],
+    tags: ['clustering', 'unsupervised', 'machine learning'],
+  },
+  {
+    id: 25,
+    title: 'Simple Attention Score',
+    description: 'Calculate attention scores - the heart of Transformers.',
+    difficulty: 'advanced',
+    category: 'Deep Learning',
+    estimatedTime: '15 min',
+    problemStatement: `**Attention** lets models focus on relevant parts of input.
+
+Write a function called \`attentionScores\` that computes attention weights.
+
+**Steps:**
+1. Compute dot products between query and all keys
+2. Apply softmax to get weights that sum to 1
+
+**Example:**
+\`\`\`javascript
+attentionScores([1,0], [[1,0],[0,1],[1,1]])
+// dot products: [1, 0, 1]
+// softmax: [0.422, 0.155, 0.422]
+\`\`\``,
+    hints: [
+      'Compute dot product of query with each key',
+      'Apply softmax: exp(x_i) / sum(exp(x_j))',
+      'For numerical stability, subtract max before exp',
+    ],
+    language: 'javascript',
+    starterCode: `function attentionScores(query, keys) {
+  // Your code here
+  // Return array of attention weights
+}`,
+    solutionCode: `function attentionScores(query, keys) {
+  // Compute dot products
+  const scores = keys.map(key => {
+    let dot = 0;
+    for (let i = 0; i < query.length; i++) {
+      dot += query[i] * key[i];
+    }
+    return dot;
+  });
+
+  // Softmax with numerical stability
+  const maxScore = Math.max(...scores);
+  const expScores = scores.map(s => Math.exp(s - maxScore));
+  const sumExp = expScores.reduce((a, b) => a + b, 0);
+
+  return expScores.map(e => e / sumExp);
+}`,
+    testCases: [
+      { id: '1', description: 'Weights sum to 1', input: 'Math.round(attentionScores([1,0], [[1,0],[0,1]]).reduce((a,b)=>a+b,0) * 100) / 100', expectedOutput: '1' },
+      { id: '2', description: 'Higher score = higher weight', input: 'attentionScores([1,0], [[1,0],[0,1]])[0] > attentionScores([1,0], [[1,0],[0,1]])[1]', expectedOutput: 'true' },
+      { id: '3', description: 'Equal queries equal weights', input: 'Math.round(attentionScores([1,1], [[1,0],[0,1]])[0] * 100) / 100', expectedOutput: '0.5' },
+    ],
+    tags: ['attention', 'transformer', 'deep learning'],
+  },
 ];
 
 export function getExerciseById(id: number): PracticeExercise | undefined {
