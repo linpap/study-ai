@@ -30,6 +30,7 @@ interface UserProgress {
 export default function Home() {
   const [progress, setProgress] = useState<Progress>({});
   const [darkMode, setDarkMode] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const { user, loading: authLoading, signOut, isPremium } = useAuth();
   const supabase = createClient();
 
@@ -102,6 +103,17 @@ export default function Home() {
   const completedCount = Object.values(progress).filter(p => p.completed).length;
   const overallProgress = Math.round((completedCount / lessons.length) * 100);
 
+  // Filter lessons based on search query
+  const filteredLessons = lessons.filter(lesson => {
+    if (!searchQuery.trim()) return true;
+    const query = searchQuery.toLowerCase();
+    return (
+      lesson.title.toLowerCase().includes(query) ||
+      lesson.description.toLowerCase().includes(query) ||
+      lesson.difficulty.toLowerCase().includes(query)
+    );
+  });
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
       {/* Header */}
@@ -131,6 +143,14 @@ export default function Home() {
             >
               Practice
             </Link>
+            {user && user.email === 'linpap@gmail.com' && (
+              <Link
+                href="/dashboard"
+                className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+              >
+                Dashboard
+              </Link>
+            )}
             <button
               onClick={toggleDarkMode}
               className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition"
@@ -265,9 +285,29 @@ export default function Home() {
         </div>
 
         {/* Lessons Grid */}
-        <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Course Content</h3>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+          <h3 className="text-2xl font-bold text-gray-900 dark:text-white">Course Content</h3>
+          <div className="relative">
+            <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input
+              type="text"
+              placeholder="Search lessons..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full sm:w-64 pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+          </div>
+        </div>
         <div className="grid gap-4">
-          {lessons.map((lesson, index) => {
+          {filteredLessons.length === 0 ? (
+            <div className="text-center py-12 text-gray-500 dark:text-gray-400">
+              No lessons found matching &quot;{searchQuery}&quot;
+            </div>
+          ) : null}
+          {filteredLessons.map((lesson) => {
+            const index = lessons.findIndex(l => l.id === lesson.id);
             const lessonProgress = progress[lesson.id];
             const isCompleted = lessonProgress?.completed;
             const isViewed = lessonProgress?.viewed;
