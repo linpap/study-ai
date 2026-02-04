@@ -253,7 +253,7 @@ export default function LessonPage() {
           <>
             {/* Lesson Content */}
             <article
-              className="prose prose-lg dark:prose-invert max-w-none mb-12 bg-white dark:bg-gray-800 rounded-xl p-8 shadow-sm"
+              className="prose prose-lg dark:prose-invert max-w-none w-full mb-12 bg-white dark:bg-gray-800 rounded-xl p-8 lg:p-12 shadow-sm"
               dangerouslySetInnerHTML={{ __html: lesson.content }}
             />
 
