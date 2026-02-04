@@ -2055,10 +2055,13 @@ export default function Home() {
 import { advancedLessons } from './advanced-lessons';
 import { engineeringLessons } from './engineering-lessons';
 import { productionLessons } from './production-lessons';
+import { foundationalLessons } from './foundational-lessons';
 
-// Combine all lessons
+// Combine all lessons - foundational lessons come after intro but before advanced
 export const lessons: Lesson[] = [
-  ...baseLessons,
+  ...baseLessons.slice(0, 2),        // Intro to AI, ML Fundamentals
+  ...foundationalLessons,             // Math foundations, Classical ML, Evaluation, Data Science, RL
+  ...baseLessons.slice(2),            // Remaining base lessons
   ...advancedLessons,
   ...engineeringLessons,
   ...productionLessons
