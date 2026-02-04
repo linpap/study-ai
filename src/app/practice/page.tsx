@@ -255,11 +255,14 @@ export default function PracticePage() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-gray-200 dark:border-gray-800 mt-16">
+      <footer className="border-t border-gray-200 dark:border-gray-700 mt-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <p className="text-center text-sm text-gray-500 dark:text-gray-400">
-            StudyAI - Learn AI with interactive exercises and quizzes
-          </p>
+          <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-500 dark:text-gray-400">
+            <Link href="/about" className="hover:text-gray-900 dark:hover:text-white">About</Link>
+            <Link href="/contact" className="hover:text-gray-900 dark:hover:text-white">Contact</Link>
+            <Link href="/privacy" className="hover:text-gray-900 dark:hover:text-white">Privacy Policy</Link>
+            <Link href="/terms" className="hover:text-gray-900 dark:hover:text-white">Terms of Service</Link>
+          </div>
         </div>
       </footer>
     </div>
