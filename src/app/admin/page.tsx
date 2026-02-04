@@ -8,7 +8,7 @@ import { createClient } from '@/lib/supabase/client';
 import { lessons } from '@/data/lessons';
 import { practiceExercises } from '@/data/practice-exercises';
 
-const ADMIN_EMAIL = 'linpap@gmail.com';
+const ADMIN_EMAIL = process.env.NEXT_PUBLIC_ADMIN_EMAIL || 'linpap@gmail.com';
 
 
 export default function AdminPage() {

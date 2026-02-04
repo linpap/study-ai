@@ -153,7 +153,7 @@ export default function Home() {
                 Dashboard
               </Link>
             )}
-            {user && user.email === 'linpap@gmail.com' && (
+            {user && user.email === (process.env.NEXT_PUBLIC_ADMIN_EMAIL || 'linpap@gmail.com') && (
               <Link
                 href="/admin"
                 className="text-gray-600 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition-colors"

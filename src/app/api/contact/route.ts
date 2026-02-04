@@ -13,7 +13,7 @@ export async function POST(request: Request) {
 
     const { data, error } = await resend.emails.send({
       from: 'StudyAI Contact <hello@learnai.greensolz.com>',
-      to: 'linpap@gmail.com',
+      to: process.env.ADMIN_EMAIL || 'linpap@gmail.com',
       replyTo: email,
       subject: `Contact Form: ${name}`,
       html: `
