@@ -22,6 +22,72 @@ export default function LessonPage() {
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [score, setScore] = useState({ correct: 0, total: 0 });
   const [authChecked, setAuthChecked] = useState(false);
+  const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+
+  // Process code blocks to add copy buttons
+  useEffect(() => {
+    const processCodeBlocks = () => {
+      const codeBlocks = document.querySelectorAll('.prose .code-block:not([data-processed])');
+      codeBlocks.forEach((block, index) => {
+        block.setAttribute('data-processed', 'true');
+
+        // Create wrapper
+        const wrapper = document.createElement('div');
+        wrapper.className = 'code-block-wrapper';
+
+        // Create header
+        const header = document.createElement('div');
+        header.className = 'code-block-header';
+
+        // Detect language from content or use default
+        const content = block.textContent || '';
+        let language = 'code';
+        if (content.includes('import ') || content.includes('def ') || content.includes('class ')) {
+          language = 'python';
+        } else if (content.includes('function') || content.includes('const ') || content.includes('let ')) {
+          language = 'javascript';
+        } else if (content.includes('SELECT') || content.includes('FROM') || content.includes('WHERE')) {
+          language = 'sql';
+        } else if (content.includes('{') && content.includes(':')) {
+          language = 'json';
+        }
+
+        const langSpan = document.createElement('span');
+        langSpan.className = 'code-block-lang';
+        langSpan.textContent = language;
+
+        const copyBtn = document.createElement('button');
+        copyBtn.className = 'code-block-copy';
+        copyBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg><span>Copy</span>`;
+
+        copyBtn.onclick = async () => {
+          try {
+            await navigator.clipboard.writeText(content);
+            copyBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span>Copied!</span>`;
+            copyBtn.classList.add('copied');
+            setTimeout(() => {
+              copyBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg><span>Copy</span>`;
+              copyBtn.classList.remove('copied');
+            }, 2000);
+          } catch (err) {
+            console.error('Failed to copy:', err);
+          }
+        };
+
+        header.appendChild(langSpan);
+        header.appendChild(copyBtn);
+
+        // Wrap the block
+        block.parentNode?.insertBefore(wrapper, block);
+        wrapper.appendChild(header);
+        wrapper.appendChild(block);
+      });
+    };
+
+    // Run after content renders
+    const timer = setTimeout(processCodeBlocks, 100);
+    return () => clearTimeout(timer);
+  }, [lesson, showQuiz]);
 
   const isFreeLesson = FREE_LESSONS.includes(lessonId);
 
@@ -333,15 +399,62 @@ export default function LessonPage() {
           background: #3b82f6;
           border-radius: 50%;
         }
-        .prose .code-block {
-          background: #1f2937;
-          color: #e5e7eb;
-          padding: 1rem;
-          border-radius: 0.5rem;
-          overflow-x: auto;
+        .prose .code-block-wrapper {
+          margin: 1.5rem 0;
+          border-radius: 0.75rem;
+          overflow: hidden;
+          background: #1e293b;
+          border: 1px solid #334155;
+        }
+        .prose .code-block-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 0.5rem 1rem;
+          background: #0f172a;
+          border-bottom: 1px solid #334155;
+        }
+        .prose .code-block-lang {
+          font-size: 0.75rem;
+          color: #94a3b8;
           font-family: monospace;
+          text-transform: lowercase;
+        }
+        .prose .code-block-copy {
+          display: flex;
+          align-items: center;
+          gap: 0.375rem;
+          padding: 0.375rem 0.75rem;
+          font-size: 0.75rem;
+          color: #94a3b8;
+          background: transparent;
+          border: 1px solid #475569;
+          border-radius: 0.375rem;
+          cursor: pointer;
+          transition: all 0.2s;
+        }
+        .prose .code-block-copy:hover {
+          background: #334155;
+          color: #e2e8f0;
+        }
+        .prose .code-block-copy.copied {
+          color: #4ade80;
+          border-color: #4ade80;
+        }
+        .prose .code-block {
+          background: #1e293b;
+          color: #e2e8f0;
+          padding: 1rem;
+          overflow-x: auto;
+          font-family: 'Fira Code', 'Consolas', 'Monaco', monospace;
           font-size: 0.875rem;
           white-space: pre-wrap;
+          line-height: 1.6;
+          margin: 0;
+          border-radius: 0;
+        }
+        .prose .code-block-wrapper + .code-block-wrapper {
+          margin-top: 1rem;
         }
         .prose table {
           width: 100%;
