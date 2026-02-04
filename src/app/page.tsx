@@ -105,16 +105,18 @@ export default function Home() {
   const completedCount = Object.values(progress).filter(p => p.completed).length;
   const overallProgress = Math.round((completedCount / lessons.length) * 100);
 
-  // Filter lessons based on search query
-  const filteredLessons = lessons.filter(lesson => {
-    if (!searchQuery.trim()) return true;
-    const query = searchQuery.toLowerCase();
-    return (
-      lesson.title.toLowerCase().includes(query) ||
-      lesson.description.toLowerCase().includes(query) ||
-      lesson.difficulty.toLowerCase().includes(query)
-    );
-  });
+  // Filter and sort lessons based on search query
+  const filteredLessons = lessons
+    .filter(lesson => {
+      if (!searchQuery.trim()) return true;
+      const query = searchQuery.toLowerCase();
+      return (
+        lesson.title.toLowerCase().includes(query) ||
+        lesson.description.toLowerCase().includes(query) ||
+        lesson.difficulty.toLowerCase().includes(query)
+      );
+    })
+    .sort((a, b) => a.id - b.id);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
@@ -317,7 +319,6 @@ export default function Home() {
             </div>
           ) : null}
           {filteredLessons.map((lesson) => {
-            const index = lessons.findIndex(l => l.id === lesson.id);
             const lessonProgress = progress[lesson.id];
             const isCompleted = lessonProgress?.completed;
             const isViewed = lessonProgress?.viewed;
@@ -358,7 +359,7 @@ export default function Home() {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
                     ) : (
-                      <span className="font-bold">{index + 1}</span>
+                      <span className="font-bold">{lesson.id}</span>
                     )}
                   </div>
 
