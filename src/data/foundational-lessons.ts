@@ -3,7 +3,7 @@ import { Lesson } from './lessons';
 // These lessons should be inserted between existing lessons to provide proper foundation
 export const foundationalLessons: Lesson[] = [
   {
-    id: 101,
+    id: 3,
     title: "Math Foundations: Linear Algebra Essentials",
     description: "Master the mathematical building blocks of AI - vectors, matrices, and transformations",
     duration: "50 min",
@@ -147,7 +147,7 @@ image = [
     `,
     questions: [
       {
-        id: "101-1",
+        id: "3-1",
         type: "mcq",
         question: "What does the dot product of two vectors measure?",
         options: ["Their sum", "Their similarity/alignment", "Their difference", "Their product"],
@@ -155,7 +155,7 @@ image = [
         explanation: "The dot product measures how similar or aligned two vectors are. A higher dot product means the vectors point in similar directions. This is why attention mechanisms use dot products to measure relevance between query and key vectors."
       },
       {
-        id: "101-2",
+        id: "3-2",
         type: "mcq",
         question: "In a neural network, what happens when input data is multiplied by weight matrices?",
         options: ["Data is deleted", "Data is transformed to new representations", "Data stays the same", "Data is compressed only"],
@@ -163,14 +163,14 @@ image = [
         explanation: "Matrix multiplication transforms input data into new representations. Each layer learns different features by adjusting its weight matrix during training."
       },
       {
-        id: "101-3",
+        id: "3-3",
         type: "descriptive",
         question: "Explain why understanding linear algebra is important for AI, giving at least 2 specific examples.",
         keywords: ["vector", "matrix", "dot product", "similarity", "attention", "neural network", "weights", "transformation", "data", "representation"],
         explanation: "Linear algebra is essential because: (1) Data is represented as vectors/matrices - images are matrices, text becomes vectors. (2) Neural networks use matrix multiplication to transform data through layers. (3) Attention mechanisms use dot products to measure similarity between elements. (4) Understanding these concepts helps debug and improve models."
       },
       {
-        id: "101-4",
+        id: "3-4",
         type: "mcq",
         question: "How is a color image typically represented mathematically?",
         options: ["A single vector", "A 2D matrix", "A 3D tensor (height × width × 3)", "A 1D array"],
@@ -180,7 +180,7 @@ image = [
     ]
   },
   {
-    id: 102,
+    id: 4,
     title: "Math Foundations: Calculus for Machine Learning",
     description: "Understand gradients and optimization - how neural networks learn",
     duration: "45 min",
@@ -323,7 +323,7 @@ CrossEntropy = -Σ actual × log(predicted)
     `,
     questions: [
       {
-        id: "102-1",
+        id: "4-1",
         type: "mcq",
         question: "What does the gradient of a loss function tell us?",
         options: ["The current loss value", "The direction to adjust weights to INCREASE loss", "The direction to adjust weights to DECREASE loss", "The number of training examples"],
@@ -331,7 +331,7 @@ CrossEntropy = -Σ actual × log(predicted)
         explanation: "The gradient points in the direction of steepest INCREASE. That's why in gradient descent, we move in the OPPOSITE direction (subtract the gradient) to minimize loss."
       },
       {
-        id: "102-2",
+        id: "4-2",
         type: "mcq",
         question: "What happens if the learning rate is too high?",
         options: ["Training is too slow", "Model overfits", "Training overshoots the minimum and may fail to converge", "Model underfits"],
@@ -339,14 +339,14 @@ CrossEntropy = -Σ actual × log(predicted)
         explanation: "A learning rate that's too high causes the weight updates to be too large, overshooting the optimal values. This can cause the loss to oscillate or even explode, preventing convergence."
       },
       {
-        id: "102-3",
+        id: "4-3",
         type: "descriptive",
         question: "Explain the gradient descent algorithm in simple terms. What are the key steps?",
         keywords: ["prediction", "loss", "gradient", "derivative", "update", "weights", "learning rate", "minimize", "direction", "iterate"],
         explanation: "Gradient descent: (1) Make predictions with current weights, (2) Calculate loss (error), (3) Calculate gradient (direction of steepest increase), (4) Update weights in opposite direction: w = w - learning_rate × gradient, (5) Repeat until loss is minimized."
       },
       {
-        id: "102-4",
+        id: "4-4",
         type: "mcq",
         question: "What mathematical concept allows backpropagation to compute gradients through multiple neural network layers?",
         options: ["Integration", "The chain rule", "Matrix inversion", "Fourier transform"],
@@ -356,7 +356,7 @@ CrossEntropy = -Σ actual × log(predicted)
     ]
   },
   {
-    id: 103,
+    id: 5,
     title: "Math Foundations: Probability & Statistics",
     description: "Learn the probabilistic foundations that power AI predictions and uncertainty",
     duration: "45 min",
@@ -529,7 +529,7 @@ prediction = {
     `,
     questions: [
       {
-        id: "103-1",
+        id: "5-1",
         type: "mcq",
         question: "What does P(spam|email_contains_prize) represent?",
         options: ["Probability that any email is spam", "Probability that spam emails contain 'prize'", "Probability an email is spam given it contains 'prize'", "Probability of finding 'prize' in any email"],
@@ -537,7 +537,7 @@ prediction = {
         explanation: "P(A|B) is conditional probability - the probability of A given that B is true. P(spam|contains_prize) is the probability the email is spam, given that it contains the word 'prize'."
       },
       {
-        id: "103-2",
+        id: "5-2",
         type: "mcq",
         question: "What does the softmax function do?",
         options: ["Makes all values positive", "Converts raw scores into a probability distribution that sums to 1", "Reduces dimensionality", "Normalizes to range [0,1] independently"],
@@ -545,14 +545,14 @@ prediction = {
         explanation: "Softmax takes raw neural network outputs (logits) and converts them to probabilities. The output values are all positive and sum to 1, making them a valid probability distribution."
       },
       {
-        id: "103-3",
+        id: "5-3",
         type: "descriptive",
         question: "Explain why understanding probability is important for interpreting AI model outputs.",
         keywords: ["uncertainty", "confidence", "probability", "softmax", "classification", "prediction", "distribution", "belief", "decision"],
         explanation: "Probability is crucial because: (1) Model outputs are probabilities, not certainties - a 70% prediction isn't guaranteed. (2) We can make better decisions by considering confidence levels. (3) We can combine predictions with prior knowledge using Bayes' theorem. (4) Understanding uncertainty helps avoid overconfident mistakes."
       },
       {
-        id: "103-4",
+        id: "5-4",
         type: "mcq",
         question: "In the normal distribution, approximately what percentage of data falls within 2 standard deviations of the mean?",
         options: ["68%", "95%", "99.7%", "50%"],
@@ -562,7 +562,7 @@ prediction = {
     ]
   },
   {
-    id: 104,
+    id: 6,
     title: "Classical ML: Decision Trees & Random Forests",
     description: "Learn interpretable algorithms that form the foundation of modern ML",
     duration: "55 min",
@@ -731,7 +731,7 @@ for feature, importance in zip(feature_names, rf.feature_importances_):
     `,
     questions: [
       {
-        id: "104-1",
+        id: "6-1",
         type: "mcq",
         question: "What does Gini impurity measure in a decision tree?",
         options: ["The depth of the tree", "How well a node separates classes (purity)", "The number of features", "The training time"],
@@ -739,7 +739,7 @@ for feature, importance in zip(feature_names, rf.feature_importances_):
         explanation: "Gini impurity measures how 'pure' a node is. A Gini of 0 means all samples are the same class (pure). A Gini of 0.5 means samples are evenly split (maximum impurity). The algorithm finds splits that minimize Gini."
       },
       {
-        id: "104-2",
+        id: "6-2",
         type: "mcq",
         question: "How does a Random Forest make predictions?",
         options: ["Uses the single best tree", "Averages predictions from many trees trained on random subsets", "Uses only the deepest tree", "Picks the fastest tree"],
@@ -747,14 +747,14 @@ for feature, importance in zip(feature_names, rf.feature_importances_):
         explanation: "Random Forest trains many trees, each on a random subset of data and features. Final prediction is the majority vote (classification) or average (regression) of all trees. This reduces overfitting."
       },
       {
-        id: "104-3",
+        id: "6-3",
         type: "descriptive",
         question: "Explain why Random Forests are less prone to overfitting than a single deep decision tree.",
         keywords: ["ensemble", "averaging", "bagging", "random", "subset", "noise", "cancel", "variance", "multiple", "trees"],
         explanation: "Random Forests reduce overfitting by: (1) Training each tree on a random subset of data (bagging) - different trees see different examples. (2) Each split considers random features - trees learn different patterns. (3) Averaging predictions cancels out individual tree errors. A single deep tree memorizes noise, but the ensemble averages it out."
       },
       {
-        id: "104-4",
+        id: "6-4",
         type: "mcq",
         question: "When should you prefer Random Forests over neural networks?",
         options: ["When working with image data", "When working with tabular data and needing interpretability", "When you have millions of training examples", "When accuracy is the only priority"],
@@ -764,7 +764,7 @@ for feature, importance in zip(feature_names, rf.feature_importances_):
     ]
   },
   {
-    id: 105,
+    id: 7,
     title: "Classical ML: Model Evaluation & Metrics",
     description: "Learn to properly evaluate models with precision, recall, F1, and more",
     duration: "50 min",
@@ -984,7 +984,7 @@ print(f"AUC: {roc_auc_score(y_test, y_pred_proba):.3f}")
     `,
     questions: [
       {
-        id: "105-1",
+        id: "7-1",
         type: "mcq",
         question: "For a cancer detection model, which metric is most important?",
         options: ["Accuracy", "Precision", "Recall", "Training speed"],
@@ -992,7 +992,7 @@ print(f"AUC: {roc_auc_score(y_test, y_pred_proba):.3f}")
         explanation: "For cancer detection, missing a positive case (false negative) is extremely dangerous - the patient won't get treatment. High recall ensures we catch as many cases as possible, even if some healthy people need follow-up tests (false positives)."
       },
       {
-        id: "105-2",
+        id: "7-2",
         type: "mcq",
         question: "What does a model with high precision but low recall indicate?",
         options: ["It makes few predictions but they're mostly correct", "It catches all positives but has many false alarms", "It's perfect", "It's random guessing"],
@@ -1000,14 +1000,14 @@ print(f"AUC: {roc_auc_score(y_test, y_pred_proba):.3f}")
         explanation: "High precision, low recall means: when the model predicts positive, it's usually right (few false positives), BUT it misses many actual positives (many false negatives). It's conservative - only predicts positive when very confident."
       },
       {
-        id: "105-3",
+        id: "7-3",
         type: "descriptive",
         question: "Explain why accuracy can be misleading and what metrics you would use instead for an imbalanced dataset.",
         keywords: ["imbalanced", "precision", "recall", "F1", "confusion matrix", "false positive", "false negative", "majority class", "minority"],
         explanation: "Accuracy is misleading when classes are imbalanced: a model predicting only the majority class achieves high accuracy but fails on the minority class (e.g., 99% accuracy by always predicting 'not fraud' while catching 0% of fraud). Instead, use: (1) Precision and Recall to understand error types, (2) F1 score for a balanced metric, (3) AUC to evaluate across thresholds, (4) Confusion matrix to see all error types."
       },
       {
-        id: "105-4",
+        id: "7-4",
         type: "mcq",
         question: "What does an AUC score of 0.5 indicate?",
         options: ["Perfect classifier", "Good classifier", "Random guessing", "Inverse predictions"],
@@ -1017,7 +1017,7 @@ print(f"AUC: {roc_auc_score(y_test, y_pred_proba):.3f}")
     ]
   },
   {
-    id: 106,
+    id: 8,
     title: "Data Science: Cleaning & Feature Engineering",
     description: "Learn to prepare real-world messy data for machine learning",
     duration: "55 min",
@@ -1233,7 +1233,7 @@ X_selected = rfe.fit_transform(X, y)
     `,
     questions: [
       {
-        id: "106-1",
+        id: "8-1",
         type: "mcq",
         question: "Why is log transformation useful for skewed data?",
         options: ["It makes data negative", "It compresses large values and spreads small values, reducing outlier impact", "It removes missing values", "It converts to categories"],
@@ -1241,7 +1241,7 @@ X_selected = rfe.fit_transform(X, y)
         explanation: "Log transformation compresses the range of large values while spreading out small values. This reduces the impact of outliers and makes highly skewed distributions more normal, which many algorithms prefer."
       },
       {
-        id: "106-2",
+        id: "8-2",
         type: "mcq",
         question: "When should you use one-hot encoding vs label encoding for categorical features?",
         options: ["Always use one-hot", "One-hot for nominal (no order), label for ordinal (has order)", "Always use label encoding", "They're identical"],
@@ -1249,14 +1249,14 @@ X_selected = rfe.fit_transform(X, y)
         explanation: "One-hot encoding for nominal categories (city, color) because there's no inherent order. Label encoding for ordinal categories (education level, satisfaction rating) because the numbers preserve the ordering relationship."
       },
       {
-        id: "106-3",
+        id: "8-3",
         type: "descriptive",
         question: "Describe three strategies for handling missing values and when to use each.",
         keywords: ["drop", "mean", "median", "mode", "impute", "flag", "forward fill", "KNN", "prediction", "missing"],
         explanation: "Strategies: (1) Drop rows - when few missing values and data is large enough. (2) Fill with mean/median - for numerical data when missing at random; median is robust to outliers. (3) Fill with mode - for categorical data. (4) Forward/backward fill - for time series where previous value is a good estimate. (5) ML imputation (KNN) - when missing values have patterns related to other features."
       },
       {
-        id: "106-4",
+        id: "8-4",
         type: "mcq",
         question: "What is the purpose of feature scaling (standardization)?",
         options: ["To remove features", "To make features comparable and help algorithms converge faster", "To increase dataset size", "To remove outliers"],
@@ -1266,7 +1266,7 @@ X_selected = rfe.fit_transform(X, y)
     ]
   },
   {
-    id: 107,
+    id: 9,
     title: "Reinforcement Learning Fundamentals",
     description: "Learn how agents learn through trial and error to maximize rewards",
     duration: "60 min",
@@ -1465,7 +1465,7 @@ def q_learning(env, episodes=1000, alpha=0.1, gamma=0.99, epsilon=0.1):
     `,
     questions: [
       {
-        id: "107-1",
+        id: "9-1",
         type: "mcq",
         question: "What is the exploration-exploitation tradeoff?",
         options: ["Training vs testing", "Balancing trying new actions vs using known good actions", "Speed vs accuracy", "Memory vs computation"],
@@ -1473,7 +1473,7 @@ def q_learning(env, episodes=1000, alpha=0.1, gamma=0.99, epsilon=0.1):
         explanation: "The exploration-exploitation tradeoff: exploitation means using actions you know work well (maximize immediate reward), exploration means trying new actions to potentially find better strategies. ε-greedy balances this by exploring randomly ε% of the time."
       },
       {
-        id: "107-2",
+        id: "9-2",
         type: "mcq",
         question: "What does Q(s, a) represent in Q-learning?",
         options: ["Quality of the neural network", "Expected total reward from taking action a in state s", "Query response time", "Quantity of training data"],
@@ -1481,14 +1481,14 @@ def q_learning(env, episodes=1000, alpha=0.1, gamma=0.99, epsilon=0.1):
         explanation: "Q(s, a) is the action-value function - it estimates the expected cumulative future reward if you take action a in state s and then follow the optimal policy afterward."
       },
       {
-        id: "107-3",
+        id: "9-3",
         type: "descriptive",
         question: "Explain how reinforcement learning differs from supervised learning, with an example.",
         keywords: ["reward", "label", "interaction", "environment", "trial", "error", "feedback", "delayed", "agent", "action"],
         explanation: "Key differences: (1) Supervised learning has labeled examples (input→output), RL has rewards from environment interaction. (2) RL feedback is delayed - you might not know if an action was good until many steps later. (3) RL agent's actions affect future states. Example: Training a robot to walk - no 'correct answer' labels exist, but it learns from falling (negative reward) and moving forward (positive reward)."
       },
       {
-        id: "107-4",
+        id: "9-4",
         type: "mcq",
         question: "What is RLHF used for in modern AI?",
         options: ["Image generation", "Training large language models to be more helpful and harmless", "Autonomous driving only", "Database optimization"],

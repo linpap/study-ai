@@ -270,7 +270,7 @@ const baseLessons: Lesson[] = [
     ]
   },
   {
-    id: 3,
+    id: 17,
     title: "Neural Networks & Deep Learning",
     description: "Dive into how neural networks work and what makes deep learning powerful",
     duration: "60 min",
@@ -408,7 +408,7 @@ const baseLessons: Lesson[] = [
     `,
     questions: [
       {
-        id: "3-1",
+        id: "17-1",
         type: "mcq",
         question: "What is the purpose of an activation function in a neural network?",
         options: [
@@ -421,7 +421,7 @@ const baseLessons: Lesson[] = [
         explanation: "Activation functions introduce non-linearity into the network. Without them, a neural network would only be able to learn linear relationships, no matter how many layers it has."
       },
       {
-        id: "3-2",
+        id: "17-2",
         type: "mcq",
         question: "What does backpropagation do?",
         options: [
@@ -434,7 +434,7 @@ const baseLessons: Lesson[] = [
         explanation: "Backpropagation propagates the error backward through the network, calculating gradients that show how much each weight contributed to the error. These gradients are then used to update the weights."
       },
       {
-        id: "3-3",
+        id: "17-3",
         type: "mcq",
         question: "Which neural network architecture is most commonly used for image processing?",
         options: ["Recurrent Neural Networks (RNN)", "Transformers", "Convolutional Neural Networks (CNN)", "Autoencoders"],
@@ -442,7 +442,7 @@ const baseLessons: Lesson[] = [
         explanation: "CNNs are designed specifically for image processing. Their convolutional layers are excellent at detecting local patterns like edges and shapes, making them ideal for image classification and object detection."
       },
       {
-        id: "3-4",
+        id: "17-4",
         type: "mcq",
         question: "Which activation function is most commonly used in hidden layers of modern neural networks?",
         options: ["Sigmoid", "Tanh", "ReLU", "Softmax"],
@@ -450,14 +450,14 @@ const baseLessons: Lesson[] = [
         explanation: "ReLU (Rectified Linear Unit) is the most popular activation function for hidden layers because it's computationally efficient and helps avoid the vanishing gradient problem."
       },
       {
-        id: "3-5",
+        id: "17-5",
         type: "descriptive",
         question: "Explain how a neural network learns. Describe the key steps from input to weight update.",
         keywords: ["forward", "propagation", "loss", "error", "backpropagation", "gradient", "descent", "weights", "update", "prediction"],
         explanation: "Neural networks learn through: 1) Forward propagation - data flows through layers to produce a prediction, 2) Loss calculation - comparing prediction to actual value, 3) Backpropagation - propagating error backward to calculate gradients, 4) Gradient descent - updating weights to minimize loss."
       },
       {
-        id: "3-6",
+        id: "17-6",
         type: "descriptive",
         question: "What is the difference between CNNs, RNNs, and Transformers? When would you use each?",
         keywords: ["image", "sequential", "attention", "convolutional", "recurrent", "memory", "parallel", "text", "language", "vision"],
@@ -466,7 +466,7 @@ const baseLessons: Lesson[] = [
     ]
   },
   {
-    id: 4,
+    id: 11,
     title: "Natural Language Processing (NLP)",
     description: "Learn how AI understands and generates human language",
     duration: "50 min",
@@ -603,7 +603,7 @@ const baseLessons: Lesson[] = [
     `,
     questions: [
       {
-        id: "4-1",
+        id: "11-1",
         type: "mcq",
         question: "What is tokenization in NLP?",
         options: [
@@ -616,7 +616,7 @@ const baseLessons: Lesson[] = [
         explanation: "Tokenization is the process of breaking down text into smaller units (tokens), typically words or subwords. This is a fundamental preprocessing step in NLP."
       },
       {
-        id: "4-2",
+        id: "11-2",
         type: "mcq",
         question: "What advantage do word embeddings have over Bag of Words?",
         options: [
@@ -629,7 +629,7 @@ const baseLessons: Lesson[] = [
         explanation: "Word embeddings represent words as dense vectors where similar words have similar vectors. This captures semantic relationships (e.g., 'king' - 'man' + 'woman' ≈ 'queen'), unlike Bag of Words which just counts occurrences."
       },
       {
-        id: "4-3",
+        id: "11-3",
         type: "mcq",
         question: "What is the key innovation in Transformer architecture?",
         options: [
@@ -642,14 +642,14 @@ const baseLessons: Lesson[] = [
         explanation: "The self-attention mechanism is the key innovation in Transformers. It allows the model to weigh the importance of different parts of the input when processing each element, enabling parallel processing and better long-range dependencies."
       },
       {
-        id: "4-4",
+        id: "11-4",
         type: "descriptive",
         question: "What is sentiment analysis and give 2 examples of where it's used?",
         keywords: ["emotion", "tone", "positive", "negative", "review", "social media", "feedback", "customer", "opinion"],
         explanation: "Sentiment analysis determines the emotional tone of text (positive, negative, neutral). It's used in analyzing product reviews, social media monitoring, and customer feedback analysis to understand public opinion."
       },
       {
-        id: "4-5",
+        id: "11-5",
         type: "descriptive",
         question: "Explain the evolution of NLP from rule-based systems to Transformers.",
         keywords: ["rule", "statistical", "embedding", "word2vec", "RNN", "LSTM", "transformer", "attention", "BERT", "GPT"],
@@ -658,7 +658,7 @@ const baseLessons: Lesson[] = [
     ]
   },
   {
-    id: 5,
+    id: 12,
     title: "Computer Vision",
     description: "Explore how AI systems see and understand images and video",
     duration: "45 min",
@@ -807,7 +807,7 @@ const baseLessons: Lesson[] = [
     `,
     questions: [
       {
-        id: "5-1",
+        id: "12-1",
         type: "mcq",
         question: "What is the difference between image classification and object detection?",
         options: [
@@ -820,7 +820,7 @@ const baseLessons: Lesson[] = [
         explanation: "Image classification assigns one label to the entire image (e.g., 'cat'). Object detection finds multiple objects within an image and provides both labels AND their locations (bounding boxes)."
       },
       {
-        id: "5-2",
+        id: "12-2",
         type: "mcq",
         question: "What does a convolutional layer detect?",
         options: [
@@ -833,7 +833,7 @@ const baseLessons: Lesson[] = [
         explanation: "Convolutional layers use learnable filters (kernels) to detect features and patterns in images. Early layers detect simple features like edges, while deeper layers detect complex patterns."
       },
       {
-        id: "5-3",
+        id: "12-3",
         type: "mcq",
         question: "What innovation did ResNet introduce?",
         options: [
@@ -846,14 +846,14 @@ const baseLessons: Lesson[] = [
         explanation: "ResNet introduced skip (residual) connections that allow gradients to flow directly through the network, enabling training of very deep networks (100+ layers) without degradation."
       },
       {
-        id: "5-4",
+        id: "12-4",
         type: "descriptive",
         question: "Explain what a CNN learns at different layer depths (early, middle, deep layers).",
         keywords: ["edge", "color", "shape", "texture", "pattern", "object", "complex", "simple", "feature", "hierarchical"],
         explanation: "CNNs learn hierarchically: Early layers detect simple features (edges, colors, basic textures). Middle layers combine these into shapes, patterns, and object parts. Deep layers recognize complex features and entire objects."
       },
       {
-        id: "5-5",
+        id: "12-5",
         type: "descriptive",
         question: "Name 3 real-world applications of computer vision and explain how they use it.",
         keywords: ["autonomous", "medical", "facial", "retail", "manufacturing", "detection", "recognition", "analysis", "vehicle", "security"],
@@ -862,7 +862,7 @@ const baseLessons: Lesson[] = [
     ]
   },
   {
-    id: 6,
+    id: 13,
     title: "Large Language Models (LLMs)",
     description: "Understand how GPT, Claude, and other LLMs work",
     duration: "60 min",
@@ -1018,7 +1018,7 @@ const baseLessons: Lesson[] = [
     `,
     questions: [
       {
-        id: "6-1",
+        id: "13-1",
         type: "mcq",
         question: "What is the core training objective of most LLMs?",
         options: [
@@ -1031,7 +1031,7 @@ const baseLessons: Lesson[] = [
         explanation: "LLMs are primarily trained on next token prediction - given a sequence of tokens, predict the most likely next token. This simple objective, applied at scale, leads to sophisticated language understanding."
       },
       {
-        id: "6-2",
+        id: "13-2",
         type: "mcq",
         question: "What does RLHF stand for and what is its purpose?",
         options: [
@@ -1044,7 +1044,7 @@ const baseLessons: Lesson[] = [
         explanation: "RLHF (Reinforcement Learning from Human Feedback) is used to align LLMs with human preferences. Humans rank model outputs, a reward model learns these preferences, and RL optimizes the LLM to produce better responses."
       },
       {
-        id: "6-3",
+        id: "13-3",
         type: "mcq",
         question: "What is a 'hallucination' in the context of LLMs?",
         options: [
@@ -1057,7 +1057,7 @@ const baseLessons: Lesson[] = [
         explanation: "Hallucination refers to LLMs generating information that sounds plausible and confident but is actually false or made up. This is a significant challenge because the false information can be hard to detect."
       },
       {
-        id: "6-4",
+        id: "13-4",
         type: "mcq",
         question: "What is Chain-of-Thought (CoT) prompting?",
         options: [
@@ -1070,14 +1070,14 @@ const baseLessons: Lesson[] = [
         explanation: "Chain-of-Thought prompting encourages the model to break down complex problems into steps, showing its reasoning process. This often improves accuracy on math, logic, and reasoning tasks."
       },
       {
-        id: "6-5",
+        id: "13-5",
         type: "descriptive",
         question: "Explain the two main phases of training an LLM (pre-training and fine-tuning).",
         keywords: ["pre-training", "fine-tuning", "text", "corpus", "next token", "supervised", "RLHF", "human", "feedback", "examples"],
         explanation: "Pre-training: LLM learns from massive text corpus through next-token prediction, acquiring language patterns and knowledge. Fine-tuning: Model is adapted using supervised examples (SFT) and/or RLHF to follow instructions and align with human preferences."
       },
       {
-        id: "6-6",
+        id: "13-6",
         type: "descriptive",
         question: "What are 3 limitations of current LLMs?",
         keywords: ["hallucination", "context", "window", "cutoff", "bias", "reasoning", "false", "memory", "knowledge", "limit"],
@@ -1086,7 +1086,7 @@ const baseLessons: Lesson[] = [
     ]
   },
   {
-    id: 7,
+    id: 14,
     title: "Building AI Applications",
     description: "Learn how to integrate AI into real-world applications",
     duration: "50 min",
@@ -1286,7 +1286,7 @@ Response
     `,
     questions: [
       {
-        id: "7-1",
+        id: "14-1",
         type: "mcq",
         question: "What is RAG (Retrieval-Augmented Generation)?",
         options: [
@@ -1299,7 +1299,7 @@ Response
         explanation: "RAG combines LLMs with retrieval systems. Documents are converted to embeddings, stored in a vector database, and relevant ones are retrieved to provide context for the LLM when answering queries."
       },
       {
-        id: "7-2",
+        id: "14-2",
         type: "mcq",
         question: "When should you fine-tune a model instead of using prompting?",
         options: [
@@ -1312,7 +1312,7 @@ Response
         explanation: "Fine-tuning is best when you have abundant task-specific data, need consistent output formats, want to reduce costs/latency, or need domain-specific knowledge. Prompting is better for flexibility and quick iteration."
       },
       {
-        id: "7-3",
+        id: "14-3",
         type: "mcq",
         question: "What are the main components of an AI agent?",
         options: [
@@ -1325,14 +1325,14 @@ Response
         explanation: "AI agents consist of: an LLM (the 'brain'), tools (functions it can call), memory (for conversation history), and planning (for breaking down complex tasks)."
       },
       {
-        id: "7-4",
+        id: "14-4",
         type: "descriptive",
         question: "Explain how RAG works step by step.",
         keywords: ["embed", "vector", "database", "retrieve", "query", "context", "document", "generate", "relevant", "store"],
         explanation: "RAG works by: 1) Indexing - converting documents to embeddings and storing in a vector database, 2) Retrieval - when a query comes, finding relevant documents via similarity search, 3) Generation - including retrieved context in the LLM prompt to generate an informed answer."
       },
       {
-        id: "7-5",
+        id: "14-5",
         type: "descriptive",
         question: "What are important considerations when deploying AI applications to production?",
         keywords: ["scale", "cost", "safety", "cache", "rate limit", "latency", "token", "filter", "validation", "queue"],
@@ -1341,7 +1341,7 @@ Response
     ]
   },
   {
-    id: 8,
+    id: 15,
     title: "Ethics and Safety in AI",
     description: "Understand the ethical considerations and safety challenges in AI development",
     duration: "40 min",
@@ -1488,7 +1488,7 @@ Response
     `,
     questions: [
       {
-        id: "8-1",
+        id: "15-1",
         type: "mcq",
         question: "What is 'bias' in AI systems?",
         options: [
@@ -1501,7 +1501,7 @@ Response
         explanation: "AI bias occurs when systems treat different groups unfairly, often because they learned biased patterns from training data. This can result in discrimination against certain demographics."
       },
       {
-        id: "8-2",
+        id: "15-2",
         type: "mcq",
         question: "What is the AI alignment problem?",
         options: [
@@ -1514,7 +1514,7 @@ Response
         explanation: "The alignment problem is the challenge of ensuring AI systems reliably pursue goals that match human intentions and values, rather than finding unexpected or harmful ways to achieve objectives."
       },
       {
-        id: "8-3",
+        id: "15-3",
         type: "mcq",
         question: "What is 'Constitutional AI'?",
         options: [
@@ -1527,14 +1527,14 @@ Response
         explanation: "Constitutional AI is an alignment approach developed by Anthropic where AI is trained to follow a set of principles (a 'constitution') that guide its behavior, helping it refuse harmful requests and be more helpful."
       },
       {
-        id: "8-4",
+        id: "15-4",
         type: "descriptive",
         question: "What are 3 key ethical concerns in AI development and why do they matter?",
         keywords: ["bias", "privacy", "transparency", "fairness", "accountability", "discrimination", "data", "explainability", "black box"],
         explanation: "Key ethical concerns: 1) Bias - AI can discriminate against groups, causing real-world harm. 2) Privacy - AI requires lots of data and can enable surveillance. 3) Transparency - 'Black box' models make it hard to understand or challenge decisions, especially in high-stakes contexts like healthcare or justice."
       },
       {
-        id: "8-5",
+        id: "15-5",
         type: "descriptive",
         question: "What practices should developers follow to build more responsible AI systems?",
         keywords: ["bias", "test", "transparent", "security", "human", "oversight", "document", "review", "impact", "community"],
@@ -1543,7 +1543,7 @@ Response
     ]
   },
   {
-    id: 9,
+    id: 16,
     title: "The Future of AI",
     description: "Explore emerging trends and where AI is heading",
     duration: "35 min",
@@ -1690,7 +1690,7 @@ Response
     `,
     questions: [
       {
-        id: "9-1",
+        id: "16-1",
         type: "mcq",
         question: "What is 'multimodal AI'?",
         options: [
@@ -1703,7 +1703,7 @@ Response
         explanation: "Multimodal AI can understand and generate multiple types of data - text, images, audio, and video. Examples include GPT-4V (text + vision) and models like Gemini that handle multiple modalities."
       },
       {
-        id: "9-2",
+        id: "16-2",
         type: "mcq",
         question: "What are AI agents?",
         options: [
@@ -1716,7 +1716,7 @@ Response
         explanation: "AI agents go beyond chatbots - they can take actions like browsing the web, writing and executing code, and completing multi-step tasks autonomously, rather than just generating text responses."
       },
       {
-        id: "9-3",
+        id: "16-3",
         type: "mcq",
         question: "What is a key near-term prediction for AI (1-3 years)?",
         options: [
@@ -1729,14 +1729,14 @@ Response
         explanation: "AI assistants are already being integrated into many software products and this trend is expected to accelerate. Within 1-3 years, AI assistance will likely be a standard feature in most software applications."
       },
       {
-        id: "9-4",
+        id: "16-4",
         type: "descriptive",
         question: "What skills should individuals develop to prepare for an AI-powered future?",
         keywords: ["learn", "AI", "tool", "adapt", "creative", "empathy", "judgment", "continuous", "learning", "limitation"],
         explanation: "To prepare for an AI future, individuals should: 1) Learn to use AI tools effectively, 2) Develop complementary skills AI lacks (creativity, empathy, judgment), 3) Stay adaptable with continuous learning, 4) Understand AI limitations and when not to trust it."
       },
       {
-        id: "9-5",
+        id: "16-5",
         type: "descriptive",
         question: "What are major societal challenges that AI presents?",
         keywords: ["job", "displacement", "misinformation", "deepfake", "privacy", "access", "equitable", "economic", "human", "agency"],
@@ -1745,7 +1745,7 @@ Response
     ]
   },
   {
-    id: 10,
+    id: 17,
     title: "Hands-on: Building Your First AI App",
     description: "Put your knowledge into practice with a guided project",
     duration: "90 min",
@@ -2009,7 +2009,7 @@ export default function Home() {
     `,
     questions: [
       {
-        id: "10-1",
+        id: "17-1",
         type: "mcq",
         question: "Why do we split documents into chunks before storing them?",
         options: [
@@ -2022,7 +2022,7 @@ export default function Home() {
         explanation: "Documents are chunked because: 1) LLMs have context limits, so we need to select the most relevant portions, 2) Smaller chunks allow for more precise retrieval - a relevant paragraph is better than a slightly relevant page."
       },
       {
-        id: "10-2",
+        id: "17-2",
         type: "mcq",
         question: "What is the role of embeddings in a RAG system?",
         options: [
@@ -2035,14 +2035,14 @@ export default function Home() {
         explanation: "Embeddings convert text into numerical vectors where semantically similar texts have similar vectors. This enables finding relevant documents based on meaning, not just keyword matching."
       },
       {
-        id: "10-3",
+        id: "17-3",
         type: "descriptive",
         question: "Describe the flow of a RAG system from user question to answer.",
         keywords: ["question", "embedding", "vector", "search", "retrieve", "context", "prompt", "LLM", "generate", "answer"],
         explanation: "RAG flow: 1) User asks question, 2) Question converted to embedding, 3) Vector similarity search finds relevant document chunks, 4) Retrieved chunks added to prompt as context, 5) LLM generates answer based on context, 6) Answer returned to user."
       },
       {
-        id: "10-4",
+        id: "17-4",
         type: "descriptive",
         question: "What are 3 ways you could extend or improve this basic RAG application?",
         keywords: ["file", "upload", "PDF", "history", "conversation", "citation", "source", "authentication", "streaming", "memory"],
