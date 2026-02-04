@@ -38,6 +38,16 @@ function RegisterForm() {
       setError(error.message)
       setLoading(false)
     } else {
+      // Send welcome email
+      try {
+        await fetch('/api/send-welcome', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email }),
+        })
+      } catch (e) {
+        console.error('Failed to send welcome email:', e)
+      }
       setSuccess(true)
       setLoading(false)
     }
