@@ -18,6 +18,10 @@ export const metadata: Metadata = {
   description: "Comprehensive AI lessons from basics to building applications. Interactive quizzes with voice input support. 31 lessons covering machine learning, deep learning, neural networks, and more.",
   keywords: ["AI", "artificial intelligence", "machine learning", "deep learning", "neural networks", "learn AI", "AI course", "AI tutorial", "machine learning course"],
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://learnai.greensolz.com'),
+  icons: {
+    icon: '/icon.svg',
+    apple: '/icon.svg',
+  },
   openGraph: {
     title: "StudyAI - Learn Artificial Intelligence",
     description: "Master AI from zero to hero with 31 comprehensive lessons. Interactive quizzes, practice exercises, and hands-on learning.",
