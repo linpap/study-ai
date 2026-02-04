@@ -44,25 +44,25 @@ export default function AboutPage() {
 
   const testimonials = [
     {
-      name: "Priya S.",
+      name: "Priya Sharma",
       role: "Software Developer",
       content: "Finally, an AI course that doesn't just throw math at you. The interactive quizzes and practice exercises made concepts click. Built my first RAG app after lesson 21!",
       rating: 5
     },
     {
-      name: "Marcus T.",
+      name: "Rahul Mehta",
       role: "Data Analyst",
       content: "The voice input feature is a game-changer for learning. I can explain concepts out loud and get AI feedback. Went from zero ML knowledge to fine-tuning models in 6 weeks.",
       rating: 5
     },
     {
-      name: "Sarah K.",
+      name: "Ananya Krishnan",
       role: "Product Manager",
       content: "I needed to understand AI to work better with my engineering team. StudyAI gave me the technical foundation without overwhelming me. Highly recommend for non-engineers too.",
       rating: 5
     },
     {
-      name: "James L.",
+      name: "Vikram Patel",
       role: "CS Student",
       content: "Better than my university AI course honestly. The hands-on coding exercises are practical and the explanations are clear. Worth every minute.",
       rating: 5
