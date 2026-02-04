@@ -128,7 +128,7 @@ export default function AboutPage() {
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Soumyajit S.</h3>
               <p className="text-blue-600 dark:text-blue-400 mb-3">AI Engineer & Educator</p>
               <p className="text-gray-600 dark:text-gray-300 mb-3">
-                With over 8 years of experience in software development and 4+ years specializing in AI/ML,
+                With over 20 years of experience in software development and 4+ years specializing in AI/ML,
                 I&apos;ve built production AI systems for startups and enterprises. I created StudyAI because
                 I saw too many courses that were either too theoretical or too shallow.
               </p>
