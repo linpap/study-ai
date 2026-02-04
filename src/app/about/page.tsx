@@ -122,10 +122,10 @@ export default function AboutPage() {
           <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Created By</h2>
           <div className="flex items-start gap-6">
             <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
-              <span className="text-white font-bold text-2xl">A</span>
+              <span className="text-white font-bold text-2xl">S</span>
             </div>
             <div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Arsh</h3>
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Soumyajit S.</h3>
               <p className="text-blue-600 dark:text-blue-400 mb-3">AI Engineer & Educator</p>
               <p className="text-gray-600 dark:text-gray-300 mb-3">
                 With over 8 years of experience in software development and 4+ years specializing in AI/ML,
