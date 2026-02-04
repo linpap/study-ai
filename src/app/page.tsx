@@ -363,9 +363,14 @@ export default function Home() {
         </div>
 
         {/* Footer */}
-        <footer className="mt-16 text-center text-gray-500 dark:text-gray-400 text-sm">
-          <p>Built for learning AI from the ground up</p>
-          <p className="mt-1">Voice input powered by Web Speech API</p>
+        <footer className="mt-16 pt-8 border-t border-gray-200 dark:border-gray-700">
+          <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-500 dark:text-gray-400 mb-4">
+            <Link href="/about" className="hover:text-gray-900 dark:hover:text-white transition">About</Link>
+            <Link href="/contact" className="hover:text-gray-900 dark:hover:text-white transition">Contact</Link>
+            <Link href="/privacy" className="hover:text-gray-900 dark:hover:text-white transition">Privacy Policy</Link>
+            <Link href="/terms" className="hover:text-gray-900 dark:hover:text-white transition">Terms of Service</Link>
+          </div>
+          <p className="text-center text-gray-500 dark:text-gray-400 text-sm">Built for learning AI from the ground up</p>
         </footer>
       </main>
     </div>
