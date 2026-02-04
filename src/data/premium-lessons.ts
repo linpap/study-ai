@@ -3,7 +3,7 @@ import { Lesson } from './lessons';
 // Premium lessons to elevate course quality to 8.5+/10
 export const premiumLessons: Lesson[] = [
   {
-    id: 20,
+    id: 28,
     title: "Convolutional Neural Networks (CNNs)",
     description: "Master image processing with CNNs - the backbone of computer vision AI",
     duration: "75 min",
@@ -325,7 +325,7 @@ train_transform = transforms.Compose([
     ]
   },
   {
-    id: 21,
+    id: 29,
     title: "Recurrent Neural Networks & LSTMs",
     description: "Process sequential data with memory - essential for time series and language",
     duration: "70 min",
@@ -641,7 +641,7 @@ class SentimentLSTM(nn.Module):
     ]
   },
   {
-    id: 22,
+    id: 30,
     title: "Transfer Learning & Fine-Tuning",
     description: "Leverage pre-trained models to achieve state-of-the-art results with less data",
     duration: "60 min",
@@ -1008,7 +1008,7 @@ trainer.train()
     ]
   },
   {
-    id: 23,
+    id: 31,
     title: "Generative AI: VAEs, GANs & Diffusion Models",
     description: "Understand how AI creates new images, art, and content",
     duration: "80 min",

@@ -2,7 +2,7 @@ import { Lesson } from './lessons';
 
 export const productionLessons: Lesson[] = [
   {
-    id: 17,
+    id: 24,
     title: "MLOps & AI Infrastructure",
     description: "Deploy, monitor, and scale AI systems in production",
     duration: "90 min",
@@ -249,7 +249,7 @@ def route_to_model(prompt, complexity_score):
     ]
   },
   {
-    id: 18,
+    id: 25,
     title: "Embeddings & Vector Search",
     description: "Deep dive into embeddings, similarity search, and vector databases",
     duration: "75 min",
@@ -467,7 +467,7 @@ results = search.search("What is deep learning?")
     ]
   },
   {
-    id: 19,
+    id: 26,
     title: "AI System Design",
     description: "Design complete AI systems for real-world applications",
     duration: "100 min",
@@ -723,7 +723,7 @@ def log_interaction(input, output, feedback=None):
     ]
   },
   {
-    id: 20,
+    id: 27,
     title: "Capstone: Build a Complete AI Application",
     description: "Apply everything you've learned to build a production-ready AI application",
     duration: "180 min",

@@ -2,7 +2,7 @@ import { Lesson } from './lessons';
 
 export const advancedLessons: Lesson[] = [
   {
-    id: 11,
+    id: 18,
     title: "Transformer Architecture Deep Dive",
     description: "Master the complete transformer architecture - attention mechanisms, positional encoding, and implementation details",
     duration: "90 min",
@@ -354,7 +354,7 @@ class TransformerBlock(nn.Module):
     ]
   },
   {
-    id: 12,
+    id: 19,
     title: "Building AI Agents from Scratch",
     description: "Learn to build autonomous AI agents with tools, memory, and planning capabilities",
     duration: "120 min",

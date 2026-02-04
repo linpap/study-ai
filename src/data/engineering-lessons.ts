@@ -2,7 +2,7 @@ import { Lesson } from './lessons';
 
 export const engineeringLessons: Lesson[] = [
   {
-    id: 13,
+    id: 20,
     title: "Fine-Tuning LLMs",
     description: "Learn when and how to fine-tune language models for specific tasks",
     duration: "90 min",
@@ -186,7 +186,7 @@ train_data, test_data = split_data(data, test_size=0.1)
     ]
   },
   {
-    id: 14,
+    id: 21,
     title: "RAG Systems Deep Dive",
     description: "Build production-ready Retrieval-Augmented Generation systems",
     duration: "100 min",
@@ -448,7 +448,7 @@ def self_rag(query):
     ]
   },
   {
-    id: 15,
+    id: 22,
     title: "Building & Deploying AI CLI Tools",
     description: "Create command-line AI tools and deploy them for users",
     duration: "80 min",
@@ -763,7 +763,7 @@ nuitka --standalone --onefile src/my_ai_cli/main.py
     ]
   },
   {
-    id: 16,
+    id: 23,
     title: "Prompt Engineering Mastery",
     description: "Advanced techniques for crafting effective prompts",
     duration: "70 min",

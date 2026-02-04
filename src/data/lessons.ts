@@ -270,7 +270,7 @@ const baseLessons: Lesson[] = [
     ]
   },
   {
-    id: 17,
+    id: 10,
     title: "Neural Networks & Deep Learning",
     description: "Dive into how neural networks work and what makes deep learning powerful",
     duration: "60 min",
