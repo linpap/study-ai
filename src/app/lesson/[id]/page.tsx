@@ -203,8 +203,10 @@ export default function LessonPage() {
     }
   };
 
-  const nextLesson = lessons.find(l => l.id === lessonId + 1);
-  const prevLesson = lessons.find(l => l.id === lessonId - 1);
+  const currentIndex = lessons.findIndex(l => l.id === lessonId);
+  const lessonNumber = currentIndex + 1;
+  const nextLesson = currentIndex < lessons.length - 1 ? lessons[currentIndex + 1] : null;
+  const prevLesson = currentIndex > 0 ? lessons[currentIndex - 1] : null;
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -221,7 +223,7 @@ export default function LessonPage() {
             All Lessons
           </Link>
           <span className="text-sm text-gray-500 dark:text-gray-400">
-            Lesson {lessonId} of {lessons.length}
+            Lesson {lessonNumber} of {lessons.length}
           </span>
         </div>
       </header>

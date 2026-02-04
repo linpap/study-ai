@@ -267,7 +267,7 @@ export default function Home() {
         {/* Lessons Grid */}
         <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Course Content</h3>
         <div className="grid gap-4">
-          {lessons.map((lesson) => {
+          {lessons.map((lesson, index) => {
             const lessonProgress = progress[lesson.id];
             const isCompleted = lessonProgress?.completed;
             const isViewed = lessonProgress?.viewed;
@@ -308,7 +308,7 @@ export default function Home() {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
                     ) : (
-                      <span className="font-bold">{lesson.id}</span>
+                      <span className="font-bold">{index + 1}</span>
                     )}
                   </div>
 
