@@ -2056,6 +2056,7 @@ import { advancedLessons } from './advanced-lessons';
 import { engineeringLessons } from './engineering-lessons';
 import { productionLessons } from './production-lessons';
 import { foundationalLessons } from './foundational-lessons';
+import { premiumLessons } from './premium-lessons';
 
 // Combine all lessons - foundational lessons come after intro but before advanced
 export const lessons: Lesson[] = [
@@ -2064,7 +2065,8 @@ export const lessons: Lesson[] = [
   ...baseLessons.slice(2),            // Remaining base lessons
   ...advancedLessons,
   ...engineeringLessons,
-  ...productionLessons
+  ...productionLessons,
+  ...premiumLessons
 ];
 
 export const getLessonById = (id: number): Lesson | undefined => {
