@@ -52,7 +52,7 @@ export async function POST(request: Request) {
             </p>
 
             <div style="text-align: center; margin: 30px 0;">
-              <a href="https://study-ai-six.vercel.app" style="display: inline-block; background: linear-gradient(135deg, #3b82f6, #8b5cf6); color: white; text-decoration: none; padding: 14px 28px; border-radius: 8px; font-weight: 600; font-size: 16px;">
+              <a href="https://learnai.greensolz.com" style="display: inline-block; background: linear-gradient(135deg, #3b82f6, #8b5cf6); color: white; text-decoration: none; padding: 14px 28px; border-radius: 8px; font-weight: 600; font-size: 16px;">
                 Start Learning
               </a>
             </div>
@@ -60,7 +60,7 @@ export async function POST(request: Request) {
             <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 30px 0;">
 
             <p style="font-size: 14px; color: #9ca3af; text-align: center;">
-              Questions? Reply to this email or visit our <a href="https://study-ai-six.vercel.app/contact" style="color: #3b82f6;">contact page</a>.
+              Questions? Reply to this email or visit our <a href="https://learnai.greensolz.com/contact" style="color: #3b82f6;">contact page</a>.
             </p>
 
             <p style="font-size: 14px; color: #9ca3af; text-align: center;">
