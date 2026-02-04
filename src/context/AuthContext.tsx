@@ -1,12 +1,14 @@
 'use client'
 
-import { createContext, useContext, useEffect, useState, ReactNode, useMemo } from 'react'
+import { createContext, useContext, useEffect, useState, ReactNode, useMemo, useCallback } from 'react'
 import { User, AuthError, AuthChangeEvent, Session } from '@supabase/supabase-js'
 import { createClient, isSupabaseConfigured } from '@/lib/supabase/client'
 
 interface AuthContextType {
   user: User | null
   loading: boolean
+  isPremium: boolean
+  checkPremiumStatus: () => Promise<boolean>
   signIn: (email: string, password: string) => Promise<{ error: AuthError | null }>
   signUp: (email: string, password: string) => Promise<{ error: AuthError | null }>
   signOut: () => Promise<void>
@@ -17,7 +19,31 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined)
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
+  const [isPremium, setIsPremium] = useState(false)
   const supabase = useMemo(() => createClient(), [])
+
+  const checkPremiumStatus = useCallback(async (): Promise<boolean> => {
+    if (!supabase || !user) {
+      setIsPremium(false)
+      return false
+    }
+
+    try {
+      const { data } = await supabase
+        .from('user_premium')
+        .select('is_active')
+        .eq('user_id', user.id)
+        .eq('is_active', true)
+        .single()
+
+      const premium = !!data?.is_active
+      setIsPremium(premium)
+      return premium
+    } catch {
+      setIsPremium(false)
+      return false
+    }
+  }, [supabase, user])
 
   useEffect(() => {
     // If Supabase is not configured, just set loading to false
@@ -45,6 +71,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (event === 'SIGNED_IN' && session?.user) {
           await migrateLocalProgress(session.user.id)
         }
+
+        // Reset premium status on sign out
+        if (event === 'SIGNED_OUT') {
+          setIsPremium(false)
+        }
       }
     )
 
@@ -52,6 +83,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       subscription.unsubscribe()
     }
   }, [supabase])
+
+  // Check premium status when user changes
+  useEffect(() => {
+    if (user) {
+      checkPremiumStatus()
+    }
+  }, [user, checkPremiumStatus])
 
   const migrateLocalProgress = async (userId: string) => {
     if (!supabase) return
@@ -134,7 +172,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, signIn, signUp, signOut }}>
+    <AuthContext.Provider value={{ user, loading, isPremium, checkPremiumStatus, signIn, signUp, signOut }}>
       {children}
     </AuthContext.Provider>
   )

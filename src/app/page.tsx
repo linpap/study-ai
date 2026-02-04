@@ -8,6 +8,8 @@ import { createClient } from '@/lib/supabase/client';
 
 const FREE_LESSONS = [1, 2, 3];
 
+type LessonLockStatus = 'unlocked' | 'login_required' | 'premium_required';
+
 interface Progress {
   [lessonId: number]: {
     viewed?: boolean;
@@ -28,8 +30,15 @@ interface UserProgress {
 export default function Home() {
   const [progress, setProgress] = useState<Progress>({});
   const [darkMode, setDarkMode] = useState(false);
-  const { user, loading: authLoading, signOut } = useAuth();
+  const { user, loading: authLoading, signOut, isPremium } = useAuth();
   const supabase = createClient();
+
+  const getLockStatus = (lessonId: number): LessonLockStatus => {
+    if (FREE_LESSONS.includes(lessonId)) return 'unlocked';
+    if (!user) return 'login_required';
+    if (!isPremium) return 'premium_required';
+    return 'unlocked';
+  };
 
   useEffect(() => {
     const loadProgress = async () => {
@@ -262,13 +271,19 @@ export default function Home() {
             const lessonProgress = progress[lesson.id];
             const isCompleted = lessonProgress?.completed;
             const isViewed = lessonProgress?.viewed;
-            const isFreeLesson = FREE_LESSONS.includes(lesson.id);
-            const isLocked = !isFreeLesson && !user;
+            const lockStatus = getLockStatus(lesson.id);
+            const isLocked = lockStatus !== 'unlocked';
+
+            const getHref = () => {
+              if (lockStatus === 'login_required') return '/auth/login?redirect=/lesson/' + lesson.id;
+              if (lockStatus === 'premium_required') return '/premium?redirect=/lesson/' + lesson.id;
+              return `/lesson/${lesson.id}`;
+            };
 
             return (
               <Link
                 key={lesson.id}
-                href={isLocked ? '/auth/login?redirect=/lesson/' + lesson.id : `/lesson/${lesson.id}`}
+                href={getHref()}
                 className={`group bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm hover:shadow-md transition-all border-2 border-transparent ${
                   isLocked ? 'hover:border-purple-500' : 'hover:border-blue-500'
                 }`}
@@ -314,9 +329,14 @@ export default function Home() {
                       }`}>
                         {lesson.difficulty}
                       </span>
-                      {isLocked && (
+                      {lockStatus === 'login_required' && (
                         <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400 flex-shrink-0">
                           Login required
+                        </span>
+                      )}
+                      {lockStatus === 'premium_required' && (
+                        <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-gradient-to-r from-blue-100 to-purple-100 text-purple-700 dark:from-blue-900/30 dark:to-purple-900/30 dark:text-purple-400 flex-shrink-0">
+                          Premium
                         </span>
                       )}
                     </div>
@@ -369,6 +389,7 @@ export default function Home() {
             <Link href="/contact" className="hover:text-gray-900 dark:hover:text-white transition">Contact</Link>
             <Link href="/privacy" className="hover:text-gray-900 dark:hover:text-white transition">Privacy Policy</Link>
             <Link href="/terms" className="hover:text-gray-900 dark:hover:text-white transition">Terms of Service</Link>
+            <Link href="/refund" className="hover:text-gray-900 dark:hover:text-white transition">Refund Policy</Link>
           </div>
           <p className="text-center text-gray-500 dark:text-gray-400 text-sm">Built for learning AI from the ground up</p>
         </footer>
