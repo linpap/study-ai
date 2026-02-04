@@ -14,25 +14,25 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "StudyAI - Learn Artificial Intelligence",
-  description: "Comprehensive AI lessons from basics to building applications. Interactive quizzes with voice input support. 31 lessons covering machine learning, deep learning, neural networks, and more.",
-  keywords: ["AI", "artificial intelligence", "machine learning", "deep learning", "neural networks", "learn AI", "AI course", "AI tutorial", "machine learning course"],
+  title: "StudyAI - Learn AI & Machine Learning",
+  description: "Comprehensive AI and Machine Learning lessons from basics to building applications. Interactive quizzes with voice input support. 31 lessons covering neural networks, deep learning, NLP, computer vision, and more.",
+  keywords: ["AI", "artificial intelligence", "machine learning", "deep learning", "neural networks", "learn AI", "AI course", "ML course", "machine learning tutorial", "learn machine learning", "AI tutorial"],
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://learnai.greensolz.com'),
   icons: {
     icon: '/icon.svg',
     apple: '/icon.svg',
   },
   openGraph: {
-    title: "StudyAI - Learn Artificial Intelligence",
-    description: "Master AI from zero to hero with 31 comprehensive lessons. Interactive quizzes, practice exercises, and hands-on learning.",
+    title: "StudyAI - Learn AI & Machine Learning",
+    description: "Master AI & Machine Learning from zero to hero with 31 comprehensive lessons. Interactive quizzes, practice exercises, and hands-on learning.",
     type: "website",
     locale: "en_US",
     siteName: "StudyAI",
   },
   twitter: {
     card: "summary_large_image",
-    title: "StudyAI - Learn Artificial Intelligence",
-    description: "Master AI from zero to hero with 31 comprehensive lessons. Interactive quizzes and hands-on learning.",
+    title: "StudyAI - Learn AI & Machine Learning",
+    description: "Master AI & Machine Learning from zero to hero with 31 comprehensive lessons. Interactive quizzes and hands-on learning.",
   },
   robots: {
     index: true,

@@ -135,7 +135,7 @@ export default function Home() {
             </div>
             <div>
               <h1 className="text-xl font-bold text-gray-900 dark:text-white">StudyAI</h1>
-              <p className="text-xs text-gray-500 dark:text-gray-400">Master AI from Zero to Hero</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">Master AI & Machine Learning</p>
             </div>
           </div>
           <nav className="flex items-center gap-4">
