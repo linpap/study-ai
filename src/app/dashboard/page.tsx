@@ -44,17 +44,9 @@ export default function DashboardPage() {
     }
   }, []);
 
-  const ALLOWED_EMAIL = 'linpap@gmail.com';
-
   useEffect(() => {
     if (!authLoading && !user) {
       router.push('/auth/login?redirect=/dashboard');
-      return;
-    }
-
-    // Restrict dashboard to specific user
-    if (!authLoading && user && user.email !== ALLOWED_EMAIL) {
-      router.push('/');
       return;
     }
 
@@ -138,7 +130,7 @@ export default function DashboardPage() {
     );
   }
 
-  if (!user || user.email !== ALLOWED_EMAIL) {
+  if (!user) {
     return null;
   }
 

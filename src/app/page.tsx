@@ -143,12 +143,20 @@ export default function Home() {
             >
               Practice
             </Link>
-            {user && user.email === 'linpap@gmail.com' && (
+            {user && (
               <Link
                 href="/dashboard"
                 className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
               >
                 Dashboard
+              </Link>
+            )}
+            {user && user.email === 'linpap@gmail.com' && (
+              <Link
+                href="/admin"
+                className="text-gray-600 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition-colors"
+              >
+                Admin
               </Link>
             )}
             <button
