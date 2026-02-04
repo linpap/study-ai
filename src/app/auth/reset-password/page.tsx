@@ -1,34 +1,85 @@
 'use client'
 
-import { Suspense, useState } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { Suspense, useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { useAuth } from '@/context/AuthContext'
+import { createClient } from '@/lib/supabase/client'
 
-function LoginForm() {
-  const [email, setEmail] = useState('')
+function ResetPasswordForm() {
   const [password, setPassword] = useState('')
-  const [error, setError] = useState<string | null>(null)
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [loading, setLoading] = useState(false)
-  const { signIn } = useAuth()
+  const [error, setError] = useState<string | null>(null)
+  const [success, setSuccess] = useState(false)
   const router = useRouter()
-  const searchParams = useSearchParams()
-  const redirect = searchParams.get('redirect') || '/'
+  const supabase = createClient()
+
+  useEffect(() => {
+    // Check if we have a valid session from the reset link
+    const checkSession = async () => {
+      if (!supabase) return
+      const { data: { session } } = await supabase.auth.getSession()
+      if (!session) {
+        setError('Invalid or expired reset link. Please request a new one.')
+      }
+    }
+    checkSession()
+  }, [supabase])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError(null)
+
+    if (password !== confirmPassword) {
+      setError('Passwords do not match')
+      return
+    }
+
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters')
+      return
+    }
+
+    if (!supabase) {
+      setError('Authentication service not configured')
+      return
+    }
+
     setLoading(true)
 
-    const { error } = await signIn(email, password)
+    const { error } = await supabase.auth.updateUser({
+      password: password
+    })
 
     if (error) {
       setError(error.message)
-      setLoading(false)
     } else {
-      router.push(redirect)
-      router.refresh()
+      setSuccess(true)
+      setTimeout(() => {
+        router.push('/auth/login')
+      }, 2000)
     }
+    setLoading(false)
+  }
+
+  if (success) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-md w-full space-y-8 text-center">
+          <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-6">
+            <svg className="w-12 h-12 text-green-500 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+              Password updated!
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400">
+              Redirecting you to login...
+            </p>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -42,16 +93,10 @@ function LoginForm() {
             <span className="text-2xl font-bold text-gray-900 dark:text-white">StudyAI</span>
           </Link>
           <h2 className="text-center text-3xl font-extrabold text-gray-900 dark:text-white">
-            Sign in to your account
+            Set new password
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
-            Or{' '}
-            <Link
-              href={`/auth/register${redirect !== '/' ? `?redirect=${redirect}` : ''}`}
-              className="font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400"
-            >
-              create a new account
-            </Link>
+            Enter your new password below
           </p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
@@ -62,30 +107,14 @@ function LoginForm() {
           )}
           <div className="space-y-4">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Email address
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="appearance-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="you@example.com"
-              />
-            </div>
-            <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Password
+                New password
               </label>
               <input
                 id="password"
                 name="password"
                 type="password"
-                autoComplete="current-password"
+                autoComplete="new-password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -93,15 +122,22 @@ function LoginForm() {
                 placeholder="••••••••"
               />
             </div>
-          </div>
-
-          <div className="flex items-center justify-end">
-            <Link
-              href="/auth/forgot-password"
-              className="text-sm text-blue-600 hover:text-blue-500 dark:text-blue-400"
-            >
-              Forgot your password?
-            </Link>
+            <div>
+              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Confirm new password
+              </label>
+              <input
+                id="confirmPassword"
+                name="confirmPassword"
+                type="password"
+                autoComplete="new-password"
+                required
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className="appearance-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="••••••••"
+              />
+            </div>
           </div>
 
           <button
@@ -115,14 +151,14 @@ function LoginForm() {
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
             ) : (
-              'Sign in'
+              'Update password'
             )}
           </button>
         </form>
 
         <div className="text-center">
-          <Link href="/" className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
-            Back to home
+          <Link href="/auth/login" className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+            Back to login
           </Link>
         </div>
       </div>
@@ -130,14 +166,14 @@ function LoginForm() {
   )
 }
 
-export default function LoginPage() {
+export default function ResetPasswordPage() {
   return (
     <Suspense fallback={
       <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
         <div className="animate-spin h-8 w-8 border-4 border-blue-500 border-t-transparent rounded-full"></div>
       </div>
     }>
-      <LoginForm />
+      <ResetPasswordForm />
     </Suspense>
   )
 }
