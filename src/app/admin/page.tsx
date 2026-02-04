@@ -67,14 +67,14 @@ export default function AdminPage() {
           .select('*', { count: 'exact' });
 
         if (progressData) {
-          const completedLessons = progressData.filter(p => p.completed).length;
+          const completedLessons = progressData.filter((p: { completed: boolean }) => p.completed).length;
           setProgressStats({
             completedLessons,
             totalAttempts: progressData.length
           });
 
           // Count unique users from progress
-          const uniqueUsers = new Set(progressData.map(p => p.user_id));
+          const uniqueUsers = new Set(progressData.map((p: { user_id: string }) => p.user_id));
           setTotalUsers(uniqueUsers.size);
         }
 
