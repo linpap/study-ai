@@ -12,7 +12,7 @@ export async function POST(request: Request) {
     }
 
     const { data, error } = await resend.emails.send({
-      from: 'StudyAI <onboarding@resend.dev>',
+      from: 'StudyAI <hello@learnai.greensolz.com>',
       to: email,
       subject: 'Welcome to StudyAI! 🎓',
       html: `
