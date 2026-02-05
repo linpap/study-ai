@@ -103,11 +103,12 @@ export default function LessonPage() {
   }, [authLoading, user, isFreeLesson, lessonId, router]);
 
   useEffect(() => {
-    // Apply dark mode from localStorage
+    // Apply dark mode from localStorage or system preference
     const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
+    const isDark = savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    if (isDark) {
       document.documentElement.classList.add('dark');
-    } else if (savedTheme === 'false') {
+    } else {
       document.documentElement.classList.remove('dark');
     }
 
