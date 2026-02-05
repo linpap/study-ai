@@ -7,6 +7,7 @@ import { getExerciseById, practiceExercises } from '@/data/practice-exercises';
 import { PracticeProgress } from '@/types/practice';
 import PracticeExercise from '@/components/PracticeExercise';
 import { useAuth } from '@/context/AuthContext';
+import Logo from '@/components/Logo';
 
 export default function ExercisePage() {
   const params = useParams();
@@ -18,10 +19,11 @@ export default function ExercisePage() {
   const { user, loading: authLoading, signOut } = useAuth();
 
   useEffect(() => {
-    const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+    const savedTheme = localStorage.getItem('theme');
+    const isDark = savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches);
     // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional sync with localStorage on mount
-    setDarkMode(savedDarkMode);
-    if (savedDarkMode) {
+    setDarkMode(isDark);
+    if (isDark) {
       document.documentElement.classList.add('dark');
     }
 
@@ -34,7 +36,7 @@ export default function ExercisePage() {
   const toggleDarkMode = () => {
     const newDarkMode = !darkMode;
     setDarkMode(newDarkMode);
-    localStorage.setItem('darkMode', String(newDarkMode));
+    localStorage.setItem('theme', newDarkMode ? 'dark' : 'light');
     if (newDarkMode) {
       document.documentElement.classList.add('dark');
     } else {
@@ -93,14 +95,7 @@ export default function ExercisePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-4">
-              <Link href="/" className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">S</span>
-                </div>
-                <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  StudyAI
-                </span>
-              </Link>
+              <Logo size="sm" showText={true} />
               <span className="text-gray-300 dark:text-gray-600">/</span>
               <Link
                 href="/practice"

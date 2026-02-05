@@ -104,10 +104,10 @@ export default function LessonPage() {
 
   useEffect(() => {
     // Apply dark mode from localStorage
-    const savedDarkMode = localStorage.getItem('darkMode');
-    if (savedDarkMode === 'true') {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
       document.documentElement.classList.add('dark');
-    } else if (savedDarkMode === 'false') {
+    } else if (savedTheme === 'false') {
       document.documentElement.classList.remove('dark');
     }
 

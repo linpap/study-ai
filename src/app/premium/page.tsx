@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import { Suspense } from 'react';
+import Logo from '@/components/Logo';
 
 function PremiumContent() {
   const [darkMode, setDarkMode] = useState(false);
@@ -15,9 +16,10 @@ function PremiumContent() {
   const redirect = searchParams.get('redirect') || '/';
 
   useEffect(() => {
-    const savedDarkMode = localStorage.getItem('darkMode') === 'true';
-    setDarkMode(savedDarkMode);
-    if (savedDarkMode) {
+    const savedTheme = localStorage.getItem('theme');
+    const isDark = savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    setDarkMode(isDark);
+    if (isDark) {
       document.documentElement.classList.add('dark');
     }
 
@@ -70,12 +72,7 @@ function PremiumContent() {
       <div className={`min-h-screen bg-gray-50 dark:bg-gray-900 ${darkMode ? 'dark' : ''}`}>
         <header className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700">
           <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">S</span>
-              </div>
-              <span className="text-xl font-bold text-gray-900 dark:text-white">StudyAI</span>
-            </Link>
+            <Logo size="sm" showText={true} />
           </div>
         </header>
 

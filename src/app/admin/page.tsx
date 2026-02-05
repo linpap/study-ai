@@ -7,6 +7,7 @@ import { useAuth } from '@/context/AuthContext';
 import { createClient } from '@/lib/supabase/client';
 import { lessons } from '@/data/lessons';
 import { practiceExercises } from '@/data/practice-exercises';
+import Logo from '@/components/Logo';
 
 const ADMIN_EMAIL = 'linpap@gmail.com';
 
@@ -26,10 +27,11 @@ export default function AdminPage() {
   });
 
   useEffect(() => {
-    const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+    const savedTheme = localStorage.getItem('theme');
+    const isDark = savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches);
     // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional sync with localStorage on mount
-    setDarkMode(savedDarkMode);
-    if (savedDarkMode) {
+    setDarkMode(isDark);
+    if (isDark) {
       document.documentElement.classList.add('dark');
     }
   }, []);
@@ -89,7 +91,7 @@ export default function AdminPage() {
   const toggleDarkMode = () => {
     const newDarkMode = !darkMode;
     setDarkMode(newDarkMode);
-    localStorage.setItem('darkMode', String(newDarkMode));
+    localStorage.setItem('theme', newDarkMode ? 'dark' : 'light');
     if (newDarkMode) {
       document.documentElement.classList.add('dark');
     } else {
@@ -116,14 +118,7 @@ export default function AdminPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-4">
-              <Link href="/" className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">S</span>
-                </div>
-                <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  StudyAI
-                </span>
-              </Link>
+              <Logo size="sm" showText={true} />
               <span className="px-2 py-1 text-xs font-medium bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 rounded">
                 Admin
               </span>
