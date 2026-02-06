@@ -11,6 +11,7 @@ import Logo from '@/components/Logo';
 
 const ADMIN_EMAIL = 'linpap@gmail.com';
 
+type GrantStatus = { type: 'success' | 'error'; message: string } | null;
 
 export default function AdminPage() {
   const router = useRouter();
@@ -25,6 +26,9 @@ export default function AdminPage() {
     completedLessons: 0,
     totalAttempts: 0
   });
+  const [grantEmail, setGrantEmail] = useState('');
+  const [grantLoading, setGrantLoading] = useState(false);
+  const [grantStatus, setGrantStatus] = useState<GrantStatus>(null);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
@@ -97,6 +101,41 @@ export default function AdminPage() {
     } else {
       document.documentElement.classList.remove('dark');
     }
+  };
+
+  const handleGrantPremium = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!grantEmail.trim()) return;
+
+    setGrantLoading(true);
+    setGrantStatus(null);
+
+    try {
+      const res = await fetch('/api/admin/grant-premium', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: grantEmail.trim() }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setGrantStatus({ type: 'success', message: data.message });
+        setGrantEmail('');
+        // Refresh premium count
+        const { count } = await supabase
+          .from('user_premium')
+          .select('*', { count: 'exact' })
+          .eq('is_active', true);
+        setPremiumUsers(count || 0);
+      } else {
+        setGrantStatus({ type: 'error', message: data.error });
+      }
+    } catch {
+      setGrantStatus({ type: 'error', message: 'Network error. Please try again.' });
+    }
+
+    setGrantLoading(false);
   };
 
   if (authLoading || loading) {
@@ -354,6 +393,50 @@ export default function AdminPage() {
                 </svg>
               </a>
             </div>
+          </div>
+        </div>
+
+        {/* Grant Premium Access */}
+        <div className="mb-8">
+          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 max-w-lg">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+              Grant Premium Access
+            </h2>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+              Grant lifetime premium access to a registered user by email.
+            </p>
+            <form onSubmit={handleGrantPremium} className="space-y-4">
+              <div>
+                <label htmlFor="grant-email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  User Email
+                </label>
+                <input
+                  id="grant-email"
+                  type="email"
+                  value={grantEmail}
+                  onChange={(e) => setGrantEmail(e.target.value)}
+                  placeholder="user@example.com"
+                  required
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+              <button
+                type="submit"
+                disabled={grantLoading || !grantEmail.trim()}
+                className="px-4 py-2 bg-purple-600 hover:bg-purple-700 disabled:bg-purple-400 text-white font-medium rounded-lg transition-colors"
+              >
+                {grantLoading ? 'Granting...' : 'Grant Access'}
+              </button>
+            </form>
+            {grantStatus && (
+              <div className={`mt-4 p-3 rounded-lg text-sm ${
+                grantStatus.type === 'success'
+                  ? 'bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 border border-green-200 dark:border-green-800'
+                  : 'bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 border border-red-200 dark:border-red-800'
+              }`}>
+                {grantStatus.message}
+              </div>
+            )}
           </div>
         </div>
 
