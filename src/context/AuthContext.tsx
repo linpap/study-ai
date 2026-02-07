@@ -154,6 +154,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       email,
       password,
     })
+    if (!error) {
+      // Revoke all other sessions (fire-and-forget)
+      fetch('/api/auth/enforce-single-session', { method: 'POST' }).catch(console.error)
+    }
     return { error }
   }
 
