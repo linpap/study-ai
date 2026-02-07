@@ -1,27 +1,56 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import crypto from 'crypto';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+const INSTAMOJO_SALT = process.env.INSTAMOJO_SALT;
+
+function verifyWebhookSignature(
+  payload: Record<string, string>,
+  receivedMac: string
+): boolean {
+  if (!INSTAMOJO_SALT) {
+    console.error('Instamojo salt not configured');
+    return false;
+  }
+
+  // Sort all keys alphabetically (excluding 'mac')
+  const sortedKeys = Object.keys(payload)
+    .filter((key) => key !== 'mac')
+    .sort();
+
+  // Join values with '|'
+  const message = sortedKeys.map((key) => payload[key]).join('|');
+
+  // Compute HMAC-SHA1
+  const computedMac = crypto
+    .createHmac('sha1', INSTAMOJO_SALT)
+    .update(message)
+    .digest('hex');
+
+  return computedMac === receivedMac;
+}
 
 export async function POST(request: Request) {
   try {
-    const body = await request.formData();
+    const formData = await request.formData();
+    const payload: Record<string, string> = {};
 
-    const paymentRequestId = body.get('payment_request_id') as string;
-    const paymentId = body.get('payment_id') as string;
-    const status = body.get('status') as string;
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- Reserved for MAC verification in production
-    const _mac = body.get('mac') as string;
+    formData.forEach((value, key) => {
+      payload[key] = value.toString();
+    });
 
-    // Verify MAC (Message Authentication Code) for security
-    // Note: In production, you should verify the MAC using your salt
-    // const expectedMac = crypto.createHmac('sha1', INSTAMOJO_SALT)
-    //   .update(paymentId + '|' + paymentRequestId + '|' + status)
-    //   .digest('hex');
+    const { payment_request_id: paymentRequestId, payment_id: paymentId, status, mac } = payload;
 
     if (!paymentRequestId || !paymentId || !status) {
       return NextResponse.json({ error: 'Missing parameters' }, { status: 400 });
+    }
+
+    // Verify MAC signature
+    if (!verifyWebhookSignature(payload, mac)) {
+      console.error('Invalid MAC signature');
+      return NextResponse.json({ error: 'Invalid signature' }, { status: 400 });
     }
 
     // Use service role key for webhook (no user context)
