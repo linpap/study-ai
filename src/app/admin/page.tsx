@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
-import { createClient } from '@/lib/supabase/client';
 import { lessons } from '@/data/lessons';
 import { practiceExercises } from '@/data/practice-exercises';
 import Logo from '@/components/Logo';
@@ -16,7 +15,6 @@ type GrantStatus = { type: 'success' | 'error'; message: string } | null;
 export default function AdminPage() {
   const router = useRouter();
   const { user, loading: authLoading, signOut } = useAuth();
-  const supabase = createClient();
 
   const [darkMode, setDarkMode] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -52,34 +50,21 @@ export default function AdminPage() {
     }
 
     const loadAdminData = async () => {
-      if (!supabase || !user || user.email !== ADMIN_EMAIL) return;
+      if (!user || user.email !== ADMIN_EMAIL) return;
 
       try {
-        // Get user progress stats
-        const { data: progressData } = await supabase
-          .from('user_progress')
-          .select('*', { count: 'exact' });
-
-        if (progressData) {
-          const completedLessons = progressData.filter((p: { completed: boolean }) => p.completed).length;
+        const res = await fetch('/api/admin/stats');
+        if (res.ok) {
+          const data = await res.json();
+          setTotalUsers(data.totalUsers);
+          setPremiumUsers(data.premiumUsers);
           setProgressStats({
-            completedLessons,
-            totalAttempts: progressData.length
+            completedLessons: data.completedLessons,
+            totalAttempts: data.totalAttempts,
           });
-
-          // Count unique users from progress
-          const uniqueUsers = new Set(progressData.map((p: { user_id: string }) => p.user_id));
-          setTotalUsers(uniqueUsers.size);
+        } else {
+          console.error('Failed to load admin stats:', res.status);
         }
-
-        // Get premium users count
-        const { count: premiumCount } = await supabase
-          .from('user_premium')
-          .select('*', { count: 'exact' })
-          .eq('is_active', true);
-
-        setPremiumUsers(premiumCount || 0);
-
       } catch (error) {
         console.error('Error loading admin data:', error);
       }
@@ -90,7 +75,7 @@ export default function AdminPage() {
     if (user && user.email === ADMIN_EMAIL) {
       loadAdminData();
     }
-  }, [user, authLoading, supabase, router]);
+  }, [user, authLoading, router]);
 
   const toggleDarkMode = () => {
     const newDarkMode = !darkMode;
@@ -122,12 +107,17 @@ export default function AdminPage() {
       if (res.ok) {
         setGrantStatus({ type: 'success', message: data.message });
         setGrantEmail('');
-        // Refresh premium count
-        const { count } = await supabase
-          .from('user_premium')
-          .select('*', { count: 'exact' })
-          .eq('is_active', true);
-        setPremiumUsers(count || 0);
+        // Refresh stats from API
+        const statsRes = await fetch('/api/admin/stats');
+        if (statsRes.ok) {
+          const statsData = await statsRes.json();
+          setTotalUsers(statsData.totalUsers);
+          setPremiumUsers(statsData.premiumUsers);
+          setProgressStats({
+            completedLessons: statsData.completedLessons,
+            totalAttempts: statsData.totalAttempts,
+          });
+        }
       } else {
         setGrantStatus({ type: 'error', message: data.error });
       }

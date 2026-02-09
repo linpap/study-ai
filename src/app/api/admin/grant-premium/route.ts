@@ -56,7 +56,7 @@ export async function POST(request: Request) {
       payment_id: 'admin-grant',
       amount_paid: 0,
       purchased_at: new Date().toISOString(),
-    });
+    }, { onConflict: 'user_id' });
 
     if (upsertError) {
       console.error('Error granting premium:', upsertError);
