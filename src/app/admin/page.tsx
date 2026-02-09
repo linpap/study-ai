@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
+import { createClient } from '@/lib/supabase/client';
 import { lessons } from '@/data/lessons';
 import { practiceExercises } from '@/data/practice-exercises';
 import Logo from '@/components/Logo';
@@ -15,6 +16,12 @@ type GrantStatus = { type: 'success' | 'error'; message: string } | null;
 export default function AdminPage() {
   const router = useRouter();
   const { user, loading: authLoading, signOut } = useAuth();
+  const supabase = createClient();
+
+  const getAccessToken = async () => {
+    const { data: { session } } = await supabase!.auth.getSession();
+    return session?.access_token;
+  };
 
   const [darkMode, setDarkMode] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -53,9 +60,14 @@ export default function AdminPage() {
       if (!user || user.email !== ADMIN_EMAIL) return;
 
       try {
-        const res = await fetch('/api/admin/stats');
+        const token = await getAccessToken();
+        if (!token) return;
+
+        const res = await fetch('/api/admin/stats', {
+          headers: { 'Authorization': `Bearer ${token}` },
+        });
+        const data = await res.json();
         if (res.ok) {
-          const data = await res.json();
           setTotalUsers(data.totalUsers);
           setPremiumUsers(data.premiumUsers);
           setProgressStats({
@@ -63,7 +75,7 @@ export default function AdminPage() {
             totalAttempts: data.totalAttempts,
           });
         } else {
-          console.error('Failed to load admin stats:', res.status);
+          console.error('Failed to load admin stats:', res.status, data);
         }
       } catch (error) {
         console.error('Error loading admin data:', error);
@@ -96,9 +108,19 @@ export default function AdminPage() {
     setGrantStatus(null);
 
     try {
+      const token = await getAccessToken();
+      if (!token) {
+        setGrantStatus({ type: 'error', message: 'Session expired. Please refresh.' });
+        setGrantLoading(false);
+        return;
+      }
+
       const res = await fetch('/api/admin/grant-premium', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
         body: JSON.stringify({ email: grantEmail.trim() }),
       });
 
@@ -108,7 +130,9 @@ export default function AdminPage() {
         setGrantStatus({ type: 'success', message: data.message });
         setGrantEmail('');
         // Refresh stats from API
-        const statsRes = await fetch('/api/admin/stats');
+        const statsRes = await fetch('/api/admin/stats', {
+          headers: { 'Authorization': `Bearer ${token}` },
+        });
         if (statsRes.ok) {
           const statsData = await statsRes.json();
           setTotalUsers(statsData.totalUsers);

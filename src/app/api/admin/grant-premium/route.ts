@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import { createClient as createServerClient } from '@/lib/supabase/server';
 import { createClient } from '@supabase/supabase-js';
 
 const ADMIN_EMAIL = 'linpap@gmail.com';
@@ -9,11 +8,23 @@ const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 
 export async function POST(request: Request) {
   try {
-    // Verify the caller is the admin via session
-    const serverSupabase = await createServerClient();
-    const { data: { user } } = await serverSupabase.auth.getUser();
+    if (!supabaseServiceKey) {
+      return NextResponse.json({ error: 'Server configuration error' }, { status: 500 });
+    }
 
-    if (!user || user.email !== ADMIN_EMAIL) {
+    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+
+    // Verify the caller is the admin via access token
+    const authHeader = request.headers.get('authorization');
+    const token = authHeader?.replace('Bearer ', '');
+
+    if (!token) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
+    }
+
+    const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+
+    if (authError || !user || user.email !== ADMIN_EMAIL) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
     }
 
@@ -22,13 +33,6 @@ export async function POST(request: Request) {
     if (!email || typeof email !== 'string') {
       return NextResponse.json({ error: 'Email is required' }, { status: 400 });
     }
-
-    // Use service role key to bypass RLS and access auth.users
-    if (!supabaseServiceKey) {
-      return NextResponse.json({ error: 'Server configuration error' }, { status: 500 });
-    }
-
-    const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
     // Look up user by email
     const { data: { users }, error: listError } = await supabase.auth.admin.listUsers();
