@@ -59,8 +59,9 @@ export default function ContactPage() {
         <div className="grid md:grid-cols-2 gap-8">
           <div className="bg-white dark:bg-gray-800 rounded-xl p-8 shadow-sm">
             <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Get in Touch</h2>
+            <p className="text-sm text-blue-600 dark:text-blue-400 font-medium mb-2">Greensolz</p>
             <p className="text-gray-600 dark:text-gray-300 mb-6">
-              Have questions, feedback, or need support? We&apos;d love to hear from you.
+              Have questions about StudyAI or Greensolz? We&apos;d love to hear from you.
             </p>
 
             <div className="space-y-4">
@@ -161,6 +162,7 @@ export default function ContactPage() {
             <Link href="/privacy" className="hover:text-gray-900 dark:hover:text-white">Privacy Policy</Link>
             <Link href="/terms" className="hover:text-gray-900 dark:hover:text-white">Terms of Service</Link>
           </div>
+          <p className="text-center text-gray-400 dark:text-gray-500 text-xs mt-4">A product by Greensolz</p>
         </div>
       </footer>
     </div>

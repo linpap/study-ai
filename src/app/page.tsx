@@ -205,9 +205,10 @@ export default function Home() {
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
             Learn <span className="bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">Artificial Intelligence</span>
           </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-8">
+          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-2">
             Comprehensive lessons covering everything from basics to building your own AI applications. Interactive quizzes with voice input support.
           </p>
+          <p className="text-sm text-gray-400 dark:text-gray-500 mb-8">by Greensolz</p>
 
           {/* Progress Overview */}
           <div className="inline-flex items-center gap-4 bg-white dark:bg-gray-800 rounded-2xl px-6 py-4 shadow-lg">
@@ -438,7 +439,7 @@ export default function Home() {
             <Link href="/terms" className="hover:text-gray-900 dark:hover:text-white transition">Terms of Service</Link>
             <Link href="/refund" className="hover:text-gray-900 dark:hover:text-white transition">Refund Policy</Link>
           </div>
-          <p className="text-center text-gray-500 dark:text-gray-400 text-sm">Built for learning AI from the ground up</p>
+          <p className="text-center text-gray-500 dark:text-gray-400 text-sm">A product by Greensolz | Built for learning AI from the ground up</p>
         </footer>
       </main>
     </div>

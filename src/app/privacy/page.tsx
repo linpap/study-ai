@@ -106,6 +106,7 @@ export default function PrivacyPage() {
             <Link href="/privacy" className="hover:text-gray-900 dark:hover:text-white">Privacy Policy</Link>
             <Link href="/terms" className="hover:text-gray-900 dark:hover:text-white">Terms of Service</Link>
           </div>
+          <p className="text-center text-gray-400 dark:text-gray-500 text-xs mt-4">A product by Greensolz</p>
         </div>
       </footer>
     </div>

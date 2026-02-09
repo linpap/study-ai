@@ -91,7 +91,7 @@ export default function AboutPage() {
         <section className="bg-white dark:bg-gray-800 rounded-xl p-8 shadow-sm mb-8">
           <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Our Mission</h2>
           <p className="text-gray-600 dark:text-gray-300 mb-4">
-            StudyAI is dedicated to making artificial intelligence education accessible to everyone.
+            StudyAI, a product by Greensolz, is dedicated to making artificial intelligence education accessible to everyone.
             We believe that understanding AI is becoming essential in today&apos;s world, and our platform
             provides comprehensive, interactive lessons that take you from the basics to building
             your own AI applications.
@@ -113,6 +113,20 @@ export default function AboutPage() {
               <div className="text-3xl font-bold text-orange-600 dark:text-orange-400">40+</div>
               <div className="text-sm text-gray-600 dark:text-gray-400">Hours of Content</div>
             </div>
+          </div>
+        </section>
+
+        {/* About Greensolz Section */}
+        <section className="bg-white dark:bg-gray-800 rounded-xl p-8 shadow-sm mb-8">
+          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">About Greensolz</h2>
+          <p className="text-gray-600 dark:text-gray-300 mb-6">
+            Greensolz is a technology company focused on building innovative education and AI solutions.
+            StudyAI is our flagship product, designed to make AI education accessible to everyone.
+          </p>
+          <div className="inline-flex items-center gap-3 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-lg px-5 py-3 border border-blue-100 dark:border-blue-800/30">
+            <span className="text-lg font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Greensolz</span>
+            <span className="text-gray-400 dark:text-gray-500">|</span>
+            <span className="text-sm text-gray-500 dark:text-gray-400">Building the future of education</span>
           </div>
         </section>
 
@@ -241,6 +255,7 @@ export default function AboutPage() {
             <Link href="/privacy" className="hover:text-gray-900 dark:hover:text-white">Privacy Policy</Link>
             <Link href="/terms" className="hover:text-gray-900 dark:hover:text-white">Terms of Service</Link>
           </div>
+          <p className="text-center text-gray-400 dark:text-gray-500 text-xs mt-4">A product by Greensolz</p>
         </div>
       </footer>
     </div>
