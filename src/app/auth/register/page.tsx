@@ -32,24 +32,27 @@ function RegisterForm() {
 
     setLoading(true)
 
-    const { error } = await signUp(email, password)
+    const { error, session } = await signUp(email, password)
 
     if (error) {
       setError(error.message)
       setLoading(false)
     } else {
-      // Send welcome email
-      try {
-        await fetch('/api/send-welcome', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email }),
-        })
-      } catch (e) {
-        console.error('Failed to send welcome email:', e)
+      // Send welcome email (fire-and-forget)
+      fetch('/api/send-welcome', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      }).catch((e) => console.error('Failed to send welcome email:', e))
+
+      if (session) {
+        // Email confirmation disabled — user is already signed in, redirect
+        window.location.href = redirect
+      } else {
+        // Email confirmation enabled — show check-your-email message
+        setSuccess(true)
+        setLoading(false)
       }
-      setSuccess(true)
-      setLoading(false)
     }
   }
 

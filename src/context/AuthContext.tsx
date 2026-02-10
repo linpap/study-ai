@@ -1,7 +1,7 @@
 'use client'
 
 import { createContext, useContext, useEffect, useState, ReactNode, useMemo, useCallback } from 'react'
-import { User, AuthError, AuthChangeEvent, Session } from '@supabase/supabase-js'
+import { User, AuthError, AuthChangeEvent, Session, AuthResponse } from '@supabase/supabase-js'
 import { createClient } from '@/lib/supabase/client'
 
 interface AuthContextType {
@@ -10,7 +10,7 @@ interface AuthContextType {
   isPremium: boolean
   checkPremiumStatus: () => Promise<boolean>
   signIn: (email: string, password: string) => Promise<{ error: AuthError | null }>
-  signUp: (email: string, password: string) => Promise<{ error: AuthError | null }>
+  signUp: (email: string, password: string) => Promise<{ error: AuthError | null; session: Session | null }>
   signOut: () => Promise<void>
 }
 
@@ -163,13 +163,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signUp = async (email: string, password: string) => {
     if (!supabase) {
-      return { error: { message: 'Supabase is not configured' } as AuthError }
+      return { error: { message: 'Supabase is not configured' } as AuthError, session: null }
     }
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
     })
-    return { error }
+    return { error, session: data?.session ?? null }
   }
 
   const signOut = async () => {
