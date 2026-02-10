@@ -85,7 +85,7 @@ function SuccessContent() {
               </li>
               <li className="flex items-start gap-3">
                 <span className="w-6 h-6 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center text-blue-600 dark:text-blue-400 font-semibold text-sm flex-shrink-0">2</span>
-                <span className="text-gray-600 dark:text-gray-300">Explore all 10 comprehensive AI lessons</span>
+                <span className="text-gray-600 dark:text-gray-300">Explore all 31 comprehensive AI lessons</span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="w-6 h-6 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center text-blue-600 dark:text-blue-400 font-semibold text-sm flex-shrink-0">3</span>

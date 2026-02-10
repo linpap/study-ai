@@ -39,7 +39,7 @@ export async function POST(request: Request) {
             <div style="background: linear-gradient(135deg, #eff6ff, #f0fdf4); border-left: 4px solid #3b82f6; padding: 20px; border-radius: 8px; margin: 25px 0;">
               <h3 style="margin: 0 0 10px 0; color: #1f2937;">What's included:</h3>
               <ul style="margin: 0; padding-left: 20px; color: #4b5563;">
-                <li>10 comprehensive AI lessons</li>
+                <li>31 comprehensive AI lessons</li>
                 <li>Interactive quizzes with AI evaluation</li>
                 <li>Hands-on coding exercises</li>
                 <li>Voice input support</li>

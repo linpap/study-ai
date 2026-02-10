@@ -201,17 +201,50 @@ export default function Home() {
 
       <main className="max-w-6xl mx-auto px-4 py-12">
         {/* Hero Section */}
-        <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
-            Learn <span className="bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">Artificial Intelligence</span>
-          </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-2">
-            Comprehensive lessons covering everything from basics to building your own AI applications. Interactive quizzes with voice input support.
+        <div className="text-center mb-16">
+          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
+            Master <span className="bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">AI & Machine Learning</span>
+            <br className="hidden md:block" />
+            <span className="text-3xl md:text-5xl">From Zero to Production</span>
+          </h1>
+          <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-2">
+            Go from &quot;What is AI?&quot; to building real applications. Structured lessons, hands-on exercises, and quizzes — everything you need to break into AI.
           </p>
-          <p className="text-sm text-gray-400 dark:text-gray-500 mb-4">by Greensolz</p>
+          <p className="text-sm text-gray-400 dark:text-gray-500 mb-8">by Greensolz</p>
+
+          {/* CTAs */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-10">
+            <Link
+              href="/lesson/1"
+              className="px-8 py-3.5 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-xl hover:from-blue-600 hover:to-purple-700 transition shadow-lg shadow-blue-500/25"
+            >
+              Start Learning Free
+            </Link>
+            <a
+              href="#course-content"
+              className="px-8 py-3.5 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+            >
+              View Full Curriculum
+            </a>
+          </div>
+
+          {/* Stats Bar */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto mb-10">
+            {[
+              { value: '31', label: 'Lessons' },
+              { value: '40+', label: 'Hours' },
+              { value: '25', label: 'Exercises' },
+              { value: '150+', label: 'Quiz Questions' },
+            ].map((stat) => (
+              <div key={stat.label} className="bg-white dark:bg-gray-800 rounded-xl px-4 py-3 shadow-sm">
+                <p className="text-2xl font-bold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">{stat.value}</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">{stat.label}</p>
+              </div>
+            ))}
+          </div>
 
           {/* Price Badge */}
-          <div className="flex justify-center mb-8">
+          <div className="flex justify-center mb-6">
             <Link href="/premium" className="price-badge inline-flex items-center gap-2 bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-800 rounded-full px-5 py-2.5 cursor-pointer hover:bg-indigo-100 dark:hover:bg-indigo-900/60 hover:border-indigo-300 dark:hover:border-indigo-700 hover:shadow-md transition-all">
               <span className="text-sm font-medium text-indigo-600 dark:text-indigo-300">Full Course</span>
               <span className="w-px h-4 bg-indigo-200 dark:bg-indigo-700"></span>
@@ -262,6 +295,52 @@ export default function Home() {
           </div>
         </div>
 
+        {/* Who Is This For? */}
+        <div className="mb-16">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white text-center mb-8">
+            Who Is This For?
+          </h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
+              <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center mb-4">
+                <svg className="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                </svg>
+              </div>
+              <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Developers & Engineers</h3>
+              <p className="text-gray-600 dark:text-gray-300 text-sm">Add AI/ML to your existing skillset and build intelligent features into your applications.</p>
+            </div>
+            <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
+              <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center mb-4">
+                <svg className="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l9-5-9-5-9 5 9 5z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+                </svg>
+              </div>
+              <h3 className="font-semibold text-gray-900 dark:text-white mb-2">CS Students</h3>
+              <p className="text-gray-600 dark:text-gray-300 text-sm">Supplement your coursework with practical, hands-on AI education and real-world projects.</p>
+            </div>
+            <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
+              <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center mb-4">
+                <svg className="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                </svg>
+              </div>
+              <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Career Changers</h3>
+              <p className="text-gray-600 dark:text-gray-300 text-sm">Break into AI/ML with structured learning that takes you from zero to job-ready skills.</p>
+            </div>
+            <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
+              <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900/30 rounded-lg flex items-center justify-center mb-4">
+                <svg className="w-6 h-6 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                </svg>
+              </div>
+              <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Product Managers</h3>
+              <p className="text-gray-600 dark:text-gray-300 text-sm">Understand AI capabilities and limitations to make better product decisions and roadmaps.</p>
+            </div>
+          </div>
+        </div>
+
         {/* Features */}
         <div className="grid md:grid-cols-4 gap-6 mb-12">
           <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
@@ -303,7 +382,7 @@ export default function Home() {
         </div>
 
         {/* Lessons Grid */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+        <div id="course-content" className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
           <h3 className="text-2xl font-bold text-gray-900 dark:text-white">Course Content</h3>
           <div className="relative">
             <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

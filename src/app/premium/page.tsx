@@ -183,7 +183,7 @@ function PremiumContent() {
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">What&apos;s Included</h3>
             <ul className="space-y-3">
               {[
-                'Access to all 10 comprehensive AI lessons',
+                'Access to all 31 comprehensive AI lessons',
                 'Interactive quizzes with AI-powered evaluation',
                 'Hands-on coding practice exercises',
                 'Voice input support for answers',
@@ -205,13 +205,19 @@ function PremiumContent() {
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Course Topics</h3>
             <ul className="space-y-3">
               {[
-                'Introduction to Artificial Intelligence',
-                'Machine Learning Fundamentals',
-                'Neural Networks & Deep Learning',
+                'AI Fundamentals & Machine Learning',
+                'Neural Networks, CNNs & RNNs',
+                'Transformer Architecture & LLMs',
                 'Natural Language Processing',
-                'Computer Vision Basics',
-                'AI Ethics & Responsible AI',
-                'Building Your First AI Application',
+                'Computer Vision & Image Processing',
+                'Math Foundations (Linear Algebra, Calculus, Probability)',
+                'Generative AI: GANs, VAEs & Diffusion',
+                'Reinforcement Learning',
+                'RAG Systems & Vector Search',
+                'Prompt Engineering & Fine-Tuning',
+                'MLOps & AI Infrastructure',
+                'Building AI Agents & Applications',
+                'AI Ethics, Safety & Alignment',
               ].map((item, i) => (
                 <li key={i} className="flex items-start gap-3">
                   <svg className="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
