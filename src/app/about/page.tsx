@@ -138,17 +138,18 @@ export default function AboutPage() {
               <span className="text-white font-bold text-2xl">S</span>
             </div>
             <div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Soumyajit S.</h3>
-              <p className="text-blue-600 dark:text-blue-400 mb-3">AI Engineer & Educator</p>
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Soumyajit Sarkar</h3>
+              <p className="text-blue-600 dark:text-blue-400 mb-3">Partner & CTO, Greensolz</p>
               <p className="text-gray-600 dark:text-gray-300 mb-3">
-                With over 20 years of experience in software development and 4+ years specializing in AI/ML,
-                I&apos;ve built production AI systems for startups and enterprises. I created StudyAI because
-                I saw too many courses that were either too theoretical or too shallow.
+                With 20+ years in software engineering and a deep passion for AI, I co-founded Greensolz to build
+                tools that make a real difference. As CTO, I lead our technical vision — and StudyAI is the product
+                closest to my heart. I created it because I saw too many AI courses that were either drowning in
+                theory or barely scratching the surface.
               </p>
               <p className="text-gray-600 dark:text-gray-300">
-                My goal is to help you actually understand AI — not just memorize terms, but build intuition
-                and practical skills you can apply immediately. Every lesson, quiz, and exercise is designed
-                based on what I wish I had when I was learning.
+                My goal is to democratize AI education — help you build genuine intuition and practical skills,
+                not just memorize buzzwords. Every lesson, quiz, and exercise is crafted from real-world experience
+                building production AI systems for startups and enterprises.
               </p>
             </div>
           </div>

@@ -212,11 +212,11 @@ export default function Home() {
 
           {/* Price Badge */}
           <div className="flex justify-center mb-8">
-            <div className="price-badge inline-flex items-center gap-2 bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-800 rounded-full px-5 py-2.5 cursor-default">
+            <Link href="/premium" className="price-badge inline-flex items-center gap-2 bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-800 rounded-full px-5 py-2.5 cursor-pointer hover:bg-indigo-100 dark:hover:bg-indigo-900/60 hover:border-indigo-300 dark:hover:border-indigo-700 hover:shadow-md transition-all">
               <span className="text-sm font-medium text-indigo-600 dark:text-indigo-300">Full Course</span>
               <span className="w-px h-4 bg-indigo-200 dark:bg-indigo-700"></span>
               <span className="price-badge-text text-lg font-bold">₹1,200</span>
-            </div>
+            </Link>
           </div>
 
           {/* Progress Overview */}
