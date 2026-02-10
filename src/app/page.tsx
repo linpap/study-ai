@@ -208,7 +208,16 @@ export default function Home() {
           <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-2">
             Comprehensive lessons covering everything from basics to building your own AI applications. Interactive quizzes with voice input support.
           </p>
-          <p className="text-sm text-gray-400 dark:text-gray-500 mb-8">by Greensolz</p>
+          <p className="text-sm text-gray-400 dark:text-gray-500 mb-4">by Greensolz</p>
+
+          {/* Price Badge */}
+          <div className="flex justify-center mb-8">
+            <div className="price-badge inline-flex items-center gap-2 bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-800 rounded-full px-5 py-2.5 cursor-default">
+              <span className="text-sm font-medium text-indigo-600 dark:text-indigo-300">Full Course</span>
+              <span className="w-px h-4 bg-indigo-200 dark:bg-indigo-700"></span>
+              <span className="price-badge-text text-lg font-bold">₹1,200</span>
+            </div>
+          </div>
 
           {/* Progress Overview */}
           <div className="inline-flex items-center gap-4 bg-white dark:bg-gray-800 rounded-2xl px-6 py-4 shadow-lg">
