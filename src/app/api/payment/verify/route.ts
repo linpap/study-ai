@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
-import { getInstamojoToken, INSTAMOJO_BASE_URL } from '@/lib/instamojo';
+import { getInstamojoHeaders, INSTAMOJO_BASE_URL } from '@/lib/instamojo';
 
 export async function GET(request: Request) {
   try {
@@ -16,26 +16,22 @@ export async function GET(request: Request) {
       return NextResponse.redirect(`${baseUrl}/premium?error=missing_params`);
     }
 
-    // Verify payment with Instamojo API v2
-    const accessToken = await getInstamojoToken();
+    // Verify payment with Instamojo API v1.1
+    const headers = getInstamojoHeaders();
 
     const response = await fetch(
-      `${INSTAMOJO_BASE_URL}/v2/payment_requests/${paymentRequestId}/`,
-      {
-        headers: {
-          'Authorization': `Bearer ${accessToken}`,
-        },
-      }
+      `${INSTAMOJO_BASE_URL}/payment-requests/${paymentRequestId}/`,
+      { headers }
     );
 
     const data = await response.json();
 
-    if (!response.ok || !data.id) {
+    if (!data.success || !data.payment_request) {
       console.error('Instamojo verification failed:', data);
       return NextResponse.redirect(`${baseUrl}/premium?error=verification_failed`);
     }
 
-    if (data.status !== 'Completed') {
+    if (data.payment_request.status !== 'Completed') {
       return NextResponse.redirect(`${baseUrl}/premium?error=payment_failed`);
     }
 

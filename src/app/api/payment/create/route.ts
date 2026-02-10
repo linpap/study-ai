@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
-import { getInstamojoToken, INSTAMOJO_BASE_URL } from '@/lib/instamojo';
+import { getInstamojoHeaders, INSTAMOJO_BASE_URL } from '@/lib/instamojo';
 
 export async function POST(request: Request) {
   try {
-    const accessToken = await getInstamojoToken();
+    const headers = getInstamojoHeaders();
 
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
@@ -34,11 +34,11 @@ export async function POST(request: Request) {
     const { redirect_url } = await request.json();
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://learnai.greensolz.com';
 
-    // Create Instamojo payment request (API v2)
-    const response = await fetch(`${INSTAMOJO_BASE_URL}/v2/payment_requests/`, {
+    // Create Instamojo payment request (API v1.1)
+    const response = await fetch(`${INSTAMOJO_BASE_URL}/payment-requests/`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${accessToken}`,
+        ...headers,
         'Content-Type': 'application/x-www-form-urlencoded',
       },
       body: new URLSearchParams({
@@ -48,14 +48,14 @@ export async function POST(request: Request) {
         email: user.email || '',
         redirect_url: `${baseUrl}/api/payment/verify?user_id=${user.id}&redirect=${redirect_url || '/'}`,
         webhook: `${baseUrl}/api/payment/webhook`,
-        allow_repeated_payments: 'false',
-        send_email: 'false',
+        allow_repeated_payments: 'False',
+        send_email: 'False',
       }),
     });
 
     const data = await response.json();
 
-    if (!response.ok || !data.id) {
+    if (!data.success || !data.payment_request) {
       console.error('Instamojo error:', data);
       return NextResponse.json(
         { error: data.message || 'Failed to create payment request' },
@@ -63,17 +63,19 @@ export async function POST(request: Request) {
       );
     }
 
+    const paymentRequest = data.payment_request;
+
     // Store payment request in database for tracking
     await supabase.from('payment_requests').insert({
       user_id: user.id,
-      payment_request_id: data.id,
+      payment_request_id: paymentRequest.id,
       amount: 1200,
       status: 'pending',
     });
 
     return NextResponse.json({
       success: true,
-      payment_url: data.longurl,
+      payment_url: paymentRequest.longurl,
     });
   } catch (error) {
     console.error('Create payment error:', error);
