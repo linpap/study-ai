@@ -1,21 +1,10 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
-
-const INSTAMOJO_API_KEY = process.env.INSTAMOJO_API_KEY;
-const INSTAMOJO_AUTH_TOKEN = process.env.INSTAMOJO_AUTH_TOKEN;
-const INSTAMOJO_API_URL = process.env.INSTAMOJO_SANDBOX === 'true'
-  ? 'https://test.instamojo.com/api/1.1'
-  : 'https://www.instamojo.com/api/1.1';
+import { getInstamojoToken, INSTAMOJO_BASE_URL } from '@/lib/instamojo';
 
 export async function POST(request: Request) {
   try {
-    // Check if Instamojo is configured
-    if (!INSTAMOJO_API_KEY || !INSTAMOJO_AUTH_TOKEN) {
-      return NextResponse.json(
-        { error: 'Payment gateway not configured' },
-        { status: 500 }
-      );
-    }
+    const accessToken = await getInstamojoToken();
 
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
@@ -45,12 +34,11 @@ export async function POST(request: Request) {
     const { redirect_url } = await request.json();
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://learnai.greensolz.com';
 
-    // Create Instamojo payment request
-    const response = await fetch(`${INSTAMOJO_API_URL}/payment-requests/`, {
+    // Create Instamojo payment request (API v2)
+    const response = await fetch(`${INSTAMOJO_BASE_URL}/v2/payment_requests/`, {
       method: 'POST',
       headers: {
-        'X-Api-Key': INSTAMOJO_API_KEY,
-        'X-Auth-Token': INSTAMOJO_AUTH_TOKEN,
+        'Authorization': `Bearer ${accessToken}`,
         'Content-Type': 'application/x-www-form-urlencoded',
       },
       body: new URLSearchParams({
@@ -62,13 +50,12 @@ export async function POST(request: Request) {
         webhook: `${baseUrl}/api/payment/webhook`,
         allow_repeated_payments: 'false',
         send_email: 'false',
-        send_sms: 'false',
       }),
     });
 
     const data = await response.json();
 
-    if (!data.success) {
+    if (!response.ok || !data.id) {
       console.error('Instamojo error:', data);
       return NextResponse.json(
         { error: data.message || 'Failed to create payment request' },
@@ -79,14 +66,14 @@ export async function POST(request: Request) {
     // Store payment request in database for tracking
     await supabase.from('payment_requests').insert({
       user_id: user.id,
-      payment_request_id: data.payment_request.id,
+      payment_request_id: data.id,
       amount: 1200,
       status: 'pending',
     });
 
     return NextResponse.json({
       success: true,
-      payment_url: data.payment_request.longurl,
+      payment_url: data.longurl,
     });
   } catch (error) {
     console.error('Create payment error:', error);

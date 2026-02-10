@@ -1,11 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
-
-const INSTAMOJO_API_KEY = process.env.INSTAMOJO_API_KEY;
-const INSTAMOJO_AUTH_TOKEN = process.env.INSTAMOJO_AUTH_TOKEN;
-const INSTAMOJO_API_URL = process.env.INSTAMOJO_SANDBOX === 'true'
-  ? 'https://test.instamojo.com/api/1.1'
-  : 'https://www.instamojo.com/api/1.1';
+import { getInstamojoToken, INSTAMOJO_BASE_URL } from '@/lib/instamojo';
 
 export async function GET(request: Request) {
   try {
@@ -21,32 +16,26 @@ export async function GET(request: Request) {
       return NextResponse.redirect(`${baseUrl}/premium?error=missing_params`);
     }
 
-    // Verify payment with Instamojo
-    if (!INSTAMOJO_API_KEY || !INSTAMOJO_AUTH_TOKEN) {
-      return NextResponse.redirect(`${baseUrl}/premium?error=config`);
-    }
+    // Verify payment with Instamojo API v2
+    const accessToken = await getInstamojoToken();
 
     const response = await fetch(
-      `${INSTAMOJO_API_URL}/payment-requests/${paymentRequestId}/${paymentId}/`,
+      `${INSTAMOJO_BASE_URL}/v2/payment_requests/${paymentRequestId}/`,
       {
         headers: {
-          'X-Api-Key': INSTAMOJO_API_KEY,
-          'X-Auth-Token': INSTAMOJO_AUTH_TOKEN,
+          'Authorization': `Bearer ${accessToken}`,
         },
       }
     );
 
     const data = await response.json();
 
-    if (!data.success) {
+    if (!response.ok || !data.id) {
       console.error('Instamojo verification failed:', data);
       return NextResponse.redirect(`${baseUrl}/premium?error=verification_failed`);
     }
 
-    const payment = data.payment_request;
-    const paymentDetails = payment.payment;
-
-    if (paymentDetails.status !== 'Credit') {
+    if (data.status !== 'Completed') {
       return NextResponse.redirect(`${baseUrl}/premium?error=payment_failed`);
     }
 
