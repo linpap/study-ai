@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
+import { JsonLd } from "@/components/JsonLd";
+import { siteConfig } from "@/data/site";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,10 +16,16 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "StudyAI - Learn AI & Machine Learning",
-  description: "Comprehensive AI and Machine Learning lessons from basics to building applications. Interactive quizzes with voice input support. 31 lessons covering neural networks, deep learning, NLP, computer vision, and more.",
+  title: {
+    default: "StudyAI - Learn AI & Machine Learning",
+    template: "%s | StudyAI",
+  },
+  description: siteConfig.description,
   keywords: ["AI", "artificial intelligence", "machine learning", "deep learning", "neural networks", "learn AI", "AI course", "ML course", "machine learning tutorial", "learn machine learning", "AI tutorial"],
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://learnai.greensolz.com'),
+  metadataBase: new URL(siteConfig.url),
+  alternates: {
+    canonical: '/',
+  },
   icons: {
     icon: '/icon.svg',
     apple: '/icon.svg',
@@ -28,6 +36,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     siteName: "StudyAI",
+    url: siteConfig.url,
   },
   twitter: {
     card: "summary_large_image",
@@ -37,8 +46,17 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
 };
+
+const GA_ID = process.env.NEXT_PUBLIC_GA4_ID;
 
 export default function RootLayout({
   children,
@@ -48,6 +66,16 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        {GA_ID && (
+          <>
+            <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} />
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${GA_ID}');`,
+              }}
+            />
+          </>
+        )}
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -62,6 +90,29 @@ export default function RootLayout({
             `,
           }}
         />
+        <JsonLd data={{
+          '@context': 'https://schema.org',
+          '@type': 'WebSite',
+          name: siteConfig.name,
+          url: siteConfig.url,
+          description: siteConfig.description,
+          potentialAction: {
+            '@type': 'SearchAction',
+            target: {
+              '@type': 'EntryPoint',
+              urlTemplate: `${siteConfig.url}/?q={search_term_string}`,
+            },
+            'query-input': 'required name=search_term_string',
+          },
+        }} />
+        <JsonLd data={{
+          '@context': 'https://schema.org',
+          '@type': 'Organization',
+          name: siteConfig.company,
+          url: siteConfig.url,
+          logo: `${siteConfig.url}/icon.svg`,
+          description: 'Technology company building innovative education and AI solutions.',
+        }} />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}

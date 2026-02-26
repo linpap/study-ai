@@ -1,0 +1,25 @@
+User-agent: *
+Allow: /
+
+Disallow: /api/
+Disallow: /admin
+Disallow: /auth/
+Disallow: /dashboard
+
+# AI Crawlers Welcome
+User-agent: GPTBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+Sitemap: https://learnai.greensolz.com/sitemap.xml

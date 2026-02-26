@@ -158,6 +158,7 @@ export default function ContactPage() {
         <div className="max-w-4xl mx-auto px-4 py-8">
           <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-500 dark:text-gray-400">
             <Link href="/about" className="hover:text-gray-900 dark:hover:text-white">About</Link>
+            <Link href="/blog" className="hover:text-gray-900 dark:hover:text-white">Blog</Link>
             <Link href="/contact" className="hover:text-gray-900 dark:hover:text-white">Contact</Link>
             <Link href="/privacy" className="hover:text-gray-900 dark:hover:text-white">Privacy Policy</Link>
             <Link href="/terms" className="hover:text-gray-900 dark:hover:text-white">Terms of Service</Link>

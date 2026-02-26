@@ -140,6 +140,12 @@ export default function Home() {
             >
               Practice
             </Link>
+            <Link
+              href="/blog"
+              className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            >
+              Blog
+            </Link>
             {user && (
               <Link
                 href="/dashboard"
@@ -522,6 +528,7 @@ export default function Home() {
         <footer className="mt-16 pt-8 border-t border-gray-200 dark:border-gray-700">
           <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-500 dark:text-gray-400 mb-4">
             <Link href="/about" className="hover:text-gray-900 dark:hover:text-white transition">About</Link>
+            <Link href="/blog" className="hover:text-gray-900 dark:hover:text-white transition">Blog</Link>
             <Link href="/contact" className="hover:text-gray-900 dark:hover:text-white transition">Contact</Link>
             <Link href="/privacy" className="hover:text-gray-900 dark:hover:text-white transition">Privacy Policy</Link>
             <Link href="/terms" className="hover:text-gray-900 dark:hover:text-white transition">Terms of Service</Link>
