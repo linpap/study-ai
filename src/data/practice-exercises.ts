@@ -1285,6 +1285,528 @@ attentionScores([1,0], [[1,0],[0,1],[1,1]])
     ],
     tags: ['attention', 'transformer', 'deep learning'],
   },
+  {
+    id: 26,
+    title: 'Build a Simple RAG Pipeline',
+    description: 'Implement a basic Retrieval-Augmented Generation pipeline with document chunking, similarity search, and answer generation.',
+    difficulty: 'advanced',
+    category: 'RAG',
+    estimatedTime: '25 min',
+    problemStatement: `**RAG (Retrieval-Augmented Generation)** grounds LLM responses in external knowledge by retrieving relevant documents before generating answers.
+
+Write a function called \`ragPipeline\` that:
+1. Chunks documents into sentences
+2. Finds the most relevant chunk to a query using word overlap (Jaccard similarity)
+3. Returns the best matching chunk as context
+
+**Example:**
+\`\`\`javascript
+const docs = [
+  "Neural networks learn by adjusting weights through backpropagation.",
+  "RAG combines retrieval with generation for grounded AI responses.",
+  "Transformers use self-attention to process sequences in parallel."
+];
+ragPipeline(docs, "How does RAG work?")
+// returns "RAG combines retrieval with generation for grounded AI responses."
+\`\`\``,
+    hints: [
+      'Tokenize both the query and each document into word sets (lowercase)',
+      'Jaccard similarity = |intersection| / |union| of two word sets',
+      'Return the document with the highest similarity score',
+      'Handle edge cases: empty docs array should return empty string',
+    ],
+    language: 'javascript',
+    starterCode: `function ragPipeline(documents, query) {
+  // Your code here
+  // 1. Tokenize query into a set of words
+  // 2. For each document, compute Jaccard similarity with query
+  // 3. Return the most relevant document
+}`,
+    solutionCode: `function ragPipeline(documents, query) {
+  if (documents.length === 0) return "";
+
+  const tokenize = (text) => new Set(text.toLowerCase().split(/\\W+/).filter(w => w.length > 0));
+  const queryTokens = tokenize(query);
+
+  let bestDoc = "";
+  let bestScore = -1;
+
+  for (const doc of documents) {
+    const docTokens = tokenize(doc);
+    const intersection = new Set([...queryTokens].filter(w => docTokens.has(w)));
+    const union = new Set([...queryTokens, ...docTokens]);
+    const score = union.size === 0 ? 0 : intersection.size / union.size;
+
+    if (score > bestScore) {
+      bestScore = score;
+      bestDoc = doc;
+    }
+  }
+
+  return bestDoc;
+}`,
+    testCases: [
+      { id: '1', description: 'Finds RAG-related document', input: 'ragPipeline(["Neural networks use backpropagation.", "RAG combines retrieval with generation.", "CNNs process images."], "How does RAG work?")', expectedOutput: 'RAG combines retrieval with generation.' },
+      { id: '2', description: 'Finds neural network document', input: 'ragPipeline(["The cat sat on the mat.", "Neural networks learn from data.", "Python is a language."], "How do neural networks learn?")', expectedOutput: 'Neural networks learn from data.' },
+      { id: '3', description: 'Empty documents returns empty string', input: 'ragPipeline([], "any query")', expectedOutput: '' },
+      { id: '4', description: 'Single document returns it', input: 'ragPipeline(["Only document here."], "document")', expectedOutput: 'Only document here.', isHidden: true },
+    ],
+    tags: ['rag', 'retrieval', 'nlp', 'similarity'],
+  },
+  {
+    id: 27,
+    title: 'Prompt Engineering: Few-Shot Classification',
+    description: 'Build a few-shot classifier that uses example-based prompting to categorize text.',
+    difficulty: 'intermediate',
+    category: 'Prompt Engineering',
+    estimatedTime: '15 min',
+    problemStatement: `**Few-shot classification** uses labeled examples to classify new inputs without training a model.
+
+Write a function called \`fewShotClassify\` that:
+1. Takes an array of labeled examples \`{text, label}\`
+2. Takes an input text to classify
+3. Returns the label of the most similar example (using word overlap)
+
+**Example:**
+\`\`\`javascript
+const examples = [
+  { text: "I love this product, amazing!", label: "positive" },
+  { text: "Terrible experience, worst ever", label: "negative" },
+  { text: "It's okay, nothing special", label: "neutral" }
+];
+fewShotClassify(examples, "This is wonderful and great!")
+// returns "positive"
+\`\`\``,
+    hints: [
+      'Tokenize input and each example into word sets',
+      'Calculate similarity between input and each example',
+      'Return the label of the example with highest similarity',
+      'Use Jaccard similarity: |intersection| / |union|',
+    ],
+    language: 'javascript',
+    starterCode: `function fewShotClassify(examples, input) {
+  // Your code here
+  // Find the most similar example and return its label
+}`,
+    solutionCode: `function fewShotClassify(examples, input) {
+  const tokenize = (text) => new Set(text.toLowerCase().split(/\\W+/).filter(w => w.length > 0));
+  const inputTokens = tokenize(input);
+
+  let bestLabel = examples[0].label;
+  let bestScore = -1;
+
+  for (const example of examples) {
+    const exTokens = tokenize(example.text);
+    const intersection = new Set([...inputTokens].filter(w => exTokens.has(w)));
+    const union = new Set([...inputTokens, ...exTokens]);
+    const score = union.size === 0 ? 0 : intersection.size / union.size;
+
+    if (score > bestScore) {
+      bestScore = score;
+      bestLabel = example.label;
+    }
+  }
+
+  return bestLabel;
+}`,
+    testCases: [
+      { id: '1', description: 'Classifies positive sentiment', input: 'fewShotClassify([{text:"I love this",label:"positive"},{text:"I hate this",label:"negative"}], "I really love it")', expectedOutput: 'positive' },
+      { id: '2', description: 'Classifies negative sentiment', input: 'fewShotClassify([{text:"Great product amazing",label:"positive"},{text:"Terrible awful horrible",label:"negative"}], "This is terrible and awful")', expectedOutput: 'negative' },
+      { id: '3', description: 'Returns first label on tie', input: 'fewShotClassify([{text:"hello world",label:"greeting"},{text:"goodbye world",label:"farewell"}], "world")', expectedOutput: 'greeting' },
+      { id: '4', description: 'Works with technical text', input: 'fewShotClassify([{text:"bug error crash",label:"bug"},{text:"new feature request",label:"feature"}], "application crashes with error")', expectedOutput: 'bug', isHidden: true },
+    ],
+    tags: ['prompt engineering', 'classification', 'few-shot', 'nlp'],
+  },
+  {
+    id: 28,
+    title: 'Sentiment Analysis',
+    description: 'Build a rule-based sentiment analyzer using positive and negative word lists.',
+    difficulty: 'intermediate',
+    category: 'NLP',
+    estimatedTime: '15 min',
+    problemStatement: `**Sentiment analysis** determines whether text expresses positive, negative, or neutral sentiment.
+
+Write a function called \`analyzeSentiment\` that:
+1. Takes a text string
+2. Counts positive words (good, great, love, amazing, excellent, happy, wonderful, fantastic, awesome, best)
+3. Counts negative words (bad, terrible, hate, awful, worst, sad, horrible, poor, ugly, boring)
+4. Returns an object with \`{score, label}\` where score = positive - negative counts, and label is "positive", "negative", or "neutral"
+
+**Example:**
+\`\`\`javascript
+analyzeSentiment("This is a great and amazing product")
+// { score: 2, label: "positive" }
+\`\`\``,
+    hints: [
+      'Define arrays of positive and negative words',
+      'Tokenize input to lowercase words',
+      'Count how many tokens appear in each list',
+      'Score > 0 = positive, < 0 = negative, 0 = neutral',
+    ],
+    language: 'javascript',
+    starterCode: `function analyzeSentiment(text) {
+  // Your code here
+  // Return { score, label }
+}`,
+    solutionCode: `function analyzeSentiment(text) {
+  const positive = new Set(["good", "great", "love", "amazing", "excellent", "happy", "wonderful", "fantastic", "awesome", "best"]);
+  const negative = new Set(["bad", "terrible", "hate", "awful", "worst", "sad", "horrible", "poor", "ugly", "boring"]);
+
+  const words = text.toLowerCase().split(/\\W+/).filter(w => w.length > 0);
+
+  let posCount = 0;
+  let negCount = 0;
+
+  for (const word of words) {
+    if (positive.has(word)) posCount++;
+    if (negative.has(word)) negCount++;
+  }
+
+  const score = posCount - negCount;
+  const label = score > 0 ? "positive" : score < 0 ? "negative" : "neutral";
+
+  return { score, label };
+}`,
+    testCases: [
+      { id: '1', description: 'Positive text', input: 'analyzeSentiment("This is great and amazing").label', expectedOutput: 'positive' },
+      { id: '2', description: 'Negative text', input: 'analyzeSentiment("This is terrible and awful").label', expectedOutput: 'negative' },
+      { id: '3', description: 'Neutral text', input: 'analyzeSentiment("This is a product").label', expectedOutput: 'neutral' },
+      { id: '4', description: 'Score calculation', input: 'analyzeSentiment("good good bad").score', expectedOutput: '1', isHidden: true },
+    ],
+    tags: ['nlp', 'sentiment', 'text analysis'],
+  },
+  {
+    id: 29,
+    title: 'Named Entity Extraction',
+    description: 'Extract named entities from text using pattern matching rules.',
+    difficulty: 'intermediate',
+    category: 'NLP',
+    estimatedTime: '20 min',
+    problemStatement: `**Named Entity Recognition (NER)** identifies and classifies entities like names, dates, and numbers in text.
+
+Write a function called \`extractEntities\` that extracts:
+- **NUMBERS**: any sequence of digits (optionally with decimals)
+- **EMAILS**: patterns matching word@word.word
+- **DATES**: patterns like MM/DD/YYYY or YYYY-MM-DD
+
+Return an array of objects \`{type, value}\`.
+
+**Example:**
+\`\`\`javascript
+extractEntities("Contact john@example.com by 12/25/2026 for $500")
+// [
+//   { type: "EMAIL", value: "john@example.com" },
+//   { type: "DATE", value: "12/25/2026" },
+//   { type: "NUMBER", value: "500" }
+// ]
+\`\`\``,
+    hints: [
+      'Use regex patterns for each entity type',
+      'Email pattern: /[\\w.+-]+@[\\w-]+\\.[\\w.]+/g',
+      'Date pattern: /\\d{1,2}\\/\\d{1,2}\\/\\d{4}|\\d{4}-\\d{2}-\\d{2}/g',
+      'Number pattern: /\\b\\d+\\.?\\d*\\b/g — but extract after removing emails and dates to avoid conflicts',
+    ],
+    language: 'javascript',
+    starterCode: `function extractEntities(text) {
+  // Your code here
+  // Return array of { type, value } objects
+}`,
+    solutionCode: `function extractEntities(text) {
+  const entities = [];
+
+  // Extract emails
+  const emailRegex = /[\\w.+-]+@[\\w-]+\\.[\\w.]+/g;
+  let match;
+  while ((match = emailRegex.exec(text)) !== null) {
+    entities.push({ type: "EMAIL", value: match[0] });
+  }
+
+  // Extract dates
+  const dateRegex = /\\d{1,2}\\/\\d{1,2}\\/\\d{4}|\\d{4}-\\d{2}-\\d{2}/g;
+  while ((match = dateRegex.exec(text)) !== null) {
+    entities.push({ type: "DATE", value: match[0] });
+  }
+
+  // Extract numbers (exclude those already part of emails/dates)
+  const cleaned = text.replace(/[\\w.+-]+@[\\w-]+\\.[\\w.]+/g, ' ').replace(/\\d{1,2}\\/\\d{1,2}\\/\\d{4}|\\d{4}-\\d{2}-\\d{2}/g, ' ');
+  const numRegex = /\\b\\d+\\.?\\d*\\b/g;
+  while ((match = numRegex.exec(cleaned)) !== null) {
+    entities.push({ type: "NUMBER", value: match[0] });
+  }
+
+  return entities;
+}`,
+    testCases: [
+      { id: '1', description: 'Extracts email', input: 'extractEntities("Email me at test@mail.com").find(e => e.type === "EMAIL").value', expectedOutput: 'test@mail.com' },
+      { id: '2', description: 'Extracts date', input: 'extractEntities("Due on 01/15/2026").find(e => e.type === "DATE").value', expectedOutput: '01/15/2026' },
+      { id: '3', description: 'Extracts number', input: 'extractEntities("Total is 42 items").find(e => e.type === "NUMBER").value', expectedOutput: '42' },
+      { id: '4', description: 'Multiple entity types', input: 'extractEntities("Contact a@b.com on 2026-01-01 for 100").length', expectedOutput: '3', isHidden: true },
+    ],
+    tags: ['nlp', 'ner', 'regex', 'entity extraction'],
+  },
+  {
+    id: 30,
+    title: 'TF-IDF from Scratch',
+    description: 'Implement Term Frequency-Inverse Document Frequency for text importance scoring.',
+    difficulty: 'advanced',
+    category: 'NLP',
+    estimatedTime: '20 min',
+    problemStatement: `**TF-IDF** measures how important a word is to a document in a collection.
+
+Write a function called \`tfidf\` that:
+1. Computes **TF** (term frequency) = count of term in doc / total words in doc
+2. Computes **IDF** (inverse document frequency) = log(total docs / docs containing term)
+3. Returns TF * IDF for a given term in a given document
+
+**Example:**
+\`\`\`javascript
+const docs = ["the cat sat", "the dog ran", "the cat ran fast"];
+tfidf(docs, 0, "cat")
+// TF = 1/3 = 0.333
+// IDF = log(3/2) = 0.405
+// TF-IDF = 0.135
+\`\`\``,
+    hints: [
+      'Tokenize each document into lowercase words',
+      'TF = occurrences of term in doc / total words in doc',
+      'IDF = Math.log(total number of docs / number of docs containing term)',
+      'Handle edge case: if term appears in 0 docs, return 0',
+    ],
+    language: 'javascript',
+    starterCode: `function tfidf(documents, docIndex, term) {
+  // Your code here
+  // Return the TF-IDF score
+}`,
+    solutionCode: `function tfidf(documents, docIndex, term) {
+  const tokenize = (text) => text.toLowerCase().split(/\\W+/).filter(w => w.length > 0);
+  const termLower = term.toLowerCase();
+
+  // Tokenize target document
+  const docTokens = tokenize(documents[docIndex]);
+  const termCount = docTokens.filter(w => w === termLower).length;
+
+  if (termCount === 0) return 0;
+
+  // TF
+  const tf = termCount / docTokens.length;
+
+  // IDF
+  const docsWithTerm = documents.filter(doc => tokenize(doc).includes(termLower)).length;
+  const idf = Math.log(documents.length / docsWithTerm);
+
+  return tf * idf;
+}`,
+    testCases: [
+      { id: '1', description: 'TF-IDF for common word is low', input: 'Math.round(tfidf(["the cat sat", "the dog ran", "the cat ran"], 0, "the") * 1000) / 1000', expectedOutput: '0' },
+      { id: '2', description: 'TF-IDF for unique word is higher', input: 'tfidf(["the cat sat", "the dog ran"], 0, "cat") > 0', expectedOutput: 'true' },
+      { id: '3', description: 'Missing term returns 0', input: 'tfidf(["hello world", "foo bar"], 0, "xyz")', expectedOutput: '0' },
+      { id: '4', description: 'Unique term has highest score', input: 'tfidf(["unique word here", "other words"], 0, "unique") > tfidf(["unique word here", "other words"], 0, "words")', expectedOutput: 'true', isHidden: true },
+    ],
+    tags: ['nlp', 'tf-idf', 'information retrieval', 'text mining'],
+  },
+  {
+    id: 31,
+    title: 'Q-Learning Grid World',
+    description: 'Implement one step of Q-Learning update for a simple grid world agent.',
+    difficulty: 'advanced',
+    category: 'Reinforcement Learning',
+    estimatedTime: '25 min',
+    problemStatement: `**Q-Learning** is a model-free RL algorithm that learns action values for state-action pairs.
+
+Write a function called \`qLearningStep\` that performs one Q-value update:
+
+**Formula:** Q(s,a) = Q(s,a) + alpha * (reward + gamma * max(Q(s')) - Q(s,a))
+
+Parameters:
+- \`qTable\`: object mapping "state-action" keys to Q-values
+- \`state\`: current state (string)
+- \`action\`: action taken (string)
+- \`reward\`: reward received (number)
+- \`nextState\`: resulting state (string)
+- \`actions\`: array of possible actions
+- \`alpha\`: learning rate (default 0.1)
+- \`gamma\`: discount factor (default 0.9)
+
+Return the updated Q-table.
+
+**Example:**
+\`\`\`javascript
+const qTable = { "0-up": 0, "0-right": 0, "1-up": 5, "1-right": 3 };
+qLearningStep(qTable, "0", "right", 1, "1", ["up", "right"], 0.1, 0.9)
+// Q("0-right") = 0 + 0.1 * (1 + 0.9 * 5 - 0) = 0.55
+\`\`\``,
+    hints: [
+      'Q-table key format: "state-action"',
+      'Get current Q value: qTable[state + "-" + action] || 0',
+      'Find max Q of next state across all actions',
+      'Apply the update formula and return the modified table',
+    ],
+    language: 'javascript',
+    starterCode: `function qLearningStep(qTable, state, action, reward, nextState, actions, alpha, gamma) {
+  // Your code here
+  // Update Q(state, action) and return updated qTable
+}`,
+    solutionCode: `function qLearningStep(qTable, state, action, reward, nextState, actions, alpha, gamma) {
+  if (alpha === undefined) alpha = 0.1;
+  if (gamma === undefined) gamma = 0.9;
+
+  const key = state + "-" + action;
+  const currentQ = qTable[key] || 0;
+
+  // Find max Q-value for next state
+  let maxNextQ = -Infinity;
+  for (const a of actions) {
+    const nextQ = qTable[nextState + "-" + a] || 0;
+    if (nextQ > maxNextQ) maxNextQ = nextQ;
+  }
+  if (maxNextQ === -Infinity) maxNextQ = 0;
+
+  // Update Q-value
+  qTable[key] = currentQ + alpha * (reward + gamma * maxNextQ - currentQ);
+
+  return qTable;
+}`,
+    testCases: [
+      { id: '1', description: 'Basic Q update', input: 'qLearningStep({"0-up":0,"0-right":0,"1-up":5,"1-right":3}, "0", "right", 1, "1", ["up","right"], 0.1, 0.9)["0-right"]', expectedOutput: '0.55' },
+      { id: '2', description: 'Zero reward', input: 'qLearningStep({"s-a":0}, "s", "a", 0, "s2", ["a"], 0.1, 0.9)["s-a"]', expectedOutput: '0' },
+      { id: '3', description: 'High reward updates significantly', input: 'qLearningStep({}, "s", "a", 10, "s2", ["a"], 1.0, 0)["s-a"]', expectedOutput: '10' },
+      { id: '4', description: 'Preserves other Q values', input: 'qLearningStep({"x-y":5}, "a", "b", 1, "c", ["b"], 0.1, 0)["x-y"]', expectedOutput: '5', isHidden: true },
+    ],
+    tags: ['reinforcement learning', 'q-learning', 'agent', 'mdp'],
+  },
+  {
+    id: 32,
+    title: 'Build a Simple Chatbot',
+    description: 'Create a rule-based chatbot with pattern matching and response templates.',
+    difficulty: 'intermediate',
+    category: 'LLM',
+    estimatedTime: '20 min',
+    problemStatement: `Build a simple **pattern-matching chatbot** that responds based on keyword detection.
+
+Write a function called \`chatbot\` that:
+1. Takes a user message string
+2. Checks for keyword patterns (case-insensitive)
+3. Returns the appropriate response
+
+**Rules:**
+- Contains "hello" or "hi" → "Hello! How can I help you today?"
+- Contains "help" → "I can assist with AI, ML, and programming questions."
+- Contains "bye" or "goodbye" → "Goodbye! Happy learning!"
+- Contains "ai" or "artificial intelligence" → "AI is fascinating! Would you like to learn about machine learning or deep learning?"
+- Contains "thanks" or "thank you" → "You're welcome! Let me know if you need anything else."
+- Default → "I'm not sure I understand. Could you rephrase that?"
+
+**Example:**
+\`\`\`javascript
+chatbot("Hello there!") // "Hello! How can I help you today?"
+chatbot("Tell me about AI") // "AI is fascinating! ..."
+\`\`\``,
+    hints: [
+      'Convert the input to lowercase for case-insensitive matching',
+      'Use string.includes() to check for keywords',
+      'Check patterns in order — first match wins',
+      'Return the default response if no patterns match',
+    ],
+    language: 'javascript',
+    starterCode: `function chatbot(message) {
+  // Your code here
+  // Match patterns and return appropriate response
+}`,
+    solutionCode: `function chatbot(message) {
+  const msg = message.toLowerCase();
+
+  if (msg.includes("hello") || msg.includes("hi")) {
+    return "Hello! How can I help you today?";
+  }
+  if (msg.includes("help")) {
+    return "I can assist with AI, ML, and programming questions.";
+  }
+  if (msg.includes("bye") || msg.includes("goodbye")) {
+    return "Goodbye! Happy learning!";
+  }
+  if (msg.includes("ai") || msg.includes("artificial intelligence")) {
+    return "AI is fascinating! Would you like to learn about machine learning or deep learning?";
+  }
+  if (msg.includes("thanks") || msg.includes("thank you")) {
+    return "You're welcome! Let me know if you need anything else.";
+  }
+
+  return "I'm not sure I understand. Could you rephrase that?";
+}`,
+    testCases: [
+      { id: '1', description: 'Greeting response', input: 'chatbot("Hello there!")', expectedOutput: 'Hello! How can I help you today?' },
+      { id: '2', description: 'AI question', input: 'chatbot("Tell me about AI")', expectedOutput: 'AI is fascinating! Would you like to learn about machine learning or deep learning?' },
+      { id: '3', description: 'Default response', input: 'chatbot("random gibberish xyz")', expectedOutput: "I'm not sure I understand. Could you rephrase that?" },
+      { id: '4', description: 'Case insensitive', input: 'chatbot("GOODBYE")', expectedOutput: 'Goodbye! Happy learning!', isHidden: true },
+    ],
+    tags: ['chatbot', 'nlp', 'pattern matching', 'llm'],
+  },
+  {
+    id: 33,
+    title: 'Image Histogram Equalization',
+    description: 'Implement histogram equalization to improve image contrast.',
+    difficulty: 'intermediate',
+    category: 'Computer Vision',
+    estimatedTime: '15 min',
+    problemStatement: `**Histogram equalization** enhances image contrast by redistributing pixel intensities.
+
+Write a function called \`histogramEqualize\` that:
+1. Takes a 1D array of pixel values (0-255)
+2. Computes the histogram (frequency of each value)
+3. Computes the cumulative distribution function (CDF)
+4. Maps each pixel to its equalized value: round(CDF(pixel) * 255 / totalPixels)
+
+**Example:**
+\`\`\`javascript
+histogramEqualize([0, 0, 1, 1, 2, 2, 3, 3])
+// Histogram: {0:2, 1:2, 2:2, 3:2}
+// CDF: {0:2, 1:4, 2:6, 3:8}
+// Equalized: [64, 64, 127, 127, 191, 191, 255, 255]
+\`\`\``,
+    hints: [
+      'Build a histogram: count occurrences of each pixel value (0-255)',
+      'Compute CDF: cumulative sum of histogram values',
+      'Normalize: equalized[i] = round(cdf[pixel[i]] * 255 / totalPixels)',
+      'The minimum CDF value should map to 0 for proper equalization',
+    ],
+    language: 'javascript',
+    starterCode: `function histogramEqualize(pixels) {
+  // Your code here
+  // Return array of equalized pixel values
+}`,
+    solutionCode: `function histogramEqualize(pixels) {
+  const total = pixels.length;
+  if (total === 0) return [];
+
+  // Build histogram
+  const histogram = new Array(256).fill(0);
+  for (const p of pixels) {
+    histogram[p]++;
+  }
+
+  // Compute CDF
+  const cdf = new Array(256).fill(0);
+  cdf[0] = histogram[0];
+  for (let i = 1; i < 256; i++) {
+    cdf[i] = cdf[i - 1] + histogram[i];
+  }
+
+  // Find minimum non-zero CDF
+  const cdfMin = cdf.find(v => v > 0) || 0;
+
+  // Map pixels
+  return pixels.map(p => {
+    return Math.round(((cdf[p] - cdfMin) / (total - cdfMin)) * 255);
+  });
+}`,
+    testCases: [
+      { id: '1', description: 'Uniform distribution', input: 'JSON.stringify(histogramEqualize([0, 0, 1, 1, 2, 2, 3, 3]))', expectedOutput: '"[0,0,73,73,146,146,255,255]"' },
+      { id: '2', description: 'Single value unchanged', input: 'histogramEqualize([128, 128, 128])[0]', expectedOutput: '0' },
+      { id: '3', description: 'Empty array', input: 'histogramEqualize([]).length', expectedOutput: '0' },
+      { id: '4', description: 'Already spread values', input: 'histogramEqualize([0, 255]).length', expectedOutput: '2', isHidden: true },
+    ],
+    tags: ['computer vision', 'image processing', 'histogram', 'contrast'],
+  },
 ];
 
 export function getExerciseById(id: number): PracticeExercise | undefined {

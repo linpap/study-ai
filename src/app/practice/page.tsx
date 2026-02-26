@@ -84,6 +84,12 @@ export default function PracticePage() {
               >
                 Practice
               </Link>
+              <Link
+                href="/paths"
+                className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+              >
+                Paths
+              </Link>
               {user && (
                 <Link
                   href="/dashboard"

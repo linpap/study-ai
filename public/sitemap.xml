@@ -7,6 +7,15 @@
   <url><loc>https://learnai.greensolz.com/premium</loc><lastmod>2026-02-26</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
   <url><loc>https://learnai.greensolz.com/blog</loc><lastmod>2026-02-26</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
   <url><loc>https://learnai.greensolz.com/practice</loc><lastmod>2026-02-26</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://learnai.greensolz.com/paths</loc><lastmod>2026-02-26</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://learnai.greensolz.com/certificate</loc><lastmod>2026-02-26</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+
+  <!-- Learning Paths (5 total) -->
+  <url><loc>https://learnai.greensolz.com/paths/ai-foundations</loc><lastmod>2026-02-26</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://learnai.greensolz.com/paths/classical-ml</loc><lastmod>2026-02-26</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://learnai.greensolz.com/paths/deep-learning</loc><lastmod>2026-02-26</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://learnai.greensolz.com/paths/llm-engineer</loc><lastmod>2026-02-26</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://learnai.greensolz.com/paths/production-ai</loc><lastmod>2026-02-26</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
 
   <!-- Lessons (31 total) -->
   <url><loc>https://learnai.greensolz.com/lesson/1</loc><lastmod>2026-02-26</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
@@ -41,7 +50,7 @@
   <url><loc>https://learnai.greensolz.com/lesson/30</loc><lastmod>2026-02-26</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
   <url><loc>https://learnai.greensolz.com/lesson/31</loc><lastmod>2026-02-26</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
 
-  <!-- Practice Exercises (25 total) -->
+  <!-- Practice Exercises (33 total) -->
   <url><loc>https://learnai.greensolz.com/practice/1</loc><lastmod>2026-02-26</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://learnai.greensolz.com/practice/2</loc><lastmod>2026-02-26</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://learnai.greensolz.com/practice/3</loc><lastmod>2026-02-26</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
@@ -67,6 +76,14 @@
   <url><loc>https://learnai.greensolz.com/practice/23</loc><lastmod>2026-02-26</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://learnai.greensolz.com/practice/24</loc><lastmod>2026-02-26</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://learnai.greensolz.com/practice/25</loc><lastmod>2026-02-26</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://learnai.greensolz.com/practice/26</loc><lastmod>2026-02-26</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://learnai.greensolz.com/practice/27</loc><lastmod>2026-02-26</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://learnai.greensolz.com/practice/28</loc><lastmod>2026-02-26</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://learnai.greensolz.com/practice/29</loc><lastmod>2026-02-26</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://learnai.greensolz.com/practice/30</loc><lastmod>2026-02-26</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://learnai.greensolz.com/practice/31</loc><lastmod>2026-02-26</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://learnai.greensolz.com/practice/32</loc><lastmod>2026-02-26</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://learnai.greensolz.com/practice/33</loc><lastmod>2026-02-26</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
 
   <!-- Blog Posts -->
   <url><loc>https://learnai.greensolz.com/blog/how-to-learn-ai-from-scratch</loc><lastmod>2026-02-26</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
@@ -79,6 +96,10 @@
   <url><loc>https://learnai.greensolz.com/blog/how-to-get-into-ai-without-degree</loc><lastmod>2026-02-26</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://learnai.greensolz.com/blog/top-ai-interview-questions-2026</loc><lastmod>2026-02-26</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://learnai.greensolz.com/blog/what-is-rag-explained</loc><lastmod>2026-02-26</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://learnai.greensolz.com/blog/ai-learning-paths-guide</loc><lastmod>2026-02-26</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://learnai.greensolz.com/blog/rag-tutorial-beginners</loc><lastmod>2026-02-26</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://learnai.greensolz.com/blog/prompt-engineering-techniques</loc><lastmod>2026-02-26</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://learnai.greensolz.com/blog/reinforcement-learning-beginners</loc><lastmod>2026-02-26</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
 
   <!-- Legal Pages -->
   <url><loc>https://learnai.greensolz.com/privacy</loc><lastmod>2026-02-26</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>

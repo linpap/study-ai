@@ -1,7 +1,7 @@
 export const siteConfig = {
   name: 'StudyAI',
   url: 'https://learnai.greensolz.com',
-  description: 'Master AI & Machine Learning from zero to production. 31 comprehensive lessons, 25 hands-on coding exercises, 150+ quiz questions with AI evaluation.',
+  description: 'Master AI & Machine Learning from zero to production. 31 comprehensive lessons, 33 hands-on coding exercises, 5 learning paths, and completion certificates.',
   tagline: 'Learn AI & Machine Learning',
   company: 'Greensolz',
   author: {
@@ -17,7 +17,8 @@ export const siteConfig = {
   },
   stats: {
     lessons: 31,
-    exercises: 25,
+    exercises: 33,
+    paths: 5,
     quizQuestions: 150,
     hours: 40,
   },

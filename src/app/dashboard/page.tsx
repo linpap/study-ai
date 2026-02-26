@@ -8,6 +8,7 @@ import { createClient } from '@/lib/supabase/client';
 import { lessons } from '@/data/lessons';
 import { practiceExercises } from '@/data/practice-exercises';
 import Logo from '@/components/Logo';
+import { learningPaths } from '@/data/learning-paths';
 
 interface LessonProgress {
   lesson_id: number;
@@ -158,6 +159,12 @@ export default function DashboardPage() {
                 className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
               >
                 Practice
+              </Link>
+              <Link
+                href="/paths"
+                className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+              >
+                Paths
               </Link>
               <Link
                 href="/dashboard"
@@ -395,8 +402,61 @@ export default function DashboardPage() {
                   </svg>
                   <p className="text-sm font-medium text-gray-900 dark:text-white">All Exercises</p>
                 </Link>
+                <Link
+                  href="/paths"
+                  className="p-4 rounded-lg border border-gray-200 dark:border-gray-600 hover:border-purple-500 dark:hover:border-purple-400 transition text-center"
+                >
+                  <svg className="w-6 h-6 mx-auto mb-2 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                  </svg>
+                  <p className="text-sm font-medium text-gray-900 dark:text-white">Learning Paths</p>
+                </Link>
+                <Link
+                  href="/certificate"
+                  className="p-4 rounded-lg border border-gray-200 dark:border-gray-600 hover:border-green-500 dark:hover:border-green-400 transition text-center"
+                >
+                  <svg className="w-6 h-6 mx-auto mb-2 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                  </svg>
+                  <p className="text-sm font-medium text-gray-900 dark:text-white">Certificates</p>
+                </Link>
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* Learning Paths Progress */}
+        <div className="mt-8 bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Learning Paths</h2>
+            <Link href="/paths" className="text-sm text-blue-600 dark:text-blue-400 hover:underline">View all</Link>
+          </div>
+          <div className="space-y-4">
+            {learningPaths.map((path) => {
+              const completedPathLessons = path.lessonIds.filter(id => lessonProgress.some(p => p.lesson_id === id && p.completed)).length;
+              const completedPathExercises = path.exerciseIds.filter(id => practiceProgress[id]?.completed).length;
+              const pathTotal = path.lessonIds.length + path.exerciseIds.length;
+              const pathCompleted = completedPathLessons + completedPathExercises;
+              const pathPercent = pathTotal > 0 ? Math.round((pathCompleted / pathTotal) * 100) : 0;
+
+              return (
+                <Link key={path.id} href={`/paths/${path.id}`} className="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition">
+                  <span className="text-2xl">{path.icon}</span>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between mb-1">
+                      <p className="font-medium text-gray-900 dark:text-white text-sm truncate">{path.title}</p>
+                      <span className="text-xs text-gray-500 dark:text-gray-400 ml-2">{pathCompleted}/{pathTotal}</span>
+                    </div>
+                    <div className="h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                      <div className={`h-full bg-gradient-to-r ${path.color} transition-all`} style={{ width: `${pathPercent}%` }} />
+                    </div>
+                  </div>
+                  {pathPercent === 100 && (
+                    <Link href="/certificate" className="text-xs text-green-600 dark:text-green-400 font-medium whitespace-nowrap">Certificate</Link>
+                  )}
+                </Link>
+              );
+            })}
           </div>
         </div>
 

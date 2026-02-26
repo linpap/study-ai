@@ -940,6 +940,255 @@ export const articles: Article[] = [
       <p>Learn to build production RAG systems in our <a href="/lesson/21">RAG Systems Deep Dive</a> lesson, which covers advanced retrieval strategies, evaluation, and deployment. <a href="/premium">Get full access to all 31 lessons</a> and start building AI applications today.</p>
     `,
   },
+  {
+    slug: 'ai-learning-paths-guide',
+    title: 'Best AI Learning Paths for 2026: From Beginner to Production Engineer',
+    excerpt: 'Discover the most effective AI learning paths for 2026. Whether you want to master ML fundamentals, deep learning, LLM engineering, or production AI — we have a structured path for you.',
+    date: '2026-02-26',
+    author: 'Soumyajit Sarkar',
+    category: 'Getting Started',
+    readTime: '8 min read',
+    tags: ['AI learning path', 'machine learning roadmap', 'AI career', 'learning paths', 'AI curriculum'],
+    relatedLessons: [1, 2, 10],
+    content: `
+      <h2>Why You Need a Structured Learning Path</h2>
+      <p>The biggest mistake people make when learning AI is jumping between random tutorials, courses, and blog posts without a clear direction. A structured learning path ensures you build knowledge in the right order — each concept builds on the previous one, and nothing is left to guesswork.</p>
+      <p>At StudyAI, we've designed <a href="/paths">5 learning paths</a> that cover the full spectrum of AI and ML — from absolute beginner to production-ready engineer.</p>
+
+      <h2>Path 1: AI Foundations (Beginner)</h2>
+      <p>Start here if you're completely new to AI. This path covers:</p>
+      <ul>
+        <li>What AI is and how it works</li>
+        <li>Machine learning fundamentals — supervised, unsupervised, reinforcement learning</li>
+        <li>Essential math — linear algebra, calculus, probability</li>
+        <li>Your first ML models and evaluation metrics</li>
+      </ul>
+      <p><strong>Duration:</strong> ~6 hours | <strong>Includes:</strong> 6 lessons + 7 exercises</p>
+      <p>Start the <a href="/paths/ai-foundations">AI Foundations path</a> to build your base.</p>
+
+      <h2>Path 2: Classical ML Practitioner (Intermediate)</h2>
+      <p>After mastering the basics, dive into the workhorses of production ML:</p>
+      <ul>
+        <li>Decision trees, random forests, gradient boosting</li>
+        <li>SVMs, k-nearest neighbors, ensemble methods</li>
+        <li>Feature engineering and data preprocessing</li>
+        <li>Model evaluation: precision, recall, F1, confusion matrices</li>
+      </ul>
+      <p><strong>Duration:</strong> ~8 hours | <strong>Includes:</strong> 4 lessons + 9 exercises</p>
+
+      <h2>Path 3: Deep Learning Specialist (Intermediate)</h2>
+      <p>Ready for neural networks? This path covers:</p>
+      <ul>
+        <li>Neural network architecture and backpropagation</li>
+        <li>CNNs for computer vision</li>
+        <li>Advanced architectures: ResNets, attention mechanisms</li>
+        <li>Hands-on exercises with convolution, pooling, and attention</li>
+      </ul>
+      <p><strong>Duration:</strong> ~8 hours | <strong>Includes:</strong> 5 lessons + 5 exercises</p>
+
+      <h2>Path 4: LLM Engineer (Advanced)</h2>
+      <p>The most in-demand AI role in 2026. Learn to:</p>
+      <ul>
+        <li>Understand transformer architecture deeply</li>
+        <li>Master prompt engineering techniques</li>
+        <li>Build RAG (Retrieval-Augmented Generation) systems</li>
+        <li>Deploy LLM-powered applications</li>
+      </ul>
+      <p><strong>Duration:</strong> ~10 hours | <strong>Includes:</strong> 6 lessons + 5 exercises</p>
+
+      <h2>Path 5: Production AI Engineer (Advanced)</h2>
+      <p>Ship AI to production with confidence:</p>
+      <ul>
+        <li>MLOps and model deployment</li>
+        <li>Model monitoring and drift detection</li>
+        <li>Scaling AI systems</li>
+        <li>Real-world capstone projects</li>
+      </ul>
+      <p><strong>Duration:</strong> ~10 hours | <strong>Includes:</strong> 6 lessons + 2 exercises</p>
+
+      <h2>Earn Certificates</h2>
+      <p>Complete all lessons and exercises in any path to earn a downloadable <a href="/certificate">completion certificate</a>. Certificates include your name, the path completed, and a unique verification ID — perfect for sharing on LinkedIn or adding to your resume.</p>
+
+      <h2>Which Path Should You Start With?</h2>
+      <p>If you're brand new: start with <a href="/paths/ai-foundations">AI Foundations</a>. If you know the basics but want to specialize, pick the path that matches your career goals. LLM Engineer is the hottest track for 2026, while Production AI Engineer is ideal for backend engineers wanting to add ML to their toolkit.</p>
+
+      <p>Ready to begin? <a href="/paths">Choose your learning path</a> and start building real AI skills today.</p>
+    `,
+  },
+  {
+    slug: 'rag-tutorial-beginners',
+    title: 'RAG Tutorial: Build Your First Retrieval-Augmented Generation System',
+    excerpt: 'A hands-on guide to building a RAG system from scratch. Learn document chunking, embeddings, vector search, and how to ground LLM responses in real data.',
+    date: '2026-02-26',
+    author: 'Soumyajit Sarkar',
+    category: 'LLMs',
+    readTime: '12 min read',
+    tags: ['RAG tutorial', 'retrieval augmented generation', 'LLM', 'vector database', 'embeddings', 'AI tutorial'],
+    relatedLessons: [21, 23],
+    content: `
+      <h2>What You'll Build</h2>
+      <p>By the end of this tutorial, you'll understand how to build a RAG (Retrieval-Augmented Generation) system — the architecture behind most production AI assistants in 2026. RAG lets you connect LLMs to your own data, eliminating hallucination and keeping responses grounded in facts.</p>
+
+      <h2>Why RAG Matters</h2>
+      <p>LLMs are powerful but have two critical weaknesses: they hallucinate when they don't know something, and their knowledge is frozen at training time. RAG solves both by retrieving relevant documents at query time and feeding them to the LLM as context.</p>
+      <p>Every major AI product — from ChatGPT's browsing mode to enterprise search — uses some form of RAG. Understanding it is essential for any AI engineer in 2026.</p>
+
+      <h2>Step 1: Document Processing</h2>
+      <p>The first step is preparing your documents for retrieval:</p>
+      <h3>Loading</h3>
+      <p>Ingest documents from any source — PDFs, web pages, databases, APIs. Use libraries like LangChain's document loaders or LlamaIndex for structured ingestion.</p>
+      <h3>Chunking</h3>
+      <p>Split documents into smaller pieces (typically 200-1000 tokens). Chunk size is critical: too small loses context, too large reduces retrieval precision. Recursive text splitting is the gold standard — it splits by paragraphs, then sentences, then characters.</p>
+
+      <h2>Step 2: Creating Embeddings</h2>
+      <p>Convert each text chunk into a dense vector (embedding) using a model like OpenAI's text-embedding-3 or open-source BGE. These vectors capture semantic meaning — "How to train a model" and "Steps for building ML" would have similar embeddings despite different words.</p>
+      <p>Store these vectors in a vector database: Chroma (easy start), Pinecone (production scale), pgvector (if you already use Postgres), or Qdrant (advanced filtering).</p>
+
+      <h2>Step 3: Retrieval</h2>
+      <p>When a user asks a question:</p>
+      <ol>
+        <li>Embed the query using the same model</li>
+        <li>Search the vector database for the K most similar chunks</li>
+        <li>Optionally re-rank results with a cross-encoder for better accuracy</li>
+      </ol>
+
+      <h2>Step 4: Generation</h2>
+      <p>Combine the retrieved chunks with the user's question into a prompt:</p>
+      <p>"Based on the following context, answer the user's question. Context: [retrieved chunks]. Question: [user query]"</p>
+      <p>The LLM generates a response grounded in the retrieved information, dramatically reducing hallucination.</p>
+
+      <h2>Advanced Techniques</h2>
+      <ul>
+        <li><strong>Hybrid search:</strong> Combine vector similarity with keyword search (BM25) for better coverage</li>
+        <li><strong>Query expansion:</strong> Use the LLM to generate multiple query variations</li>
+        <li><strong>HyDE:</strong> Generate a hypothetical answer first, then search with its embedding</li>
+        <li><strong>Agentic RAG:</strong> Multi-step retrieval where an agent breaks complex questions into sub-queries</li>
+      </ul>
+
+      <h2>Practice It</h2>
+      <p>Our <a href="/practice/26">Build a Simple RAG Pipeline</a> exercise lets you implement the core retrieval logic hands-on. Then dive deeper with the <a href="/lesson/21">RAG Systems Deep Dive</a> lesson for production-grade techniques.</p>
+
+      <p>Want to master the full LLM stack? Follow the <a href="/paths/llm-engineer">LLM Engineer learning path</a> — it covers transformers, prompt engineering, RAG, and production deployment.</p>
+    `,
+  },
+  {
+    slug: 'prompt-engineering-techniques',
+    title: 'Prompt Engineering Techniques That Actually Work in 2026',
+    excerpt: 'Master the art of prompt engineering with practical techniques: few-shot learning, chain-of-thought, role prompting, and more. Includes examples you can use today.',
+    date: '2026-02-26',
+    author: 'Soumyajit Sarkar',
+    category: 'LLMs',
+    readTime: '10 min read',
+    tags: ['prompt engineering', 'LLM', 'AI techniques', 'few-shot learning', 'chain of thought', 'AI prompts'],
+    relatedLessons: [23, 22],
+    content: `
+      <h2>What Is Prompt Engineering?</h2>
+      <p>Prompt engineering is the art of crafting instructions that get the best possible output from LLMs. It's not about tricks — it's about clear communication with AI systems. In 2026, it's a core skill for every developer working with AI.</p>
+
+      <h2>Technique 1: Few-Shot Learning</h2>
+      <p>Provide examples of the input-output pattern you want. The model learns the pattern from your examples and applies it to new inputs.</p>
+      <p><strong>Example:</strong></p>
+      <p>Instead of: "Classify this text as positive or negative"</p>
+      <p>Use: "Classify the sentiment. Examples: 'I love this!' → positive. 'Terrible product' → negative. 'Absolutely amazing experience' → positive. Now classify: 'The worst service ever'"</p>
+      <p>Our <a href="/practice/27">Few-Shot Classification exercise</a> lets you implement this pattern hands-on.</p>
+
+      <h2>Technique 2: Chain-of-Thought (CoT)</h2>
+      <p>Ask the model to think step-by-step. This dramatically improves performance on reasoning tasks — math, logic, code debugging.</p>
+      <p><strong>Example:</strong> "Think through this step by step: If a train travels at 60mph for 2.5 hours, then 80mph for 1.5 hours, what's the total distance?"</p>
+      <p>The model breaks it down: 60×2.5 = 150 miles + 80×1.5 = 120 miles = 270 miles total.</p>
+
+      <h2>Technique 3: Role Prompting</h2>
+      <p>Assign the model a specific role or persona. This activates domain-specific knowledge and adjusts the response style.</p>
+      <p><strong>Example:</strong> "You are a senior ML engineer reviewing code. Identify potential issues with this training pipeline..."</p>
+
+      <h2>Technique 4: Structured Output</h2>
+      <p>Request specific output formats to get clean, parseable results.</p>
+      <p><strong>Example:</strong> "Analyze this text and return a JSON object with fields: sentiment (positive/negative/neutral), confidence (0-1), key_phrases (array of strings)"</p>
+
+      <h2>Technique 5: Constraint Prompting</h2>
+      <p>Set explicit boundaries on the response:</p>
+      <ul>
+        <li>"Answer in exactly 3 bullet points"</li>
+        <li>"Use only information from the provided context"</li>
+        <li>"If you're not sure, say 'I don't know' instead of guessing"</li>
+      </ul>
+
+      <h2>Technique 6: Self-Consistency</h2>
+      <p>Generate multiple responses and pick the most common answer. This reduces errors on tasks where the model might give different answers on different attempts.</p>
+
+      <h2>Common Mistakes</h2>
+      <ul>
+        <li><strong>Being too vague:</strong> "Write something about AI" vs "Write a 200-word summary of how transformers work, suitable for a CS student"</li>
+        <li><strong>Not providing context:</strong> Always include relevant background information</li>
+        <li><strong>Ignoring output format:</strong> If you need structured data, ask for it explicitly</li>
+        <li><strong>Prompt injection:</strong> Always validate and sanitize user input before including it in prompts</li>
+      </ul>
+
+      <h2>Practice These Techniques</h2>
+      <p>Try our <a href="/practice/27">Few-Shot Classification</a> and <a href="/practice/32">Build a Simple Chatbot</a> exercises to practice prompt engineering patterns. For a deep dive, follow the <a href="/paths/llm-engineer">LLM Engineer path</a> which covers prompt engineering, RAG, and production LLM deployment.</p>
+    `,
+  },
+  {
+    slug: 'reinforcement-learning-beginners',
+    title: 'Reinforcement Learning for Beginners: A Practical Guide',
+    excerpt: 'Learn reinforcement learning from scratch. Understand agents, environments, rewards, Q-learning, and policy gradients with practical examples and code.',
+    date: '2026-02-26',
+    author: 'Soumyajit Sarkar',
+    category: 'Machine Learning',
+    readTime: '11 min read',
+    tags: ['reinforcement learning', 'Q-learning', 'RL', 'AI agents', 'machine learning', 'policy gradient'],
+    relatedLessons: [9, 27],
+    content: `
+      <h2>What Is Reinforcement Learning?</h2>
+      <p>Reinforcement learning (RL) is the branch of ML where an agent learns by interacting with an environment. Unlike supervised learning (where you have labeled data) or unsupervised learning (where you find patterns), RL learns through trial and error — taking actions, receiving rewards, and adjusting strategy.</p>
+      <p>RL powers some of the most impressive AI achievements: AlphaGo, ChatGPT's RLHF training, robotic manipulation, autonomous driving, and game-playing agents that surpass human performance.</p>
+
+      <h2>Core Concepts</h2>
+      <h3>Agent and Environment</h3>
+      <p>The <strong>agent</strong> is the learner — it observes the environment, takes actions, and receives rewards. The <strong>environment</strong> is everything the agent interacts with. Think of it like a game: the player (agent) plays in a world (environment) and tries to maximize their score (reward).</p>
+
+      <h3>States, Actions, and Rewards</h3>
+      <ul>
+        <li><strong>State (s):</strong> The current situation — what the agent observes. In a chess game, it's the board position.</li>
+        <li><strong>Action (a):</strong> What the agent can do. In chess, it's the set of legal moves.</li>
+        <li><strong>Reward (r):</strong> The feedback signal. +1 for winning, -1 for losing, 0 for neutral moves.</li>
+        <li><strong>Policy (π):</strong> The agent's strategy — a mapping from states to actions.</li>
+      </ul>
+
+      <h3>The Goal</h3>
+      <p>Maximize the <strong>cumulative discounted reward</strong>: R = r₁ + γr₂ + γ²r₃ + ... where γ (gamma) is the discount factor (typically 0.9-0.99). This means the agent values immediate rewards more than distant ones.</p>
+
+      <h2>Q-Learning: Your First RL Algorithm</h2>
+      <p>Q-learning learns a "quality" value for each state-action pair: Q(s, a) = how good is it to take action a in state s?</p>
+      <h3>The Update Rule</h3>
+      <p>Q(s, a) = Q(s, a) + α × (reward + γ × max Q(s') - Q(s, a))</p>
+      <p>Where α is the learning rate, γ is the discount factor, and max Q(s') is the best Q-value from the next state.</p>
+      <p>The agent uses a Q-table that stores values for every state-action pair. Over many episodes, the table converges to optimal values.</p>
+
+      <h3>Exploration vs. Exploitation</h3>
+      <p>The agent faces a dilemma: should it <strong>exploit</strong> what it already knows (pick the highest Q-value action) or <strong>explore</strong> new actions that might lead to better outcomes? The ε-greedy strategy handles this: with probability ε, take a random action; otherwise, take the best known action. Start with high ε (explore a lot) and decrease it over time.</p>
+
+      <h2>Deep Q-Networks (DQN)</h2>
+      <p>When the state space is too large for a table (e.g., Atari game pixels), replace the Q-table with a neural network that approximates Q-values. This is how DeepMind's DQN beat human players at Atari games in 2015.</p>
+
+      <h2>Policy Gradient Methods</h2>
+      <p>Instead of learning Q-values, directly learn the policy — the probability of taking each action in each state. Policy gradients can handle continuous action spaces (like controlling a robot arm) where Q-learning struggles.</p>
+
+      <h2>RLHF: How ChatGPT Learns</h2>
+      <p>Reinforcement Learning from Human Feedback (RLHF) is how modern LLMs are aligned with human preferences. The process:</p>
+      <ol>
+        <li>Train a base language model on text data</li>
+        <li>Have humans rank model outputs by quality</li>
+        <li>Train a reward model on these rankings</li>
+        <li>Fine-tune the LLM using RL (PPO algorithm) to maximize the reward model's score</li>
+      </ol>
+
+      <h2>Practice It</h2>
+      <p>Try our <a href="/practice/31">Q-Learning Grid World</a> exercise to implement Q-learning from scratch. Then explore our <a href="/lesson/9">Reinforcement Learning</a> lesson for a comprehensive deep dive with quizzes and examples.</p>
+
+      <p>Ready for a structured learning journey? The <a href="/paths/ai-foundations">AI Foundations path</a> covers RL alongside other essential AI concepts. For production applications, check the <a href="/paths/production-ai">Production AI Engineer path</a>.</p>
+    `,
+  },
 ];
 
 export function getArticleBySlug(slug: string): Article | undefined {

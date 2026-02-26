@@ -100,6 +100,12 @@ export default function PracticeClient({ exerciseId }: { exerciseId: number }) {
               >
                 Practice
               </Link>
+              <Link
+                href="/paths"
+                className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors hidden sm:inline"
+              >
+                Paths
+              </Link>
             </div>
 
             <div className="flex items-center gap-4">

@@ -6,6 +6,7 @@ import { lessons } from '@/data/lessons';
 import { useAuth } from '@/context/AuthContext';
 import { createClient } from '@/lib/supabase/client';
 import Logo from '@/components/Logo';
+import { learningPaths } from '@/data/learning-paths';
 
 const FREE_LESSONS = [1, 2, 3];
 
@@ -141,6 +142,12 @@ export default function Home() {
               Practice
             </Link>
             <Link
+              href="/paths"
+              className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            >
+              Paths
+            </Link>
+            <Link
               href="/blog"
               className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
             >
@@ -239,8 +246,8 @@ export default function Home() {
             {[
               { value: '31', label: 'Lessons' },
               { value: '40+', label: 'Hours' },
-              { value: '25', label: 'Exercises' },
-              { value: '150+', label: 'Quiz Questions' },
+              { value: '33', label: 'Exercises' },
+              { value: '5', label: 'Learning Paths' },
             ].map((stat) => (
               <div key={stat.label} className="bg-white dark:bg-gray-800 rounded-xl px-4 py-3 shadow-sm">
                 <p className="text-2xl font-bold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">{stat.value}</p>
@@ -522,6 +529,51 @@ export default function Home() {
               </Link>
             );
           })}
+        </div>
+
+        {/* Learning Paths CTA */}
+        <div className="mt-16 mb-16">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-3">
+              Follow a Learning Path
+            </h2>
+            <p className="text-gray-600 dark:text-gray-300 max-w-xl mx-auto">
+              Structured sequences of lessons and exercises to take you from beginner to expert.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {learningPaths.slice(0, 3).map((path) => (
+              <Link
+                key={path.id}
+                href={`/paths/${path.id}`}
+                className="group bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm hover:shadow-md border-2 border-transparent hover:border-blue-500 transition-all"
+              >
+                <div className="flex items-center gap-3 mb-2">
+                  <span className="text-2xl">{path.icon}</span>
+                  <h3 className="font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                    {path.title}
+                  </h3>
+                </div>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">{path.description}</p>
+                <div className="flex items-center gap-3 text-xs text-gray-500 dark:text-gray-400">
+                  <span>{path.lessonIds.length} lessons</span>
+                  <span>{path.exerciseIds.length} exercises</span>
+                  <span>~{path.estimatedHours}h</span>
+                </div>
+              </Link>
+            ))}
+          </div>
+          <div className="text-center mt-6">
+            <Link
+              href="/paths"
+              className="inline-flex items-center gap-2 px-6 py-2.5 text-sm font-medium text-blue-600 dark:text-blue-400 border border-blue-300 dark:border-blue-700 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 transition"
+            >
+              View All 5 Paths
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </Link>
+          </div>
         </div>
 
         {/* Footer */}
